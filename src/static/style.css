@@ -118,9 +118,9 @@ body {
 .lectures {
   overflow-y: auto;
   overflow-x: hidden;
-  margin: 8px;
+  margin: 8px 4px 8px 6px;
   height: calc(100% - 16px);
-  padding-right: 4px;
+  padding-right: 6px;
 }
 
 
@@ -134,7 +134,6 @@ body {
   padding: 0;
   margin-bottom: 3px;
   color: var(--main-color);
-  border: 1px dotted var(--graph-bg-color);
 }
 
 .lecture__name {
@@ -142,6 +141,7 @@ body {
   justify-content: start;
   align-items: center;
   text-align: left;
+  overflow: hidden;
 }
 
 .lectures .lecture:last-child {
@@ -157,6 +157,8 @@ body {
   text-align: left;
   opacity: 50%;
   font-size: 0;
+  border: var(--graph-bg-color) dotted 1px;
+  overflow: hidden;
 }
 
 .lecture__bar {

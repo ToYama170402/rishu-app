@@ -97,7 +97,6 @@ body {
   grid-template-columns: 1rem repeat(5, 1fr);
 }
 
-
 .timetable__datas {
   height: calc((100vh - 32px) / 5);
   overflow-x: hidden;
@@ -244,13 +243,13 @@ body {
   backdrop-filter: blur(3px);
   z-index: 4;
   opacity: 0;
-  transition: opacity 300ms ease-out;
+  transition: opacity 150ms ease-out;
 }
 
 .setting-menu-wrap--visible {
   visibility: visible;
   opacity: 1;
-  transition: opacity 300ms ease-in;
+  transition: opacity 150ms ease-in;
 }
 
 .setting-menu {

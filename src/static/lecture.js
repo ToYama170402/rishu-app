@@ -3,7 +3,7 @@
 // 講義の詳細情報と志望者数を保持
 class lecture {
   constructor(
-    number,// 時間割番号
+    lectureNumber,// 時間割番号
     category,// 科目区分
     name,// 時間割名
     dateTime,// 曜日時限
@@ -18,7 +18,7 @@ class lecture {
     forth,// 第４希望
     fifth// 第５希望
   ) {
-    this.number = number
+    this.lectureNumber = lectureNumber
     this.category = category
     this.name = name
     this.dateTime = dateTime
@@ -36,7 +36,7 @@ class lecture {
 
   // risyu APIの基本モードで取得できる情報をセット
   setNormalMode(
-    number,
+    lectureNumber,
     capacity,
     applicantsAmount,
     priority,
@@ -46,7 +46,7 @@ class lecture {
     forth,
     fifth
   ) {
-    this.number = number;
+    this.lectureNumber = lectureNumber;
     this.capacity = capacity;
     this.applicantsAmount = applicantsAmount;
     this.priority = priority;
@@ -58,15 +58,15 @@ class lecture {
   }
 
   // risyu APIの科目詳細モードで取得できる情報をセット
-  setLectureDetail(
-    number,
+  setDetailMode(
+    lectureNumber,
     category,
     name,
     dateTime,
     teacher,
     target
   ) {
-    this.number = number;
+    this.lectureNumber = lectureNumber;
     this.category = category;
     this.name = name;
     this.dateTime = dateTime;

@@ -1,8 +1,0 @@
-/*
-スマホ用のスタイルシート
-style.cssを上書きする形で記述
- */
-
-.timetable__datas {
-  width: calc(100vw - 1rem);
-}

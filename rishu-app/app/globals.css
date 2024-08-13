@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+*::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+  background-color: inherit;
+  position: fixed;
+  right: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 1px;
+  margin: 1px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: inherit;
+}

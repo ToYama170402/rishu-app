@@ -5,12 +5,8 @@ import Grid from '@mui/material/Unstable_Grid2'
 import Box from '@mui/material/Box'
 import { colors, Divider, Paper } from '@mui/material';
 import Stack from '@mui/material/Stack'
-import { Bar } from 'react-chartjs-2'
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { ChartData, ChartOptions } from 'chart.js';
 import AppRouter from 'next/dist/client/components/app-router';
 type timeTableType = { timeTable: TimeTableData.weekTimeTable }
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 function TimeTable({ timeTable }: timeTableType): JSX.Element {
   const [isDisplayLaterLecture, setIsDisplayLaterLecture] = React.useState(false);
   function ApplicantsBar({ applicantsAmount, capacity }: { applicantsAmount: TimeTableData.applicantsAmount, capacity: number }): JSX.Element {

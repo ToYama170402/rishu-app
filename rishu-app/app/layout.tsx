@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "rishu-app",
-  description: "金沢大学抽選対象GS科目履修登録支援WEBアプリ",
+  description: "金沢大学抽選対象科目履修登録支援WEBアプリ",
 };
 
 export default function RootLayout({

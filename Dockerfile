@@ -10,5 +10,6 @@ RUN apt-get update \
 
 
 # アプリケーションの依存関係をインストール
-COPY /rishu-app/yarn.lock ./
+COPY /rishu-app/yarn.lock ./rishu-app/
+CMD cd rishu-app
 RUN yarn install --frozen-lockfile

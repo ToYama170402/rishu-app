@@ -31,7 +31,7 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
       width={'100%'}
       sx={{
         overflowX: 'auto',
-        scrollSnapType: 'x proximity',
+        scrollSnapType: 'x mandatory',
       }}
     >
       {

@@ -21,7 +21,19 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
       </Stack>);
   }
   return (
-    <Grid container columns={5} spacing={1} padding={1} height={'100vh'} width={'100%'} >
+    <Stack
+      direction={'row'}
+      alignItems={'center'}
+      justifyContent={{ xs: 'left', xl: 'center' }}
+      spacing={1}
+      padding={1}
+      height={'100vh'}
+      width={'100%'}
+      sx={{
+        overflowX: 'auto',
+        scrollSnapType: 'x proximity',
+      }}
+    >
       {
         [
           timeTable.monday,
@@ -30,79 +42,91 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
           timeTable.thursday,
           timeTable.friday
         ].map(date => (
-          <Grid
-            xs={1}
+          <Paper
+            elevation={3}
             key={date.period1[0].dateTime.date}
-            sx={{ height: '100%' }}
-          >
-            <Paper elevation={3} sx={{ height: '100%' }}>
-              <Stack spacing={1} height={'100%'} padding={1} divider={<Divider />}>
-                <Box
-                  sx={{
-                    textAlign: 'center',
-                    height: '1em',
-                  }}>
-                  {date.period1[0].dateTime.date}
-                </Box>
-                {
-                  [
-                    date.period1,
-                    date.period2,
-                    date.period3,
-                    date.period4,
-                    date.period5,
-                    date.period6,
-                    date.period7,
-                    date.period8,
-                  ].map((period, index) => {
-                    if (!isDisplayLaterLecture && index < 5) {
-                      return (
-                        <Box
-                          key={index + 1}
-                          padding={1}
-                          sx={{
-                            overflow: 'auto',
-                            height: 'calc((100% - 1em) / 5 - 4px)',
-                          }}>
-                          {
-                            period.map((data, index) => (
-                              <Box
-                                key={index}
-                                sx={{
-                                  textOverflow: 'ellipsis',
-                                  overflow: 'hidden',
-                                  textWrap: 'nowrap',
-                                  position: 'relative',
-                                  zIndex: 1,
-                                }}
-                              >
-                                <Box sx={{ zIndex: 1 }}>
-                                  {data.title}
-                                </Box>
-                                <Box sx={{
-                                  position: 'absolute',
-                                  top: 0,
-                                  left: 0,
-                                  width: '100%',
-                                  height: '100%',
-                                  zIndex: 0,
-                                  opacity: 0.5,
-                                }}>
-                                  <ApplicantsBar applicantsAmount={data.applicants} capacity={data.capacity} />
-                                </Box>
+            sx={{
+              height: '100%',
+              width: {
+                xs: '98vw',
+                sm: '48vw',
+                md: '32vw',
+                lg: '24vw',
+                xl: '19vw'
+              },
+              flexGrow: 0,
+              flexShrink: 0,
+              scrollSnapAlign: 'start',
+            }}>
+            <Stack spacing={1} height={'100%'} padding={1} divider={<Divider />}>
+              <Box
+                sx={{
+                  textAlign: 'center',
+                  height: '1em',
+                  lineHeight: 1
+                }}>
+                {date.period1[0].dateTime.date}
+              </Box>
+              {
+                [
+                  date.period1,
+                  date.period2,
+                  date.period3,
+                  date.period4,
+                  date.period5,
+                  date.period6,
+                  date.period7,
+                  date.period8,
+                ].map((period, index) => {
+                  if (!isDisplayLaterLecture && index < 5) {
+                    return (
+                      <Box
+                        key={index + 1}
+                        padding={1}
+                        sx={{
+                          overflow: 'auto',
+                          height: 'calc((100% - 1em) / 5 - 4px)',
+                          scrollSnapType: 'y proximity',
+                        }}>
+                        {
+                          period.map((data, index) => (
+                            <Box
+                              key={index}
+                              sx={{
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                textWrap: 'nowrap',
+                                position: 'relative',
+                                zIndex: 1,
+                                scrollSnapAlign: 'start',
+                              }}
+                            >
+                              <Box sx={{ zIndex: 1 }}>
+                                {data.title}
                               </Box>
-                            ))
-                          }
-                        </Box>)
-                    }
-                  })
-                }
-              </Stack>
-            </Paper>
-          </Grid>
+                              <Box sx={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                zIndex: 0,
+                                opacity: 0.5,
+                              }}>
+                                <ApplicantsBar applicantsAmount={data.applicants} capacity={data.capacity} />
+                              </Box>
+                            </Box>
+                          ))
+                        }
+                      </Box>)
+                  }
+                })
+              }
+            </Stack>
+          </Paper>
         ))
       }
-    </Grid >
+    </ Stack>
   );
 }
 export default TimeTable;

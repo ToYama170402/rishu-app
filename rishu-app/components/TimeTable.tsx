@@ -48,15 +48,16 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
             sx={{
               height: '100%',
               width: {
-                xs: '98vw',
-                sm: '48vw',
-                md: '32vw',
-                lg: '24vw',
-                xl: '19vw'
+                xs: '100%',
+                sm: 'calc((100% - 8px) / 2)',
+                md: 'calc((100% - 16px) / 3)',
+                lg: 'calc((100% - 24px) / 4)',
+                xl: 'calc((100% - 32px) / 5)',
               },
               flexGrow: 0,
               flexShrink: 0,
               scrollSnapAlign: 'start',
+              scrollMarginLeft: '8px'
             }}>
             <Stack spacing={1} height={'100%'} padding={1} divider={<Divider />}>
               <Box

@@ -83,7 +83,7 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
                     return (
                       <Box
                         key={index + 1}
-                        padding={1}
+                        padding='0 4px'
                         sx={{
                           overflow: 'auto',
                           height: 'calc((100% - 1em) / 5 - 4px)',

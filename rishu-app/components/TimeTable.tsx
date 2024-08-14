@@ -27,7 +27,7 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
       justifyContent={{ xs: 'left', xl: 'center' }}
       spacing={1}
       padding={1}
-      height={'100vh'}
+      height={'100dvh'}
       width={'100%'}
       sx={{
         overflowX: 'auto',

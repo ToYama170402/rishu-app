@@ -102,7 +102,13 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
                                 scrollSnapAlign: 'start',
                               }}
                             >
-                              <Box sx={{ zIndex: 1 }}>
+                              <Box
+                                sx={{
+                                  zIndex: 1,
+                                  position: 'relative',
+                                  textOverflow: 'ellipsis',
+                                  overflow: 'hidden'
+                                }}>
                                 {data.title}
                               </Box>
                               <Box sx={{
@@ -112,7 +118,7 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
                                 width: '100%',
                                 height: '100%',
                                 zIndex: 0,
-                                opacity: 0.5,
+                                opacity: 0.7,
                               }}>
                                 <ApplicantsBar applicantsAmount={data.applicants} capacity={data.capacity} />
                               </Box>

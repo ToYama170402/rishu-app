@@ -50,7 +50,8 @@ Dev Containerを使用して開発環境を構築します。
 2. クローンしたレポジトリをVS Codeで開く
 3. コマンドパレット（`Ctrl+Shift+p`）から`Reopen in Container`を選択
 4. `cd rishu-app`でプロジェクトディレクトリに移動
-5. `yarn dev`で開発サーバーを起動
+5. `yarn`で依存関係をインストール
+6. `yarn dev`で開発サーバーを起動
 
 `.vscode/launch.json`にデバッグ設定が記述されています。
 VS Codeのデバッグ機能を使用して、開発サーバーをデバッグできます。

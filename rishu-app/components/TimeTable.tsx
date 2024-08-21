@@ -1,13 +1,11 @@
 "use client";
 import * as React from 'react';
 import * as TimeTableData from '../util/timeTable'
-import Grid from '@mui/material/Unstable_Grid2'
 import Box from '@mui/material/Box'
 import { colors, Divider, Paper } from '@mui/material';
 import Stack from '@mui/material/Stack'
-import AppRouter from 'next/dist/client/components/app-router';
-type timeTableType = { timeTable: TimeTableData.weekTimeTable }
-function TimeTable({ timeTable }: timeTableType): JSX.Element {
+import { ResponsiveStyleValue } from '@mui/system';
+function TimeTable({ timeTable, width, height }: { timeTable: TimeTableData.weekTimeTable, width: ResponsiveStyleValue<string | number>, height: ResponsiveStyleValue<string | number> }): JSX.Element {
   const [isDisplayLaterLecture, setIsDisplayLaterLecture] = React.useState(false);
   function ApplicantsBar({ applicantsAmount, capacity }: { applicantsAmount: TimeTableData.applicantsAmount, capacity: number }): JSX.Element {
     return (
@@ -23,12 +21,12 @@ function TimeTable({ timeTable }: timeTableType): JSX.Element {
   return (
     <Stack
       direction={'row'}
-      alignItems={'center'}
+      alignItems={'start'}
       justifyContent={{ xs: 'left', xl: 'center' }}
       spacing={1}
       padding={1}
-      height={'100dvh'}
-      width={'100%'}
+      height={height}
+      width={width}
       sx={{
         overflowX: 'auto',
         scrollSnapType: 'x mandatory',

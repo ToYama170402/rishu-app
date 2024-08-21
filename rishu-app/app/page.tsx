@@ -6,5 +6,5 @@ export default async function Home(): Promise<JSX.Element> {
   datas.shift()?.shift();
   const weekTimeTableData = arrayToWeekTimeTable(datas);
   return (
-    <TimeTable timeTable={weekTimeTableData} />);
+    <TimeTable timeTable={weekTimeTableData} width={'100%'} height={'100vh'} />);
 }

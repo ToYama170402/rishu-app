@@ -1,10 +1,12 @@
 // 月１みたいな曜日時限のデータを保持
-type datePeriod = {
-  date: '月' | '火' | '水' | '木' | '金';
+export type date = '月' | '火' | '水' | '木' | '金';
+
+export type datePeriod = {
+  date: date;
   period: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 }
 // 全志望者数と各志望者数を保持
-type applicantsAmount = {
+export type applicantsAmount = {
   all: number;
   primary: number;
   first: number;
@@ -14,7 +16,7 @@ type applicantsAmount = {
   fifth: number;
 }
 // 講義情報を保持
-type lecture = {
+export type lecture = {
   number: string;
   category: 'ＧＳ科目' | '自由履修科目' | 'ＧＳ言語科目' | '言語科目Ａ' | '言語科目Ｂ';
   title: string;
@@ -25,7 +27,7 @@ type lecture = {
   applicants: applicantsAmount;
 }
 // 一日の講義情報を保持
-type dateTimeTable = {
+export type dateTimeTable = {
   period1: lecture[];
   period2: lecture[];
   period3: lecture[];
@@ -36,15 +38,38 @@ type dateTimeTable = {
   period8: lecture[];
 }
 // 一週間の講義情報を保持
-type weekTimeTable = {
+export type weekTimeTable = {
   monday: dateTimeTable;
   tuesday: dateTimeTable;
   wednesday: dateTimeTable;
   thursday: dateTimeTable;
   friday: dateTimeTable;
 }
-export type { weekTimeTable, dateTimeTable, lecture, datePeriod, applicantsAmount };
-function arrayToWeekTimeTable(arr: string[][]): weekTimeTable {
+
+export const weekTimeTable2Dates = (weekTimeTable: weekTimeTable): dateTimeTable[] => (
+  [
+    weekTimeTable.monday,
+    weekTimeTable.tuesday,
+    weekTimeTable.wednesday,
+    weekTimeTable.thursday,
+    weekTimeTable.friday
+  ]
+)
+
+export const dateTimeTable2Periods = (dateTimeTable: dateTimeTable): lecture[][] => (
+  [
+    dateTimeTable.period1,
+    dateTimeTable.period2,
+    dateTimeTable.period3,
+    dateTimeTable.period4,
+    dateTimeTable.period5,
+    dateTimeTable.period6,
+    dateTimeTable.period7,
+    dateTimeTable.period8,
+  ]
+)
+
+export function array2WeekTimeTable(arr: string[][]): weekTimeTable {
   let weekTimeTable: weekTimeTable = {
     monday: {
       period1: [],
@@ -174,4 +199,3 @@ function arrayToWeekTimeTable(arr: string[][]): weekTimeTable {
   }
   return weekTimeTable;
 }
-export { arrayToWeekTimeTable };

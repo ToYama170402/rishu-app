@@ -1,139 +1,145 @@
 "use client";
 import * as React from 'react';
 import * as TimeTableData from '../util/timeTable'
-import Grid from '@mui/material/Unstable_Grid2'
+import { ResponsiveStyleValue } from '@mui/system';
 import Box from '@mui/material/Box'
 import { colors, Divider, Paper } from '@mui/material';
 import Stack from '@mui/material/Stack'
-import AppRouter from 'next/dist/client/components/app-router';
-type timeTableType = { timeTable: TimeTableData.weekTimeTable }
-function TimeTable({ timeTable }: timeTableType): JSX.Element {
-  const [isDisplayLaterLecture, setIsDisplayLaterLecture] = React.useState(false);
-  function ApplicantsBar({ applicantsAmount, capacity }: { applicantsAmount: TimeTableData.applicantsAmount, capacity: number }): JSX.Element {
-    return (
-      <Stack direction={'row'} sx={{ overflow: 'hidden', height: '100%' }} >
-        <Box width={(applicantsAmount.primary / capacity) * 100 + '%'} sx={{ backgroundColor: colors.amber[100] }}></Box>
-        <Box width={(applicantsAmount.first / capacity) * 100 + '%'} sx={{ bgcolor: colors.blue[100] }}></Box>
-        <Box width={(applicantsAmount.second / capacity) * 100 + '%'} sx={{ bgcolor: colors.blue[100] }}></Box>
-        <Box width={(applicantsAmount.third / capacity) * 100 + '%'} sx={{ bgcolor: colors.green[100] }}></Box>
-        <Box width={(applicantsAmount.forth / capacity) * 100 + '%'} sx={{ bgcolor: colors.purple[100] }}></Box>
-        <Box width={(applicantsAmount.fifth / capacity) * 100 + '%'} sx={{ bgcolor: colors.grey[100] }}></Box>
-      </Stack>);
-  }
-  return (
-    <Stack
-      direction={'row'}
-      alignItems={'center'}
-      justifyContent={{ xs: 'left', xl: 'center' }}
-      spacing={1}
-      padding={1}
-      height={'100dvh'}
-      width={'100%'}
+
+type sizing = ResponsiveStyleValue<string | number>
+
+
+const TimeTableContainer = ({ children, height, width }: { children: React.ReactNode, height: sizing, width: sizing }): JSX.Element => (
+  <Stack
+    direction={'row'}
+    alignItems={'start'}
+    justifyContent={'left'}
+    spacing={1}
+    padding={1}
+    height={height}
+    width={width}
+    sx={{
+      overflowX: 'auto',
+      scrollSnapType: 'x mandatory',
+    }}>
+    {children}
+  </Stack>
+)
+
+const TimeTableDayItem = ({ children }: { children: React.ReactNode }): JSX.Element => (
+  <Paper
+    elevation={3}
+    sx={{
+      height: '100%',
+      width: {
+        xs: '100%',
+        sm: 'calc((100% - 8px) / 2)',
+        md: 'calc((100% - 16px) / 3)',
+        lg: 'calc((100% - 24px) / 4)',
+        xl: 'calc((100% - 32px) / 5)',
+      },
+      flexGrow: 0,
+      flexShrink: 0,
+      scrollSnapAlign: 'start',
+      scrollMarginLeft: '8px'
+    }}>
+    <Stack spacing={1} height={'100%'} padding={1} divider={<Divider />}>
+      {children}
+    </Stack>
+  </Paper>
+)
+
+const TimeTableDateLabel = ({ date }: { date: TimeTableData.date }): JSX.Element => (
+  <Box
+    sx={{
+      height: '1em',
+      textAlign: 'center',
+      lineHeight: 1
+    }}>
+    {date}
+  </Box>
+)
+
+const Period = ({ children }: { children: React.ReactNode }): JSX.Element => (
+  <Box
+    padding='0 4px'
+    sx={{
+      height: 'calc((100% - 1em) / 5 - 4px)',
+      overflow: 'auto',
+      scrollSnapType: 'y proximity'
+    }}>
+    {children}
+  </Box>
+)
+
+const ApplicantsBar = ({ applicantsAmount, capacity }: { applicantsAmount: TimeTableData.applicantsAmount, capacity: number }): JSX.Element => (
+  <Stack direction={'row'} sx={{ overflow: 'hidden', height: '100%' }} >
+    <Box width={(applicantsAmount.primary / capacity) * 100 + '%'} sx={{ backgroundColor: colors.amber[100] }}></Box>
+    <Box width={(applicantsAmount.first / capacity) * 100 + '%'} sx={{ bgcolor: colors.blue[100] }}></Box>
+    <Box width={(applicantsAmount.second / capacity) * 100 + '%'} sx={{ bgcolor: colors.blue[100] }}></Box>
+    <Box width={(applicantsAmount.third / capacity) * 100 + '%'} sx={{ bgcolor: colors.green[100] }}></Box>
+    <Box width={(applicantsAmount.forth / capacity) * 100 + '%'} sx={{ bgcolor: colors.purple[100] }}></Box>
+    <Box width={(applicantsAmount.fifth / capacity) * 100 + '%'} sx={{ bgcolor: colors.grey[100] }}></Box>
+  </Stack>
+)
+const LectureInfo = ({ lecture }: { lecture: TimeTableData.lecture }): JSX.Element => (
+  <Box
+    sx={{
+      position: 'relative',
+      zIndex: 1,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      textWrap: 'nowrap',
+      scrollSnapAlign: 'start',
+    }}>
+    <Box
       sx={{
-        overflowX: 'auto',
-        scrollSnapType: 'x mandatory',
-      }}
-    >
+        position: 'relative',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        zIndex: 1,
+      }}>
+      {lecture.title}
+    </Box>
+    <Box sx={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: 0,
+      opacity: 0.7,
+    }}>
+      <ApplicantsBar applicantsAmount={lecture.applicants} capacity={lecture.capacity} />
+    </Box>
+  </Box>
+)
+
+export default function TimeTable({ timeTable, width, height }: { timeTable: TimeTableData.weekTimeTable, width: sizing, height: sizing }): JSX.Element {
+  const [isDisplayLaterLecture, setIsDisplayLaterLecture] = React.useState(false);
+  return (
+    <TimeTableContainer height={height} width={width}>
       {
-        [
-          timeTable.monday,
-          timeTable.tuesday,
-          timeTable.wednesday,
-          timeTable.thursday,
-          timeTable.friday
-        ].map(date => (
-          <Paper
-            elevation={3}
-            key={date.period1[0].dateTime.date}
-            sx={{
-              height: '100%',
-              width: {
-                xs: '100%',
-                sm: 'calc((100% - 8px) / 2)',
-                md: 'calc((100% - 16px) / 3)',
-                lg: 'calc((100% - 24px) / 4)',
-                xl: 'calc((100% - 32px) / 5)',
-              },
-              flexGrow: 0,
-              flexShrink: 0,
-              scrollSnapAlign: 'start',
-              scrollMarginLeft: '8px'
-            }}>
-            <Stack spacing={1} height={'100%'} padding={1} divider={<Divider />}>
-              <Box
-                sx={{
-                  textAlign: 'center',
-                  height: '1em',
-                  lineHeight: 1
-                }}>
-                {date.period1[0].dateTime.date}
-              </Box>
-              {
-                [
-                  date.period1,
-                  date.period2,
-                  date.period3,
-                  date.period4,
-                  date.period5,
-                  date.period6,
-                  date.period7,
-                  date.period8,
-                ].map((period, index) => {
-                  if (!isDisplayLaterLecture && index < 5) {
-                    return (
-                      <Box
-                        key={index + 1}
-                        padding='0 4px'
-                        sx={{
-                          overflow: 'auto',
-                          height: 'calc((100% - 1em) / 5 - 4px)',
-                          scrollSnapType: 'y proximity',
-                        }}>
-                        {
-                          period.map((data, index) => (
-                            <Box
-                              key={index}
-                              sx={{
-                                textOverflow: 'ellipsis',
-                                overflow: 'hidden',
-                                textWrap: 'nowrap',
-                                position: 'relative',
-                                zIndex: 1,
-                                scrollSnapAlign: 'start',
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  zIndex: 1,
-                                  position: 'relative',
-                                  textOverflow: 'ellipsis',
-                                  overflow: 'hidden'
-                                }}>
-                                {data.title}
-                              </Box>
-                              <Box sx={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
-                                zIndex: 0,
-                                opacity: 0.7,
-                              }}>
-                                <ApplicantsBar applicantsAmount={data.applicants} capacity={data.capacity} />
-                              </Box>
-                            </Box>
-                          ))
-                        }
-                      </Box>)
-                  }
-                })
-              }
-            </Stack>
-          </Paper>
+        TimeTableData.weekTimeTable2Dates(timeTable).map(date => (
+          <TimeTableDayItem key={date.period1[0].dateTime.date}>
+            <TimeTableDateLabel date={date.period1[0].dateTime.date} />
+            {
+              TimeTableData.dateTimeTable2Periods(date).map((period, index) => {
+                if (!isDisplayLaterLecture && index < 5) {
+                  return (
+                    <Period key={period[0].dateTime.date + period[0].dateTime.period}>
+                      {
+                        period.map(data => (
+                          <LectureInfo key={data.number} lecture={data} />
+                        ))
+                      }
+                    </Period>)
+                }
+              })
+            }
+          </TimeTableDayItem>
         ))
       }
-    </ Stack>
+    </TimeTableContainer>
   );
 }
-export default TimeTable;

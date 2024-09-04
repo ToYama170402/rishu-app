@@ -12,10 +12,6 @@ services:
     networks:
       - rishu-app_network
 
-volumes:
-  node-modules:
-    name: frontend_node_modules
-
 networks:
   rishu-app_network:
     name: rishu-app_network

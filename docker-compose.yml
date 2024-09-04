@@ -1,11 +1,18 @@
-version: '3.9'
-volumes:
-  node-modules:
 services:
-  next:
+  frontend:
+    container_name: frontend
+    user: node
+
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
-    volumes:
-      - node-modules:/app/node_modules
-    tty: true
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - rishu-app_network
+
+networks:
+  rishu-app_network:
+    name: rishu-app_network
+    driver: bridge

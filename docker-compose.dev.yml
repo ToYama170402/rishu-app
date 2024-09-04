@@ -1,9 +1,32 @@
-version: '3.9'
+services:
+  frontend:
+    container_name: frontend
+    user: node
+
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /workspace
+
+      - type: volume
+        source: node-modules
+        target: /workspace/node_modules
+
+    ports:
+      - 3000:3000
+
+    networks:
+      - rishu-app_network
+
 volumes:
   node-modules:
-services:
-  next:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    tty: true
+    name: frontend_node_modules
+
+networks:
+  rishu-app_network:
+    name: rishu-app_network
+    driver: bridge

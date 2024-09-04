@@ -1,15 +1,21 @@
-FROM node:20-slim
+FROM node:20-bullseye-slim
 
-# 必要なパッケージのインストールとアップデート
-RUN apt-get update \
-    && apt-get install -y \
-    git \
-    # 追加のパッケージをここに列挙する
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+WORKDIR /workspace
 
+RUN mkdir -p /workspace/node_modules
 
-# アプリケーションの依存関係をインストール
-COPY /rishu-app/yarn.lock ./rishu-app/
-CMD cd rishu-app
-RUN yarn install --frozen-lockfile
+# 依存関係をインストール
+COPY package.json yarn.lock* ./
+
+RUN yarn install
+
+RUN chown -R node:node ./
+USER node
+
+# Next.jsによってテレメトリデータを収集するのを無効にする
+ARG NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_TELEMETRY_DISABLED=$NEXT_TELEMETRY_DISABLED
+
+# 注意: ポートのマッピングはdocker-composeで行うため、設定しない
+
+CMD ["yarn", "dev"]

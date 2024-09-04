@@ -8,7 +8,8 @@ const nextConfig = {
       aggregateTimeout: 300,
     }
     return config;
-  }
+  },
+  output: "standalone",
 };
 
 export default nextConfig;

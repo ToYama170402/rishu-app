@@ -61,6 +61,8 @@ devcontainer内からGitが使えないので、Gitを操作するときはホ�
 
 Pull Request、Issue、質問、提案など、どんな形でも歓迎します。
 
+開発に参加したい方は、Twitterの[@ToYamaSoujin](https://x.com/ToYamaSoujin)または、[toyamasoujinn@gmail.com](toyamasoujinn@gmail.com)までお気軽にご連絡ください。
+
 ## Special Thanks
 
 - [Ogawa3427](https://twitter.com/Ogawa3427)

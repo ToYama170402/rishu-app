@@ -5,20 +5,10 @@ services:
 
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
-
-    volumes:
-      - type: bind
-        source: ./frontend
-        target: /workspace
-
-      - type: volume
-        source: node-modules
-        target: /workspace/node_modules
-
+      dockerfile: Dockerfile
+    restart: always
     ports:
       - 3000:3000
-
     networks:
       - rishu-app_network
 

@@ -11,7 +11,7 @@ RUN yarn --frozen-lockfile
 COPY app/ ./app
 COPY public/ ./public
 COPY util/ ./util
-COPY coponents ./components
+COPY components/ ./components
 COPY tsconfig.json *.mjs ./
 
 # Next.jsによってテレメトリデータを収集するのを無効にする

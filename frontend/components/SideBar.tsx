@@ -23,6 +23,7 @@ import {
   weekTimeTable2Filters,
 } from "../util/timeTable";
 import DrawerContents from "./DrawerContents";
+import HelpDialog from "./HelpDialog";
 import TimeTable from "./TimeTable";
 
 export default function Layout({
@@ -40,6 +41,11 @@ export default function Layout({
   const handleDrawerOpen = () => {
     setOpen(!open);
     setDrawerWidth(open ? drawerWidth : "56px");
+  };
+
+  const [isHelpOpen, setHelpOpen] = useState(false);
+  const handleHelpOpen = () => {
+    setHelpOpen(!isHelpOpen);
   };
 
   type isFilterOpen = {
@@ -107,9 +113,11 @@ export default function Layout({
                     textWrap: "nowrap",
                     justifyContent: "flex-start",
                   }}
+                  onClick={handleHelpOpen}
                 >
                   ヘルプ
                 </Button>
+                <HelpDialog open={isHelpOpen} setOpen={handleHelpOpen} />
                 <Button
                   variant={"text"}
                   startIcon={<SettingsIcon sx={{ marginRight: "16px" }} />}
@@ -150,11 +158,12 @@ export default function Layout({
                 </Typography>
               </Box>
               <Stack direction={"row"} alignItems={"center"}>
-                <IconButton>
+                <IconButton onClick={handleHelpOpen}>
                   <HelpIcon
                     sx={{ color: theme.palette.primary.contrastText }}
                   />
                 </IconButton>
+                <HelpDialog open={isHelpOpen} setOpen={handleHelpOpen} />
                 <IconButton>
                   <SettingsIcon
                     sx={{ color: theme.palette.primary.contrastText }}

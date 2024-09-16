@@ -95,6 +95,9 @@ export default function HelpDialog({
               <Typography component={"p"} variant="body1">
                 また、本アプリの使用したことによる損害について、一切の責任を負いません。
               </Typography>
+              <Typography component={"p"} variant="body1">
+                ちょっともっさりとした動作をしますが、ご了承ください。
+              </Typography>
             </AccordionDetails>
           </Accordion>
           <Accordion>

@@ -1,55 +1,81 @@
 "use client";
-import React, { useState } from "react";
-import {
-  Box,
-  Paper,
-  useMediaQuery,
-  AppBar,
-  IconButton,
-  Stack,
-  SwipeableDrawer,
-  Toolbar as ToolBar,
-  Typography,
-  Button,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import HelpIcon from "@mui/icons-material/Help";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpen from "@mui/icons-material/MenuOpen";
 import SettingsIcon from "@mui/icons-material/Settings";
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Paper,
+  Stack,
+  SwipeableDrawer,
+  Toolbar as ToolBar,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import React, { useState } from "react";
+import {
+  filters,
+  weekTimeTable,
+  weekTimeTable2Filters,
+} from "../util/timeTable";
 import DrawerContents from "./DrawerContents";
+import TimeTable from "./TimeTable";
 
 export default function Layout({
-  children,
+  timeTable,
 }: {
-  children: React.ReactNode;
+  timeTable: weekTimeTable;
 }): JSX.Element {
   const theme = useTheme();
   const isPC = useMediaQuery(theme.breakpoints.up("sm"));
 
   const [open, setOpen] = useState(isPC);
-  const [drawerWidth, setDrawerWidth] = useState("160px");
+  const drawerWidth = "200px";
+  const [currentDrawerWidth, setDrawerWidth] = useState(drawerWidth);
 
   const handleDrawerOpen = () => {
     setOpen(!open);
-    setDrawerWidth(open ? "160px" : "56px");
+    setDrawerWidth(open ? drawerWidth : "56px");
   };
 
+  type isFilterOpen = {
+    filter: boolean;
+    category: boolean;
+    teacher: boolean;
+    targetStudent: boolean;
+  };
+  const [isFilterOpen, setFilerOpen] = useState({
+    filter: false,
+    category: false,
+    teacher: false,
+    targetStudent: false,
+  });
+
+  const [filters, setFilters] = useState(weekTimeTable2Filters(timeTable));
   const PcSideBar = (): React.ReactNode => {
     return (
       <>
         <Paper
+          elevation={3}
           sx={{
-            width: drawerWidth,
-            display: isPC ? "block" : "none",
+            width: currentDrawerWidth,
             overflow: "hidden",
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.primary.contrastText,
+            textWrap: "nowrap",
             borderRadius: "0px 4px 4px 0px",
           }}
         >
-          <Box p={1} height={"100%"}>
-            <Stack direction="row" justifyContent="space-between">
+          <Box
+            p={1}
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.primary.contrastText,
+            }}
+          >
+            <Stack direction="row">
               <IconButton onClick={handleDrawerOpen} sx={{ color: "inherit" }}>
                 <MenuIcon sx={{ display: "block" }} />
               </IconButton>
@@ -59,34 +85,42 @@ export default function Layout({
                 </Typography>
               </Box>
             </Stack>
+          </Box>
+          <Box height={"100%"}>
             <Stack
               direction={"column"}
               justifyContent={"space-between"}
               height={"calc(100% - 48px)"}
+              sx={{ overflowX: "hidden" }}
             >
-              <DrawerContents />
-              <Box>
+              <DrawerContents
+                filters={filters}
+                setFilters={(filter: filters) => setFilters(filter)}
+                isFilterOpen={isFilterOpen}
+                setFiltersOpen={setFilerOpen}
+              />
+              <Stack p={2} mb={1} direction={"column"}>
                 <Button
                   variant={"text"}
-                  startIcon={<HelpIcon />}
+                  startIcon={<HelpIcon sx={{ marginRight: "16px" }} />}
                   sx={{
                     textWrap: "nowrap",
-                    color: theme.palette.primary.contrastText,
+                    justifyContent: "flex-start",
                   }}
                 >
                   ヘルプ
                 </Button>
                 <Button
                   variant={"text"}
-                  startIcon={<SettingsIcon />}
+                  startIcon={<SettingsIcon sx={{ marginRight: "16px" }} />}
                   sx={{
                     textWrap: "nowrap",
-                    color: theme.palette.primary.contrastText,
+                    justifyContent: "flex-start",
                   }}
                 >
                   設定
                 </Button>
-              </Box>
+              </Stack>
             </Stack>
           </Box>
         </Paper>
@@ -100,7 +134,6 @@ export default function Layout({
         <AppBar
           sx={{
             position: "static",
-            display: isPC ? "none" : "block",
             color: theme.palette.primary.contrastText,
             borderRadius: "4px 4px 0px 0px",
           }}
@@ -144,7 +177,12 @@ export default function Layout({
           sx={{ display: isPC ? "none" : "block", width: "80vw" }}
         >
           <Box p={1} sx={{ width: "80vw" }}>
-            <DrawerContents />
+            <DrawerContents
+              filters={filters}
+              setFilters={(filter: filters) => setFilters(filter)}
+              isFilterOpen={isFilterOpen}
+              setFiltersOpen={setFilerOpen}
+            />
           </Box>
         </SwipeableDrawer>
       </>
@@ -152,17 +190,22 @@ export default function Layout({
   };
 
   return (
-    <Stack direction={isPC ? "row" : "column"}>
-      <PcSideBar />
+    <Stack direction={isPC ? "row" : "column"} sx={{ height: "100%" }}>
+      {isPC ? <PcSideBar /> : null}
       <Box
         sx={{
-          width: `calc(100% - ${isPC ? drawerWidth : "0px"})`,
+          width: `calc(100% - ${isPC ? currentDrawerWidth : "0px"})`,
           height: `calc(100vh - ${isPC ? "0px" : "56px"})`,
         }}
       >
-        {children}
+        <TimeTable
+          timeTable={timeTable}
+          filter={filters}
+          width={"100%"}
+          height={"100%"}
+        />
       </Box>
-      <MobileSideBar />
+      {!isPC ? <MobileSideBar /> : null}
     </Stack>
   );
 }

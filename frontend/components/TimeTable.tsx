@@ -1,11 +1,11 @@
-"use client";
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
+// "use client";
 import { colors } from "@mui/material";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 import { ResponsiveStyleValue } from "@mui/system";
+import * as React from "react";
 import * as TimeTableData from "../util/timeTable";
 
 type sizing = ResponsiveStyleValue<string | number>;
@@ -129,59 +129,72 @@ const ApplicantsBar = ({
 );
 const LectureInfo = ({
   lecture,
+  filters,
 }: {
   lecture: TimeTableData.lecture;
-}): JSX.Element => (
-  <Box
-    sx={{
-      position: "relative",
-      zIndex: 1,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      textWrap: "nowrap",
-      scrollSnapAlign: "start",
-    }}
-  >
-    <Box
-      sx={{
-        position: "relative",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        zIndex: 1,
-      }}
-    >
-      {lecture.title}
-    </Box>
-    <Box
-      sx={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        zIndex: 0,
-        opacity: 0.7,
-      }}
-    >
-      <ApplicantsBar
-        applicantsAmount={lecture.applicants}
-        capacity={lecture.capacity}
-      />
-    </Box>
-  </Box>
-);
+  filters: TimeTableData.filters;
+}): JSX.Element | undefined => {
+  if (
+    filters.category[lecture.category] &&
+    filters.teacher[lecture.teacher] &&
+    filters.targetStudent[lecture.target]
+  ) {
+    return (
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          textWrap: "nowrap",
+          scrollSnapAlign: "start",
+        }}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            zIndex: 1,
+          }}
+        >
+          {lecture.title}
+        </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 0,
+            opacity: 0.7,
+          }}
+        >
+          <ApplicantsBar
+            applicantsAmount={lecture.applicants}
+            capacity={lecture.capacity}
+          />
+        </Box>
+      </Box>
+    );
+  }
+};
 
 export default function TimeTable({
   timeTable,
+  filter,
   width,
   height,
 }: {
   timeTable: TimeTableData.weekTimeTable;
+  filter: TimeTableData.filters;
   width: sizing;
   height: sizing;
 }): JSX.Element {
-  const [isDisplayLaterLecture, setIsDisplayLaterLecture] =
-    React.useState(false);
+  // const [isDisplayLaterLecture, setIsDisplayLaterLecture] =
+  // React.useState(false);
+  const isDisplayLaterLecture = false;
   return (
     <TimeTableContainer height={height} width={width}>
       {TimeTableData.weekTimeTable2Dates(timeTable).map((date) => (
@@ -194,7 +207,11 @@ export default function TimeTable({
                   key={period[0].dateTime.date + period[0].dateTime.period}
                 >
                   {period.map((data) => (
-                    <LectureInfo key={data.number} lecture={data} />
+                    <LectureInfo
+                      key={data.number}
+                      lecture={data}
+                      filters={filter}
+                    />
                   ))}
                 </Period>
               );

@@ -204,7 +204,7 @@ export default function Layout({
       <Box
         sx={{
           width: `calc(100% - ${isPC ? currentDrawerWidth : "0px"})`,
-          height: `calc(100vh - ${isPC ? "0px" : "56px"})`,
+          height: `calc(100dvh - ${isPC ? "0px" : "56px"})`,
         }}
       >
         <TimeTable

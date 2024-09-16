@@ -14,7 +14,7 @@ import Link from "next/link";
 import React from "react";
 import exampleGraphImage from "/public/how-to-understand-graph.png";
 import usingFilter from "/public/how-to-use-filter.png";
-import { GitHub, ExpandMore } from "@mui/icons-material";
+import { GitHub, ExpandMore, Settings } from "@mui/icons-material";
 export default function HelpDialog({
   open,
   setOpen,
@@ -97,6 +97,11 @@ export default function HelpDialog({
               </Typography>
               <Typography component={"p"} variant="body1">
                 ちょっともっさりとした動作をしますが、ご了承ください。
+              </Typography>
+              <Typography component={"p"} variant="body1">
+                設定アイコン
+                <Settings />
+                はまだ機能しません。
               </Typography>
             </AccordionDetails>
           </Accordion>

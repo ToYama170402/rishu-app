@@ -16,8 +16,10 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { fetchAll } from "../util/rishu";
 import {
+  array2WeekTimeTable,
   filters,
   weekTimeTable,
   weekTimeTable2Filters,
@@ -47,6 +49,16 @@ export default function Layout({
   const handleHelpOpen = () => {
     setHelpOpen(!isHelpOpen);
   };
+
+  const [timeTableData, setTimeTableData] = useState(timeTable);
+
+  useEffect(() => {
+    setInterval(async () => {
+      const newTimeTable = await fetchAll();
+      newTimeTable.shift()?.shift();
+      setTimeTableData(array2WeekTimeTable(newTimeTable));
+    }, 50000);
+  }, []);
 
   type isFilterOpen = {
     filter: boolean;
@@ -208,7 +220,7 @@ export default function Layout({
         }}
       >
         <TimeTable
-          timeTable={timeTable}
+          timeTable={timeTableData}
           filter={filters}
           width={"100%"}
           height={"100%"}

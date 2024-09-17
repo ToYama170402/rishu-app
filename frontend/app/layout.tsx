@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body style={{ height: "100vh" }}>{children}</body>
+      <body style={{ height: "100dvh" }}>{children}</body>
       <GoogleTagManager gtmId="GTM-M47VN8WW" />
     </html>
   );

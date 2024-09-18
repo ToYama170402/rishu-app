@@ -12,7 +12,7 @@ async function fetchAll() {
     const data = await response.json();
     return parseSV(data, "\t");
   } catch (error) {
-    throw new Error("Failed to fetch data");
+    throw new Error(`Failed to fetch data${error}`);
   }
 }
 export { fetchAll };

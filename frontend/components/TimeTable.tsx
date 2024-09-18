@@ -111,7 +111,7 @@ const ApplicantsBar = ({
     ></Box>
     <Box
       width={(applicantsAmount.second / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.blue[100], flexShrink: 0 }}
+      sx={{ bgcolor: colors.orange[100], flexShrink: 0 }}
     ></Box>
     <Box
       width={(applicantsAmount.third / capacity) * 100 + "%"}

@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import { colors } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import { ResponsiveStyleValue } from "@mui/system";
 import * as React from "react";
 import * as TimeTableData from "../util/timeTable";
+import DetailPopup from "./DetailPopup";
 
 type sizing = ResponsiveStyleValue<string | number>;
 
@@ -134,49 +135,73 @@ const LectureInfo = ({
   lecture: TimeTableData.lecture;
   filters: TimeTableData.filters;
 }): JSX.Element | undefined => {
+  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+  function handleOpenPopup() {
+    setIsPopupOpen(!isPopupOpen);
+  }
   if (
     filters.category[lecture.category] &&
     filters.teacher[lecture.teacher] &&
     filters.targetStudent[lecture.target]
   ) {
     return (
-      <Box
-        sx={{
-          position: "relative",
-          zIndex: 1,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          textWrap: "nowrap",
-          scrollSnapAlign: "start",
-        }}
-      >
+      <>
         <Box
+          mt={"2px"}
           sx={{
             position: "relative",
+            zIndex: 1,
             overflow: "hidden",
             textOverflow: "ellipsis",
-            zIndex: 1,
+            textWrap: "nowrap",
+            scrollSnapAlign: "start",
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {lecture.title}
+          <Box
+            sx={{
+              position: "relative",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              zIndex: 1,
+              cursor: "pointer",
+              display: "inline-block",
+              borderBottom: "1px dashed",
+              lineHeight: 1.1,
+              height: "fit-content",
+              margin: "2px",
+            }}
+            onClick={handleOpenPopup}
+          >
+            {lecture.title}
+          </Box>
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              zIndex: 0,
+              opacity: 0.7,
+            }}
+          >
+            <ApplicantsBar
+              applicantsAmount={lecture.applicants}
+              capacity={lecture.capacity}
+            />
+          </Box>
         </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 0,
-            opacity: 0.7,
-          }}
-        >
-          <ApplicantsBar
-            applicantsAmount={lecture.applicants}
-            capacity={lecture.capacity}
-          />
-        </Box>
-      </Box>
+        {/* <IconButton onClick={handleOpenPopup}>
+          <InfoIcon fontSize="small" />
+        </IconButton> */}
+        <DetailPopup
+          lecture={lecture}
+          open={isPopupOpen}
+          onClose={handleOpenPopup}
+        />
+      </>
     );
   }
 };

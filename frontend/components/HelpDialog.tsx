@@ -8,6 +8,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Alert,
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,11 +57,16 @@ export default function HelpDialog({
             <AccordionDetails>
               <Typography component={"p"} variant="body1">
                 各講義は、1週間のカレンダーの中に棒グラフのような見た目で配置されています。棒グラフの色分けは左から順に、優先指定、第1希望、第2希望…となっています。グラフ領域に色が塗られていないところがある講義は、その講義の定員に空きがあることを示しています。
-                <Image
-                  src={exampleGraphImage}
-                  alt="棒グラフの例"
-                  style={{ width: "100%", height: "auto" }}
-                />
+              </Typography>
+              <Alert severity="warning">
+                グラフはすべての優先指定が第１希望に指定されているものとして、第１希望数から優先指定数を引いて表示しています。
+              </Alert>
+              <Image
+                src={exampleGraphImage}
+                alt="棒グラフの例"
+                style={{ width: "100%", height: "auto", marginTop: "8px" }}
+              />
+              <Typography component={"p"} variant="body1">
                 上の画像だと、デザイン思考入門は第2志望（緑色のところ）で登録しても確実に取れますが、第3希望（ピンクのところ）で登録すると抽選になってリスキーです。逆に画像下の英語学術リテラシー科目は、登録すれば確実に取れます。
               </Typography>
             </AccordionDetails>
@@ -80,6 +86,21 @@ export default function HelpDialog({
                   style={{ width: "100%", height: "auto" }}
                 />
               </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography component={"h2"} variant="h6">
+                詳細表示
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography component={"p"} variant="body1">
+                講義の棒グラフをクリックすると、その講義の詳細情報を表示することができます。詳細情報には、講義名、時間割番号、科目区分、開講曜日時限、担当教員、登録状況、当選確率、シラバスへのリンクが表示されます。
+              </Typography>
+              <Alert severity="warning">
+                当選確率はすべての優先指定が第１希望に指定されているとして計算しています。
+              </Alert>
             </AccordionDetails>
           </Accordion>
           <Accordion>

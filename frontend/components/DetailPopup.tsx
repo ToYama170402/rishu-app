@@ -253,7 +253,10 @@ export default function DetailPopup({
             <Tab label="詳細" value="1"></Tab>
             <Tab label="推移" value="2"></Tab>
           </TabList>
-          <TabPanel value="1" sx={{ padding: 1 }}>
+          <TabPanel
+            value="1"
+            sx={{ padding: 1, overflow: "auto", height: "calc(100% - 261px)" }}
+          >
             <Stack direction={"column"} gap={1}>
               <ApplicantsBar
                 capacity={lecture.capacity}
@@ -429,6 +432,11 @@ export default function DetailPopup({
                   </TableBody>
                 </Table>
               </TableContainer>
+              <Box>
+                <Typography variant="body1">
+                  ※当選確率はすべての優先指定が第１希望で指定されているものとして計算されています。
+                </Typography>
+              </Box>
               <ButtonGroup sx={{ marginTop: 1 }}>
                 {/* 確認のためにコメントアウト
                 <Button
@@ -444,6 +452,7 @@ export default function DetailPopup({
                 >
                   追加画面
                 </Button> */}
+
                 <Button
                   href={`https://eduweb.sta.kanazawa-u.ac.jp/Portal/Public/Syllabus/DetailMain.aspx?student=1&lct_year=${new Date().getFullYear()}&lct_cd=${
                     lecture.number

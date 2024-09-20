@@ -175,13 +175,14 @@ export default function DetailPopup({
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const [lectureDetail, setLectureDetail] = React.useState(null);
-  useEffect(() => {
-    fetchDetail(lecture.number).then((data) => {
-      console.log(data);
-      setLectureDetail(data);
-    });
-  }, [lecture.number]);
+
+  // const [lectureDetail, setLectureDetail] = React.useState(null);
+  // useEffect(() => {
+  //   fetchDetail(lecture.number).then((data) => {
+  //     console.log(data);
+  //     setLectureDetail(data);
+  //   });
+  // }, [lecture.number]);
 
   const applicantsRatio = calcApplicantsRatio(
     lecture.capacity,

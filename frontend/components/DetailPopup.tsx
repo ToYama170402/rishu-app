@@ -22,12 +22,14 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import React, { useEffect } from "react";
 import {
   applicantsAmount,
   calcApplicantsRatio,
   lecture,
 } from "../util/timeTable";
+import { useTheme } from "@emotion/react";
 
 function date2number(day: string): number {
   switch (day) {
@@ -186,6 +188,16 @@ export default function DetailPopup({
     lecture.applicants
   ).map((ratio) => Math.round(ratio * 100) + "%");
 
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>
@@ -235,67 +247,67 @@ export default function DetailPopup({
               <TableContainer sx={{ textWrap: "nowrap" }} component={Paper}>
                 <Table size="small">
                   <TableHead>
-                    <TableRow>
+                    <TableRow sx={{ backgroundColor: colors.blue[100] }}>
                       <TableCell>希望順位</TableCell>
-                      <TableCell>人数</TableCell>
-                      <TableCell>当選確率</TableCell>
+                      <TableCell align="right">人数</TableCell>
+                      <TableCell align="right">当選確率</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow>
+                    <StyledTableRow>
                       <TableCell>優先指定</TableCell>
                       <TableCell align="right">
                         {lecture.applicants.primary}
                       </TableCell>
                       <TableCell align="right">{applicantsRatio[0]}</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </StyledTableRow>
+                    <StyledTableRow>
                       <TableCell>第１希望</TableCell>
                       <TableCell align="right">
                         {lecture.applicants.first}
                       </TableCell>
                       <TableCell align="right">{applicantsRatio[1]}</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </StyledTableRow>
+                    <StyledTableRow>
                       <TableCell>第２希望</TableCell>
                       <TableCell align="right">
                         {lecture.applicants.second}
                       </TableCell>
                       <TableCell align="right">{applicantsRatio[2]}</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </StyledTableRow>
+                    <StyledTableRow>
                       <TableCell>第３希望</TableCell>
                       <TableCell align="right">
                         {lecture.applicants.third}
                       </TableCell>
                       <TableCell align="right">{applicantsRatio[3]}</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </StyledTableRow>
+                    <StyledTableRow>
                       <TableCell>第４希望</TableCell>
                       <TableCell align="right">
                         {lecture.applicants.forth}
                       </TableCell>
                       <TableCell align="right">{applicantsRatio[4]}</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </StyledTableRow>
+                    <StyledTableRow>
                       <TableCell>第５希望</TableCell>
                       <TableCell align="right">
                         {lecture.applicants.fifth}
                       </TableCell>
                       <TableCell align="right">{applicantsRatio[5]}</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </StyledTableRow>
+                    <StyledTableRow sx={{ borderTopStyle: "double" }}>
                       <TableCell>合計</TableCell>
                       <TableCell align="right">
                         {lecture.applicants.all}
                       </TableCell>
                       <TableCell align="right">-</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </StyledTableRow>
+                    <StyledTableRow>
                       <TableCell>適正人数</TableCell>
                       <TableCell align="right">{lecture.capacity}</TableCell>
                       <TableCell align="right">-</TableCell>
-                    </TableRow>
+                    </StyledTableRow>
                   </TableBody>
                 </Table>
               </TableContainer>

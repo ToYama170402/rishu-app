@@ -10,6 +10,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   Paper,
   Stack,
   Tab,
@@ -58,7 +59,11 @@ function ApplicantsBar({
     <>
       <Box mt={1} mb={1} sx={{ position: "relative" }}>
         <Box
-          width={(capacity / applicantsAmount.all) * 100 + "%"}
+          width={
+            applicantsAmount.all > capacity
+              ? (capacity / applicantsAmount.all) * 100 + "%"
+              : "100%"
+          }
           height={"100%"}
           position={"absolute"}
           top={0}
@@ -67,7 +72,11 @@ function ApplicantsBar({
           sx={{ zIndex: 1, backgroundColor: "#00000000" }}
         ></Box>
         <Box
-          width={(1 - capacity / applicantsAmount.all) * 100 + "%"}
+          width={
+            applicantsAmount.all > capacity
+              ? (1 - capacity / applicantsAmount.all) * 100 + "%"
+              : "0%"
+          }
           height={"100%"}
           position={"absolute"}
           top={0}
@@ -87,38 +96,60 @@ function ApplicantsBar({
         >
           <Box
             width={
-              (applicantsAmount.primary / applicantsAmount.all) * 100 + "%"
+              applicantsAmount.all > capacity
+                ? (capacity / applicantsAmount.all) * 100 + "%"
+                : "100%"
             }
             sx={{ backgroundColor: colors.amber[100] }}
           >
             {applicantsAmount.primary ? applicantsAmount.primary : null}
           </Box>
           <Box
-            width={(applicantsAmount.first / applicantsAmount.all) * 100 + "%"}
+            width={
+              applicantsAmount.all > capacity
+                ? (applicantsAmount.first / applicantsAmount.all) * 100 + "%"
+                : (applicantsAmount.first / capacity) * 100 + "%"
+            }
             sx={{ bgcolor: colors.blue[100] }}
           >
             {applicantsAmount.first ? applicantsAmount.first : null}
           </Box>
           <Box
-            width={(applicantsAmount.second / applicantsAmount.all) * 100 + "%"}
+            width={
+              applicantsAmount.all > capacity
+                ? (applicantsAmount.second / applicantsAmount.all) * 100 + "%"
+                : (applicantsAmount.second / capacity) * 100 + "%"
+            }
             sx={{ bgcolor: colors.orange[100] }}
           >
             {applicantsAmount.second ? applicantsAmount.second : null}
           </Box>
           <Box
-            width={(applicantsAmount.third / applicantsAmount.all) * 100 + "%"}
+            width={
+              applicantsAmount.all > capacity
+                ? (applicantsAmount.third / applicantsAmount.all) * 100 + "%"
+                : (applicantsAmount.third / capacity) * 100 + "%"
+            }
             sx={{ bgcolor: colors.green[100] }}
           >
             {applicantsAmount.third ? applicantsAmount.third : null}
           </Box>
           <Box
-            width={(applicantsAmount.forth / applicantsAmount.all) * 100 + "%"}
+            width={
+              applicantsAmount.all > capacity
+                ? (applicantsAmount.forth / applicantsAmount.all) * 100 + "%"
+                : (applicantsAmount.forth / capacity) * 100 + "%"
+            }
             sx={{ bgcolor: colors.purple[100] }}
           >
             {applicantsAmount.forth ? applicantsAmount.forth : null}
           </Box>
           <Box
-            width={(applicantsAmount.fifth / applicantsAmount.all) * 100 + "%"}
+            width={
+              applicantsAmount.all > capacity
+                ? (applicantsAmount.fifth / applicantsAmount.all) * 100 + "%"
+                : (applicantsAmount.fifth / capacity) * 100 + "%"
+            }
             sx={{ bgcolor: colors.grey[100] }}
           >
             {applicantsAmount.fifth ? applicantsAmount.fifth : null}
@@ -159,15 +190,35 @@ export default function DetailPopup({
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>
         <Box>{lecture.title}</Box>
-        <Box sx={{ height: "fit-content", ml: "auto" }}>
+        <Stack
+          direction={"row"}
+          flexWrap={"wrap"}
+          divider={
+            <Divider
+              orientation="vertical"
+              variant="middle"
+              flexItem
+              sx={{ margin: 1 }}
+            />
+          }
+          sx={{ height: "fit-content", ml: "auto" }}
+        >
+          <Typography variant="subtitle1">{lecture.number}</Typography>
           <Typography variant="subtitle1">
-            {lecture.number}
-            {" | "}
-            {lecture.dateTime.date + lecture.dateTime.period}
-            {" | "}
-            {lecture.teacher}
+            {lecture.category.replace(/[Ａ-Ｚ ａ-ｚ ０-９]/g, (s) =>
+              String.fromCharCode(s.charCodeAt(0) - 0xfee0)
+            )}
+            {lecture.category === "ＧＳ科目"
+              ? lecture.number.slice(1, 2) + "郡" + lecture.number.slice(2, 3)
+              : null}
           </Typography>
-        </Box>
+          <Typography variant="subtitle1">
+            {lecture.dateTime.date + lecture.dateTime.period}
+          </Typography>
+          <Typography variant="subtitle1">
+            {lecture.teacher.replace(/　/g, " ")}
+          </Typography>
+        </Stack>
       </DialogTitle>
       <DialogContent>
         <TabContext value={value}>
@@ -233,10 +284,23 @@ export default function DetailPopup({
                       </TableCell>
                       <TableCell align="right">{applicantsRatio[5]}</TableCell>
                     </TableRow>
+                    <TableRow>
+                      <TableCell>合計</TableCell>
+                      <TableCell align="right">
+                        {lecture.applicants.all}
+                      </TableCell>
+                      <TableCell align="right">-</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>適正人数</TableCell>
+                      <TableCell align="right">{lecture.capacity}</TableCell>
+                      <TableCell align="right">-</TableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
               <ButtonGroup sx={{ marginTop: 1 }}>
+                {/* 確認のためにコメントアウト
                 <Button
                   href={`https://eduweb.sta.kanazawa-u.ac.jp/Portal/StudentApp/Regist/RegistSearchResults.aspx?day=${date2number(
                     lecture.dateTime.date
@@ -249,7 +313,7 @@ export default function DetailPopup({
                   endIcon={<Link />}
                 >
                   追加画面
-                </Button>
+                </Button> */}
                 <Button
                   href={`https://eduweb.sta.kanazawa-u.ac.jp/Portal/Public/Syllabus/DetailMain.aspx?student=1&lct_year=${new Date().getFullYear()}&lct_cd=${
                     lecture.number
@@ -264,7 +328,7 @@ export default function DetailPopup({
               </ButtonGroup>
             </Stack>{" "}
           </TabPanel>
-          <TabPanel value="2">tab2</TabPanel>
+          <TabPanel value="2">開発中</TabPanel>
         </TabContext>
       </DialogContent>
     </Dialog>

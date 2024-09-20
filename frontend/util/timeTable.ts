@@ -262,7 +262,7 @@ export function calcApplicantsRatio(
 ): number[] {
   const applicants = [
     applicantsAmount.primary,
-    applicantsAmount.first,
+    applicantsAmount.first - applicantsAmount.primary,
     applicantsAmount.second,
     applicantsAmount.third,
     applicantsAmount.forth,

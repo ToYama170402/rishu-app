@@ -107,7 +107,10 @@ const ApplicantsBar = ({
       sx={{ backgroundColor: colors.amber[100], flexShrink: 0 }}
     ></Box>
     <Box
-      width={(applicantsAmount.first / capacity) * 100 + "%"}
+      width={
+        ((applicantsAmount.first - applicantsAmount.primary) / capacity) * 100 +
+        "%"
+      }
       sx={{ bgcolor: colors.blue[100], flexShrink: 0 }}
     ></Box>
     <Box

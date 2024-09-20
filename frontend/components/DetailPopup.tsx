@@ -273,7 +273,10 @@ export default function DetailPopup({
                   <TableBody>
                     <StyledTableRow>
                       <TableCell>
-                        <Box sx={{ position: "relative " }}>
+                        <Box
+                          sx={{ position: "relative " }}
+                          width={"fit-content"}
+                        >
                           <Box position={"relative"} zIndex={1}>
                             優先指定
                           </Box>
@@ -297,7 +300,10 @@ export default function DetailPopup({
                     </StyledTableRow>
                     <StyledTableRow>
                       <TableCell>
-                        <Box sx={{ position: "relative " }}>
+                        <Box
+                          sx={{ position: "relative " }}
+                          width={"fit-content"}
+                        >
                           <Box position={"relative"} zIndex={1}>
                             第１希望
                           </Box>
@@ -321,7 +327,10 @@ export default function DetailPopup({
                     </StyledTableRow>
                     <StyledTableRow>
                       <TableCell>
-                        <Box sx={{ position: "relative " }}>
+                        <Box
+                          sx={{ position: "relative " }}
+                          width={"fit-content"}
+                        >
                           <Box position={"relative"} zIndex={1}>
                             第2希望
                           </Box>
@@ -345,7 +354,10 @@ export default function DetailPopup({
                     </StyledTableRow>
                     <StyledTableRow>
                       <TableCell>
-                        <Box sx={{ position: "relative " }}>
+                        <Box
+                          sx={{ position: "relative " }}
+                          width={"fit-content"}
+                        >
                           <Box position={"relative"} zIndex={1}>
                             第３希望
                           </Box>
@@ -369,7 +381,10 @@ export default function DetailPopup({
                     </StyledTableRow>
                     <StyledTableRow>
                       <TableCell>
-                        <Box sx={{ position: "relative " }}>
+                        <Box
+                          sx={{ position: "relative " }}
+                          width={"fit-content"}
+                        >
                           <Box position={"relative"} zIndex={1}>
                             第４希望
                           </Box>
@@ -393,8 +408,10 @@ export default function DetailPopup({
                     </StyledTableRow>
                     <StyledTableRow>
                       <TableCell>
-                        {" "}
-                        <Box sx={{ position: "relative " }}>
+                        <Box
+                          sx={{ position: "relative " }}
+                          width={"fit-content"}
+                        >
                           <Box position={"relative"} zIndex={1}>
                             第５希望
                           </Box>

@@ -1,5 +1,4 @@
 "use client";
-import { fetchDetail } from "@/util/rishu";
 import { Link } from "@mui/icons-material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
@@ -23,12 +22,12 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import React from "react";
 import {
   applicantsAmount,
   calcApplicantsRatio,
   lecture,
 } from "../util/timeTable";
-import React from "react";
 
 function date2number(day: string): number {
   switch (day) {

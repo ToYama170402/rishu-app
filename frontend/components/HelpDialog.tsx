@@ -1,21 +1,21 @@
+import { ExpandMore, GitHub, Settings } from "@mui/icons-material";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Alert,
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import exampleGraphImage from "/public/how-to-understand-graph.png";
 import usingFilter from "/public/how-to-use-filter.png";
-import { GitHub, ExpandMore, Settings } from "@mui/icons-material";
 export default function HelpDialog({
   open,
   setOpen,

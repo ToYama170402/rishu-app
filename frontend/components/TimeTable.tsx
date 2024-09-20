@@ -104,27 +104,27 @@ const ApplicantsBar = ({
   <Stack direction={"row"} sx={{ overflow: "hidden", height: "100%" }}>
     <Box
       width={(applicantsAmount.primary / capacity) * 100 + "%"}
-      sx={{ backgroundColor: colors.amber[100] }}
+      sx={{ backgroundColor: colors.amber[100], flexShrink: 0 }}
     ></Box>
     <Box
       width={(applicantsAmount.first / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.blue[100] }}
+      sx={{ bgcolor: colors.blue[100], flexShrink: 0 }}
     ></Box>
     <Box
       width={(applicantsAmount.second / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.blue[100] }}
+      sx={{ bgcolor: colors.orange[100], flexShrink: 0 }}
     ></Box>
     <Box
       width={(applicantsAmount.third / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.green[100] }}
+      sx={{ bgcolor: colors.green[100], flexShrink: 0 }}
     ></Box>
     <Box
       width={(applicantsAmount.forth / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.purple[100] }}
+      sx={{ bgcolor: colors.purple[100], flexShrink: 0 }}
     ></Box>
     <Box
       width={(applicantsAmount.fifth / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.grey[100] }}
+      sx={{ bgcolor: colors.grey[100], flexShrink: 0 }}
     ></Box>
   </Stack>
 );

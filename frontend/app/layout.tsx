@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { GoogleTagManager } from "@next/third-parties/google"
+import { GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "rishu-app",
@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body style={{ height: "100dvh" }}>{children}</body>
       <GoogleTagManager gtmId="GTM-M47VN8WW" />
     </html>
   );

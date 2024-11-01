@@ -1,10 +1,14 @@
-import TimeTable from "../components/TimeTable";
-import { fetchAll } from "../util/rishu";
+import SideBar from "@/components/SideBar";
 import { array2WeekTimeTable } from "@/util/timeTable";
+import { fetchAll } from "../util/rishu";
+
 export default async function Home(): Promise<JSX.Element> {
   const datas = await fetchAll();
   datas.shift()?.shift();
   const weekTimeTableData = array2WeekTimeTable(datas);
   return (
-    <TimeTable timeTable={weekTimeTableData} width={'100%'} height={'100vh'} />);
+    <>
+      <SideBar timeTable={weekTimeTableData} />
+    </>
+  );
 }

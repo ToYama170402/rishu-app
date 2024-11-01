@@ -20,6 +20,23 @@ services:
       - 3000:3000
     networks:
       - rishu-app_network
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend
+
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /workspace
+    ports:
+      - 8000:8000
+    networks:
+      - rishu-app_network
 
 volumes:
   node-modules:

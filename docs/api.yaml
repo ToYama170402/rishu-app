@@ -9,10 +9,10 @@ servers:
   - url: https://api.rishu-app.cas-ru.com
     description: 本番環境
 paths:
-  /:
+  /registration-term:
     get:
-      summary: APIのルート
-      description: APIのルート
+      summary: 履修登録期間中の登録状況を提供
+      description: 履修登録期間中の登録状況を提供
       responses:
         '200':
           description: 成功
@@ -22,12 +22,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CourseRegistrationStatus'
+  /adjustment-term:
+    get:
+      summary: 履修登録補正期間中の登録状況を提供
+      description: 履修登録補正期間中の登録状況を提供
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseAdjustmentStatus'
 components:
   schemas:
     CourseRegistrationStatus:
       type: object
       properties:
-        TimeTableId:
+        Id:
           type: string
           example: n70194.01
         Category:
@@ -67,5 +80,35 @@ components:
           type: integer
           example: 1
         Fifth:
+          type: integer
+          example: 1
+    CourseAdjustmentStatus:
+      type: object
+      properties:
+        Id:
+          type: string
+          example: n70194.01
+        Category:
+          type: string
+          example: 共通教育科目
+        Name:
+          type: string
+          example: IoTプロトタイピング
+        Day:
+          type: string
+          example: 月
+        Period:
+          type: integer
+          example: 1
+        Teacher:
+          type: string
+          example: 秋田純一
+        Target:
+          type: string
+          example: 全学生
+        Capacity:
+          type: integer
+          example: 15
+        Registered:
           type: integer
           example: 1

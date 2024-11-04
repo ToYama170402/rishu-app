@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: rishu-API
+  version: 1.0.0
+  description: rishu-app用のAPI
+servers:
+  - url: http://localhost:8000
+    description: ローカル開発環境
+  - url: https://api.rishu-app.cas-ru.com
+    description: 本番環境
+paths:
+  /:
+    get:
+      summary: APIのルート
+      description: APIのルート
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseRegistrationStatus'
+components:
+  schemas:
+    CourseRegistrationStatus:
+      type: object
+      properties:
+        TimeTableId:
+          type: string
+          example: n70194.01
+        Category:
+          type: string
+          example: 共通教育科目
+        Name:
+          type: string
+          example: IoTプロトタイピング
+        Day:
+          type: string
+          example: 月
+        Period:
+          type: integer
+          example: 1
+        Teacher:
+          type: string
+          example: 秋田純一
+        Target:
+          type: string
+          example: 全学生
+        Capacity:
+          type: integer
+          example: 15
+        Primary:
+          type: integer
+          example: 1
+        First:
+          type: integer
+          example: 1
+        Second:
+          type: integer
+          example: 1
+        Third:
+          type: integer
+          example: 1
+        Fourth:
+          type: integer
+          example: 1
+        Fifth:
+          type: integer
+          example: 1

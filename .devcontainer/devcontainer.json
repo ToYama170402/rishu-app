@@ -1,73 +1,70 @@
 {
-	"name": "rishu-app",
-	"dockerComposeFile": [
-		"../docker-compose.dev.yml",
-		"docker-compose.yml"
-	],
-	"service": "frontend",
-	"workspaceFolder": "/workspace",
-	// コンテナに追加する機能
-	"features": {
-		"ghcr.io/devcontainers/features/common-utils:2": {
-			"installZsh": true,
-			"configureZshAsDefaultShell": true,
-			"installOhMyZsh": true,
-			"upgradePackages": true,
-			"username": "node"
-		}
-	},
-	"postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
-	"customizations": {
-		"vscode": {
-			"settings": {
-				// ファイル保存時にフォーマット処理を実行
-				"editor.formatOnSave": true,
-				// 各ファイルのデフォルトのフォーマッターを指定
-				"[javascript]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				},
-				"[javascriptreact]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				},
-				"[typescript]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				},
-				"[typescriptreact]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				},
-				"[json]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				},
-				"[postcss]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				},
-				"[css]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				},
-				// ESLintの対象を設定
-				"eslint.validate": [
-					"javascript",
-					"javascriptreact",
-					"typescript",
-					"typescriptreact"
-				],
-				// VSCodeのデフォルトのフォーマッターを無効に
-				"javascript.format.enable": false,
-				"typescript.format.enable": false
-			},
-			// 拡張機能を追加
-			"extensions": [
-				"dbaeumer.vscode-eslint", // ESLint
-				"esbenp.prettier-vscode", // Prettier
-				"formulahendry.auto-rename-tag", // Auto Rename Tag
-				"eamodio.gitlens", // GitLens
-				"streetsidesoftware.code-spell-checker", // Code Spell Checker
-				"yzhang.dictionary-completion", // Dictionary Completion
-				"mhutchie.git-graph", // Git Graph
-				"mosapride.zenkaku", // zenkaku
-				"shardulm94.trailing-spaces", // Trailing Spaces
-				"christian-kohler.path-intellisense" // Path Intellisense
-			]
-		}
-	}
+  "name": "rishu-app",
+  "dockerComposeFile": ["../docker-compose.dev.yml", "docker-compose.yml"],
+  "service": "backend",
+  "workspaceFolder": "/workspace",
+  // コンテナに追加する機能
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "node"
+    }
+  },
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // ファイル保存時にフォーマット処理を実行
+        "editor.formatOnSave": true,
+        // 各ファイルのデフォルトのフォーマッターを指定
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[postcss]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[css]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        // ESLintの対象を設定
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+        // VSCodeのデフォルトのフォーマッターを無効に
+        "javascript.format.enable": false,
+        "typescript.format.enable": false
+      },
+      // 拡張機能を追加
+      "extensions": [
+        "dbaeumer.vscode-eslint", // ESLint
+        "esbenp.prettier-vscode", // Prettier
+        "formulahendry.auto-rename-tag", // Auto Rename Tag
+        "eamodio.gitlens", // GitLens
+        "streetsidesoftware.code-spell-checker", // Code Spell Checker
+        "yzhang.dictionary-completion", // Dictionary Completion
+        "mhutchie.git-graph", // Git Graph
+        "mosapride.zenkaku", // zenkaku
+        "shardulm94.trailing-spaces", // Trailing Spaces
+        "christian-kohler.path-intellisense" // Path Intellisense
+      ]
+    }
+  }
 }

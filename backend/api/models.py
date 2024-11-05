@@ -14,14 +14,14 @@ class Syllabus(models.Model):
     # 開講時期
     year = models.PositiveSmallIntegerField()  # 開講年度
     semester = models.ManyToManyField("Semester")  # 開講学期
-    weekdat_period = models.ManyToManyField("WeekdayPeriod")  # 曜日・時限
+    weekday_period = models.ManyToManyField("WeekdayPeriod")  # 曜日・時限
 
     # 科目情報
     subject_distinguished = models.ForeignKey(  # 科目区分
         "SubjectDistinguished", on_delete=models.SET_NULL, null=True
     )
     is_intensive = models.BooleanField()  # 集中講義かどうか
-    number_of_proper = models.PositiveSmallIntegerField()  # 適正人数
+    number_of_proper = models.PositiveSmallIntegerField(null=True)  # 適正人数
     target_students = models.ForeignKey(  # 対象学生
         "TargetStudents", on_delete=models.SET_NULL, null=True
     )
@@ -147,14 +147,14 @@ class LectureRoom(models.Model):
 
 # 履修登録状況
 class CourseRegistrationStatus(models.Model):
-    primary = models.PositiveSmallIntegerField()
-    first_choice = models.PositiveSmallIntegerField()
-    second_choice = models.PositiveSmallIntegerField()
-    third_choice = models.PositiveSmallIntegerField()
-    fourth_choice = models.PositiveSmallIntegerField()
-    fifth_choice = models.PositiveSmallIntegerField()
+    primary = models.PositiveSmallIntegerField(null=True)
+    first_choice = models.PositiveSmallIntegerField(null=True)
+    second_choice = models.PositiveSmallIntegerField(null=True)
+    third_choice = models.PositiveSmallIntegerField(null=True)
+    fourth_choice = models.PositiveSmallIntegerField(null=True)
+    fifth_choice = models.PositiveSmallIntegerField(null=True)
     add_date = models.DateTimeField(auto_now_add=True)
-    course = models.ForeignKey("Syllabus", on_delete=models.CASCADE)
+    course = models.ForeignKey("Syllabus", on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return f"{self.add_date} {self.course.course_title}"

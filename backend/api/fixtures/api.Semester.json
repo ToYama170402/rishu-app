@@ -1,0 +1,30 @@
+[
+  {
+    "model": "api.Semester",
+    "pk": 1,
+    "fields": {
+      "semester": 1
+    }
+  },
+  {
+    "model": "api.Semester",
+    "pk": 2,
+    "fields": {
+      "semester": 2
+    }
+  },
+  {
+    "model": "api.Semester",
+    "pk": 3,
+    "fields": {
+      "semester": 3
+    }
+  },
+  {
+    "model": "api.Semester",
+    "pk": 4,
+    "fields": {
+      "semester": 4
+    }
+  }
+]

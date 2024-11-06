@@ -9,7 +9,7 @@
       "installZsh": true,
       "configureZshAsDefaultShell": true,
       "installOhMyZsh": true,
-      "upgradePackages": true,
+      "upgradePackages": false,
       "username": "node"
     }
   },
@@ -63,7 +63,10 @@
         "mhutchie.git-graph", // Git Graph
         "mosapride.zenkaku", // zenkaku
         "shardulm94.trailing-spaces", // Trailing Spaces
-        "christian-kohler.path-intellisense" // Path Intellisense
+        "christian-kohler.path-intellisense", // Path Intellisense
+        "ms-python.black-formatter", // Black
+        "ms-python.isort", // isort
+        "ms-python.python" // Python
       ]
     }
   }

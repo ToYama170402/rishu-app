@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+import re
 
 
 class Syllabus(models.Model):
@@ -18,7 +19,7 @@ class Syllabus(models.Model):
 
     # 科目情報
     subject_distinguished = models.ForeignKey(  # 科目区分
-        "SubjectDistinguished", on_delete=models.SET_NULL, null=True
+        "SubjectDistinguished", on_delete=models.SET_NULL, null=True, default=None
     )
     is_intensive = models.BooleanField()  # 集中講義かどうか
     number_of_proper = models.PositiveSmallIntegerField(null=True)  # 適正人数
@@ -36,7 +37,7 @@ class Syllabus(models.Model):
     lectures_form = models.CharField(  # 授業形態 例）対面とオンラインの併用
         max_length=100
     )
-    number_of_credit = models.DecimalField(max_digits=2,decimal_places=1)  # 単位数
+    number_of_credit = models.DecimalField(max_digits=2, decimal_places=1)  # 単位数
     class_to_a_maximum_of_60_credit = models.BooleanField()  # 60単位上限
 
     # その他
@@ -45,7 +46,20 @@ class Syllabus(models.Model):
     url = models.URLField()  # URL
 
     def __str__(self):
-        return self.course_title
+        return f"{self.timetable_number} {self.course_title}"
+
+    def get_category(self):
+        timetable_number = self.timetable_number
+        if re.match(r"^7\d[A-Z]", timetable_number):
+            return "ＧＳ科目"
+        elif re.match(r"74\d[37][a-z]", timetable_number):
+            return "言語科目Ｃ"
+        elif re.match(r"[0-9]{4}[a-z]\..{3}", timetable_number):
+            return "言語科目Ａ"
+        elif re.match(r"^74\d+", timetable_number):
+            return "ＧＳ言語科目"
+        else:
+            return "自由履修科目"
 
 
 # 開講学期
@@ -62,10 +76,11 @@ class Semester(models.Model):
     semester = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(4)],
         choices=SEMESTER,
+        unique=True,
     )
 
     def __str__(self):
-        return self.semester
+        return f"第{self.semester}クオーター"
 
 
 class WeekdayPeriod(models.Model):
@@ -102,7 +117,7 @@ class WeekdayPeriod(models.Model):
     )
 
     def __str__(self):
-        return f"{self.get_weekday_display()} {self.get_period_display()}"
+        return f"{self.weekday} {self.period}"
 
 
 # 科目区分
@@ -154,10 +169,10 @@ class CourseRegistrationStatus(models.Model):
     fourth_choice = models.PositiveSmallIntegerField(null=True)
     fifth_choice = models.PositiveSmallIntegerField(null=True)
     add_date = models.DateTimeField(auto_now_add=True)
-    course = models.ForeignKey("Syllabus", on_delete=models.CASCADE,null=True)
+    course = models.ForeignKey("Syllabus", on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"{self.add_date} {self.course.course_title}"
+        return f"{self.add_date} {self.course.timetable_number}\t{self.course.course_title}"
 
 
 # 補正期間中登録状況
@@ -167,4 +182,4 @@ class CourseRegistrationAdjustmentStatus(models.Model):
     course = models.ForeignKey("Syllabus", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.registered} {self.course.course_title}"
+        return f"{self.registered}\t{self.course.course_title}"

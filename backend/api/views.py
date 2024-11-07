@@ -8,6 +8,9 @@ from django.db.models import OuterRef, Subquery
 from concurrent.futures import ThreadPoolExecutor
 import os
 from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_semester_to_register():
@@ -41,7 +44,7 @@ def registration_term(request):
             "-add_date"
         ).first()
         if registration_status:
-            print(registration_status)
+            logger.info(registration_status)
             instructors = [i.name for i in course.instructors.all()]
             registration_status = {
                 "Id": course.timetable_number,

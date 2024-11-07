@@ -13,6 +13,9 @@ from .models import (
 )
 from .rishu_scraping import scrapeRegistrationStatus, scrapeSyllabus
 import re
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def parseWeekdayPeriod(weekday_period: str):
@@ -38,14 +41,11 @@ def parseWeekdayPeriod(weekday_period: str):
 
 
 def data_fetch():
-    print("Data Fetching Job")
+    logger.info("Data Fetching Job")
     try:
         data = scrapeRegistrationStatus()
     except Exception as e:
-        print("Error in data fetching job")
-        return
-    if len(data) == 0:
-        print("No data")
+        logger.error("Error in data fetching job")
         return
     for row in data:
         course_numbering = row[0]
@@ -56,14 +56,14 @@ def data_fetch():
         fourth_choice = row[12]
         fifth_choice = row[13]
         try:
-            course = Syllabus.objects.order_by("-year").get(
+            course = Syllabus.objects.filter(datetime.now().year).get(
                 course_numbering=course_numbering
             )
         except Syllabus.DoesNotExist:
             try:
                 course = scrapeSyllabus(course_numbering)
             except Exception as e:
-                print("Error in data fetching job")
+                logger.error("Error in data fetching job")
                 return
 
             # 科目名

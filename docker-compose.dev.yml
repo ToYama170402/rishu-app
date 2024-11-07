@@ -47,6 +47,9 @@ services:
     ports:
       - 4444:4444
       - 7900:7900
+    shm_size: 2g
+    cpus: 2
+    mem_limit: 4g
     volumes:
       - /dev/shm:/dev/shm
     networks:

@@ -1,6 +1,5 @@
 services:
   frontend:
-    container_name: frontend
     user: node
 
     build:
@@ -11,6 +10,45 @@ services:
       - 3000:3000
     networks:
       - rishu-app_network
+    depends_on:
+      - backend
+
+  backend:
+
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      - rishu-app_network
+    depends_on:
+      - selenium
+
+  selenium:
+    image: selenium/standalone-chrome:4.1.4-20220427
+    ports:
+      - 4444:4444
+    shm_size: 2g
+    cpus: 2
+    mem_limit: 4g
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      - rishu-app_network
+
+  web:
+    image: nginx:1.27.2-alpine
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/templates
+    networks:
+      - rishu-app_network
+    environment:
+      - SERVER_NAME=${SERVER_NAME}
 
 networks:
   rishu-app_network:

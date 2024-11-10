@@ -1,0 +1,27 @@
+server {
+  listen 80;
+  server_name ${SERVER_NAME};
+  # server_name localhost; 
+  
+  location / {
+    proxy_pass http://frontend:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+  }
+}
+
+server {
+  listen 80;
+  server_name api.${SERVER_NAME};
+  # server_name api.localhost;
+  
+  location / {
+    proxy_pass http://backend:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+  }
+  location /admin {
+    deny all;
+    return 403;
+  }
+}

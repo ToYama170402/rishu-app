@@ -6,8 +6,6 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: always
-    ports:
-      - 3000:3000
     networks:
       - rishu-app_network
     depends_on:
@@ -19,8 +17,6 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     restart: always
-    ports:
-      - 8000:8000
     networks:
       - rishu-app_network
     depends_on:
@@ -28,8 +24,6 @@ services:
 
   selenium:
     image: selenium/standalone-chrome:4.1.4-20220427
-    ports:
-      - 4444:4444
     shm_size: 2g
     cpus: 2
     mem_limit: 4g

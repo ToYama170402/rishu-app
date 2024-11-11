@@ -17,6 +17,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     restart: always
+    volumes:
+      - ./backend:/workspace
     networks:
       - rishu-app_network
     depends_on:
@@ -41,8 +43,6 @@ services:
       - ./nginx:/etc/nginx/templates
     networks:
       - rishu-app_network
-    environment:
-      - SERVER_NAME=${SERVER_NAME}
 
 networks:
   rishu-app_network:

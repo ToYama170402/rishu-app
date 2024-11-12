@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     volumes:
-      - ./backend:/workspace
+      - db:/workspace/bd
     networks:
       - rishu-app_network
     depends_on:
@@ -35,12 +35,12 @@ services:
       - rishu-app_network
 
   web:
-    image: nginx:1.27.2-alpine
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     restart: always
     ports:
       - 80:80
-    volumes:
-      - ./nginx:/etc/nginx/templates
     networks:
       - rishu-app_network
 
@@ -48,3 +48,6 @@ networks:
   rishu-app_network:
     name: rishu-app_network
     driver: bridge
+
+volumes:
+  db:

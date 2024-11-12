@@ -20,6 +20,9 @@ services:
       - 3000:3000
     networks:
       - rishu-app_network
+    environment:
+      - GTM=${GTM}
+      - GOOGLE_SITE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
     depends_on:
       - backend
 

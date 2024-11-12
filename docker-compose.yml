@@ -7,6 +7,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: always
+    environment:
+      - GTM=${GTM}
+      - GOOGLE_SITE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
     ports:
       - 3000:3000
     networks:

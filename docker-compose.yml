@@ -23,6 +23,8 @@ services:
       - rishu-app_network
     depends_on:
       - selenium
+    environment:
+      SELENIUM_URL: http://selenium:4444/wd/hub
 
   selenium:
     image: selenium/standalone-chrome:4.1.4-20220427

@@ -56,7 +56,7 @@ def data_fetch():
         fourth_choice = row[12]
         fifth_choice = row[13]
         try:
-            course = Syllabus.objects.filter(datetime.now().year).get(
+            course = Syllabus.objects.filter(year=datetime.now().year).get(
                 course_numbering=course_numbering
             )
         except Syllabus.DoesNotExist:

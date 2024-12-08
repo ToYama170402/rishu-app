@@ -1,19 +1,11 @@
 {
   "name": "rishu-app",
-  "dockerComposeFile": ["../docker-compose.dev.yml", "docker-compose.yml"],
+  "dockerComposeFile": [
+    "../docker-compose.dev.yml",
+    "docker-compose.yml"
+  ],
   "service": "backend",
   "workspaceFolder": "/workspace",
-  // コンテナに追加する機能
-  "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": true,
-      "configureZshAsDefaultShell": true,
-      "installOhMyZsh": true,
-      "upgradePackages": false,
-      "username": "node"
-    }
-  },
-  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
   "customizations": {
     "vscode": {
       "settings": {

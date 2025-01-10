@@ -1,11 +1,11 @@
 FROM node:20-bullseye-slim
 
-WORKDIR /workspace
+WORKDIR /workspace/frontend
 
 # 依存関係をインストール
 COPY --chown=user:node package.json yarn.lock* ./
 
-RUN mkdir -p /workspace/node_modules && chown -R node:node /workspace
+RUN mkdir -p /workspace/frontend/node_modules && chown -R node:node /workspace
 RUN npm install -g pnpm
 
 USER node

@@ -5,7 +5,11 @@
     "../docker-compose.yml"
   ],
   "service": "frontend",
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/workspace/frontend",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1":{}
+  },
+  "postAttachCommand": "git config --global --add safe.directory /workspace",
   "customizations": {
     "vscode": {
       "settings": {
@@ -42,7 +46,8 @@
         ],
         // VSCodeのデフォルトのフォーマッターを無効に
         "javascript.format.enable": false,
-        "typescript.format.enable": false
+        "typescript.format.enable": false,
+        "git.openRepositoryInParentFolders": "always"
       },
       // 拡張機能を追加
       "extensions": [

@@ -1,0 +1,67 @@
+{
+  "name": "frontend",
+  "dockerComposeFile": [
+    "../../docker-compose.dev.yml",
+    "../docker-compose.yml"
+  ],
+  "service": "frontend",
+  "workspaceFolder": "/workspace/frontend",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1":{}
+  },
+  "postAttachCommand": "git config --global --add safe.directory /workspace",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // ファイル保存時にフォーマット処理を実行
+        "editor.formatOnSave": true,
+        // 各ファイルのデフォルトのフォーマッターを指定
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[postcss]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[css]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        // ESLintの対象を設定
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+        // VSCodeのデフォルトのフォーマッターを無効に
+        "javascript.format.enable": false,
+        "typescript.format.enable": false,
+        "git.openRepositoryInParentFolders": "always"
+      },
+      // 拡張機能を追加
+      "extensions": [
+        "dbaeumer.vscode-eslint", // ESLint
+        "esbenp.prettier-vscode", // Prettier
+        "streetsidesoftware.code-spell-checker", // Code Spell Checker
+        "yzhang.dictionary-completion", // Dictionary Completion
+        "mhutchie.git-graph", // Git Graph
+        "mosapride.zenkaku", // zenkaku
+        "shardulm94.trailing-spaces", // Trailing Spaces
+        "christian-kohler.path-intellisense", // Path Intellisense
+        "christian-kohler.npm-intellisense", // NPM Intellisense
+        "YoavBls.pretty-ts-errors" // Pretty TS Errors
+      ]
+    }
+  }
+}

@@ -6,6 +6,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: always
+    environment:
+      - GTM=${GTM}
+      - GOOGLE_SITE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
     networks:
       - rishu-app_network
     depends_on:

@@ -1,11 +1,11 @@
 FROM node:20-bullseye-slim
 
-WORKDIR /workspace
+WORKDIR /workspace/frontend
 
 # 依存関係をインストール
-COPY --chown=user:node package.json yarn.lock* ./
+COPY --chown=user:node package.json pnpm-lock.json ./
 
-RUN mkdir -p /workspace/node_modules && chown -R node:node /workspace
+RUN mkdir -p /workspace/frontend/node_modules && chown -R node:node /workspace
 RUN npm install -g pnpm
 
 USER node
@@ -16,5 +16,3 @@ ARG NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_TELEMETRY_DISABLED=$NEXT_TELEMETRY_DISABLED
 
 # 注意: ポートのマッピングはdocker-composeで行うため、設定しない
-
-CMD ["yarn", "dev"]

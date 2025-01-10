@@ -9,12 +9,12 @@ services:
 
     volumes:
       - type: bind
-        source: ./frontend
+        source: .
         target: /workspace
 
       - type: volume
         source: node-modules
-        target: /workspace/node_modules
+        target: /workspace/frontend/node_modules
 
     ports:
       - 3000:3000
@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - type: bind
-        source: ./backend
+        source: .
         target: /workspace
     ports:
       - 8000:8000

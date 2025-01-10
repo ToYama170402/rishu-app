@@ -1,8 +1,8 @@
 {
-  "name": "rishu-app",
+  "name": "backend",
   "dockerComposeFile": [
-    "../docker-compose.dev.yml",
-    "docker-compose.yml"
+    "../../docker-compose.dev.yml",
+    "../docker-compose.yml"
   ],
   "service": "backend",
   "workspaceFolder": "/workspace",
@@ -46,10 +46,6 @@
       },
       // 拡張機能を追加
       "extensions": [
-        "dbaeumer.vscode-eslint", // ESLint
-        "esbenp.prettier-vscode", // Prettier
-        "formulahendry.auto-rename-tag", // Auto Rename Tag
-        "eamodio.gitlens", // GitLens
         "streetsidesoftware.code-spell-checker", // Code Spell Checker
         "yzhang.dictionary-completion", // Dictionary Completion
         "mhutchie.git-graph", // Git Graph

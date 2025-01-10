@@ -4,7 +4,6 @@ FROM base AS builder
 
 WORKDIR /workspace
 
-RUN apt-get update && apt-get upgrade -y
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 

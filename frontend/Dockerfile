@@ -5,8 +5,8 @@ FROM base AS builder
 WORKDIR /workspace
 
 RUN apt-get update && apt-get upgrade -y
-COPY package.json yarn.lock* ./
-RUN yarn --frozen-lockfile
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY app/ ./app
 COPY public/ ./public

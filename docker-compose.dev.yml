@@ -40,6 +40,23 @@ services:
       - 8000:8000
     networks:
       - rishu-app_network
+    depends_on:
+      - selenium
+    environment:
+      SELENIUM_URL: http://selenium:4444/wd/hub
+
+  selenium:
+    image: selenium/standalone-chrome:4.1.4-20220427
+    ports:
+      - 4444:4444
+      - 7900:7900
+    shm_size: 2g
+    cpus: 2
+    mem_limit: 4g
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      - rishu-app_network
 
 volumes:
   node-modules:

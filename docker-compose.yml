@@ -1,6 +1,5 @@
 services:
   frontend:
-    container_name: frontend
     user: node
 
     build:
@@ -10,8 +9,43 @@ services:
     environment:
       - GTM=${GTM}
       - GOOGLE_SITE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
+    networks:
+      - rishu-app_network
+    depends_on:
+      - backend
+
+  backend:
+
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - db:/workspace/bd
+    networks:
+      - rishu-app_network
+    depends_on:
+      - selenium
+    environment:
+      SELENIUM_URL: http://selenium:4444/wd/hub
+
+  selenium:
+    image: selenium/standalone-chrome:4.1.4-20220427
+    shm_size: 2g
+    cpus: 2
+    mem_limit: 4g
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      - rishu-app_network
+
+  web:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: always
     ports:
-      - 3000:3000
+      - 80:80
     networks:
       - rishu-app_network
 
@@ -19,3 +53,6 @@ networks:
   rishu-app_network:
     name: rishu-app_network
     driver: bridge
+
+volumes:
+  db:

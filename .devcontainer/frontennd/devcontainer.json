@@ -1,11 +1,15 @@
 {
-  "name": "rishu-app",
+  "name": "frontend",
   "dockerComposeFile": [
-    "../docker-compose.dev.yml",
-    "docker-compose.yml"
+    "../../docker-compose.dev.yml",
+    "../docker-compose.yml"
   ],
-  "service": "backend",
-  "workspaceFolder": "/workspace",
+  "service": "frontend",
+  "workspaceFolder": "/workspace/frontend",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1":{}
+  },
+  "postAttachCommand": "git config --global --add safe.directory /workspace",
   "customizations": {
     "vscode": {
       "settings": {
@@ -42,23 +46,21 @@
         ],
         // VSCodeのデフォルトのフォーマッターを無効に
         "javascript.format.enable": false,
-        "typescript.format.enable": false
+        "typescript.format.enable": false,
+        "git.openRepositoryInParentFolders": "always"
       },
       // 拡張機能を追加
       "extensions": [
         "dbaeumer.vscode-eslint", // ESLint
         "esbenp.prettier-vscode", // Prettier
-        "formulahendry.auto-rename-tag", // Auto Rename Tag
-        "eamodio.gitlens", // GitLens
         "streetsidesoftware.code-spell-checker", // Code Spell Checker
         "yzhang.dictionary-completion", // Dictionary Completion
         "mhutchie.git-graph", // Git Graph
         "mosapride.zenkaku", // zenkaku
         "shardulm94.trailing-spaces", // Trailing Spaces
         "christian-kohler.path-intellisense", // Path Intellisense
-        "ms-python.black-formatter", // Black
-        "ms-python.isort", // isort
-        "ms-python.python" // Python
+        "christian-kohler.npm-intellisense", // NPM Intellisense
+        "YoavBls.pretty-ts-errors" // Pretty TS Errors
       ]
     }
   }

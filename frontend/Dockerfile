@@ -5,6 +5,7 @@ FROM base AS builder
 WORKDIR /workspace
 
 COPY package.json pnpm-lock.yaml ./
+RUN npm install -g pnpm
 RUN pnpm install --frozen-lockfile
 
 COPY app/ ./app
@@ -17,7 +18,7 @@ COPY tsconfig.json *.mjs ./
 ARG NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_TELEMETRY_DISABLED=$NEXT_TELEMETRY_DISABLED
 
-RUN  yarn build
+RUN  pnpm build
 
 FROM base AS runner
 

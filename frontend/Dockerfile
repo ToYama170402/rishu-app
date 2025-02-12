@@ -7,10 +7,8 @@ WORKDIR /workspace
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-COPY app/ ./app
-COPY public/ ./public
-COPY util/ ./util
-COPY components/ ./components
+COPY src ./src
+COPY public ./public
 COPY tsconfig.json *.mjs ./
 
 # Next.jsによってテレメトリデータを収集するのを無効にする

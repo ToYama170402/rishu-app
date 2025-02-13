@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import { ResponsiveStyleValue } from "@mui/system";
 import * as React from "react";
 import * as TimeTableData from "../util/timeTable";
-import DetailPopup from "./DetailPopup";
+import DetailPopup from "@/features/DetailPopup/DetailPopup";
 import ApplicantsBar from "./ApplicantsBar";
 
 type sizing = ResponsiveStyleValue<string | number>;

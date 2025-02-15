@@ -88,89 +88,12 @@ const Period = ({
       flex: "1 1 0",
     }}
   >
-    {dataFragment!.map((lecture) => (
-      <LectureInfo key={lecture.number} lecture={lecture} />
-    ))}
+    {dataFragment &&
+      dataFragment.map((lecture) => (
+        <ApplicantsBar lecture={lecture} base="capacity" key={lecture.number} />
+      ))}
   </Box>
 );
-
-const LectureInfo = ({
-  lecture,
-}: // filters,
-{
-  lecture: TimeTableData.lecture;
-  // filters: TimeTableData.filters;
-}): JSX.Element | undefined => {
-  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
-  function handleOpenPopup() {
-    setIsPopupOpen(!isPopupOpen);
-  }
-  // if (
-  //   filters.category[lecture.category] &&
-  //   filters.teacher[lecture.teacher] &&
-  //   filters.targetStudent[lecture.target]
-  // ) {
-  return (
-    <>
-      <Box
-        mt={"2px"}
-        sx={{
-          position: "relative",
-          zIndex: 1,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          textWrap: "nowrap",
-          scrollSnapAlign: "start",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{
-            position: "relative",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            zIndex: 1,
-            cursor: "pointer",
-            display: "inline-block",
-            borderBottom: "1px dashed",
-            lineHeight: 1.1,
-            height: "fit-content",
-            margin: "2px",
-          }}
-          onClick={handleOpenPopup}
-        >
-          {lecture.title}
-        </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 0,
-            opacity: 0.7,
-          }}
-        >
-          <ApplicantsBar
-            applicantsAmount={lecture.applicants}
-            capacity={lecture.capacity}
-            base="capacity"
-          />
-        </Box>
-      </Box>
-      {/* <IconButton onClick={handleOpenPopup}>
-          <InfoIcon fontSize="small" />
-        </IconButton> */}
-      <DetailPopup
-        lecture={lecture}
-        open={isPopupOpen}
-        onClose={handleOpenPopup}
-      />
-    </>
-  );
-};
 
 export default function RishuTimeTable({
   timeTable,

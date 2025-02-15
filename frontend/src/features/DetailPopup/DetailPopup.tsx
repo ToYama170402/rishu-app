@@ -109,11 +109,7 @@ export default function DetailPopup({
           >
             <Stack direction={"column"} gap={1}>
               {lecture.applicants.all > 0 ? (
-                <ApplicantsBar
-                  capacity={lecture.capacity}
-                  applicantsAmount={lecture.applicants}
-                  base="allApplicants"
-                />
+                <ApplicantsBar lecture={lecture} base="allApplicants" />
               ) : null}
               <TableContainer sx={{ textWrap: "nowrap" }} component={Paper}>
                 <Table size="small">

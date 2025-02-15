@@ -16,7 +16,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { fetchAll } from "../util/rishu";
 import {
   array2LectureArray,
@@ -40,12 +40,9 @@ export default function Layout({
   const isPC = useMediaQuery(theme.breakpoints.up("xs"));
 
   const [open, setOpen] = useState(isPC);
-  const drawerWidth = "200px";
-  const [currentDrawerWidth, setDrawerWidth] = useState(drawerWidth);
 
   const handleDrawerOpen = () => {
     setOpen(!open);
-    setDrawerWidth(open ? drawerWidth : "56px");
   };
 
   const [isHelpOpen, setHelpOpen] = useState(false);
@@ -84,7 +81,7 @@ export default function Layout({
           elevation={3}
           sx={{
             flex: "0 0 200px",
-            flexBasis: currentDrawerWidth,
+            flexBasis: open ? "200px" : "56px",
             overflow: "hidden",
             textWrap: "nowrap",
             borderRadius: "0px 4px 4px 0px",
@@ -201,7 +198,7 @@ export default function Layout({
           onOpen={handleDrawerOpen}
           anchor="right"
           open={open}
-          sx={{ display: isPC ? "none" : "block", width: "80vw" }}
+          sx={{ display: { md: "none", sm: "block" }, width: "80vw" }}
         >
           <Box p={1} sx={{ width: "80vw" }}>
             <DrawerContents
@@ -224,7 +221,6 @@ export default function Layout({
       <PcSideBar />
       <Box
         sx={{
-          // width: `calc(100% - ${isPC ? currentDrawerWidth : "0px"})`,
           height: {
             sm: `100%`,
             xs: `calc(100% - 64px)`,

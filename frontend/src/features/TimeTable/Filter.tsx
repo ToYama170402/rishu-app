@@ -32,10 +32,10 @@ export default function DrawerContent({
   };
 
   const [isFilterOpen, setIsFilterOpen] = React.useState<isFilterOpen>({
-    filter: true,
-    category: true,
-    teacher: true,
-    targetStudent: true,
+    filter: false,
+    category: false,
+    teacher: false,
+    targetStudent: false,
   });
 
   const handleFilerOpen = (key: keyof isFilterOpen) => {

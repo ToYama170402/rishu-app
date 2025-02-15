@@ -27,8 +27,8 @@ import {
   applicantsAmount,
   calcApplicantsRatio,
   lecture,
-} from "../util/timeTable";
-import ApplicantsBar from "./ApplicantsBar";
+} from "@/util/timeTable";
+import ApplicantsBar from "@/components/ApplicantsBar";
 
 export default function DetailPopup({
   lecture,

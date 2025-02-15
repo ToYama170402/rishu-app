@@ -1,4 +1,4 @@
-import ApplicantsBar from "@/components/ApplicantsBar";
+import ApplicantsBar from "@/components/ApplicantsBar/ApplicantsBar";
 import type { RenderCellProps } from "@/components/TimeTable/TimeTable";
 import { lecture } from "@/util/timeTable";
 import { Box } from "@mui/material";

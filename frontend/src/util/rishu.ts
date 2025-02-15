@@ -1,7 +1,7 @@
 import { parseSV } from "./helper";
 async function fetchAll() {
   try {
-    const response = await fetch("https://kurisyushien.org/api?mode=&word=", {
+    const response = await fetch("http://localhost:3000/api", {
       mode: "cors",
       redirect: "follow",
       next: { revalidate: 50 },

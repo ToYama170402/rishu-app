@@ -37,7 +37,7 @@ export default function Layout({
   timeTable: lecture[];
 }): JSX.Element {
   const theme = useTheme();
-  const isPC = useMediaQuery(theme.breakpoints.up("sm"));
+  const isPC = useMediaQuery(theme.breakpoints.up("xs"));
 
   const [open, setOpen] = useState(isPC);
   const drawerWidth = "200px";
@@ -88,6 +88,7 @@ export default function Layout({
             overflow: "hidden",
             textWrap: "nowrap",
             borderRadius: "0px 4px 4px 0px",
+            display: { xs: "none", sm: "block" },
           }}
         >
           <Box
@@ -160,6 +161,7 @@ export default function Layout({
             position: "static",
             color: theme.palette.primary.contrastText,
             borderRadius: "4px 4px 0px 0px",
+            display: { xs: "block", sm: "none" },
           }}
         >
           <ToolBar>
@@ -216,14 +218,17 @@ export default function Layout({
 
   return (
     <Stack
-      direction={isPC ? "row" : "column"}
+      direction={{ sm: "row", xs: "column" }}
       sx={{ height: "100%", width: "100%" }}
     >
-      {isPC ? <PcSideBar /> : null}
+      <PcSideBar />
       <Box
         sx={{
           // width: `calc(100% - ${isPC ? currentDrawerWidth : "0px"})`,
-          height: `calc(100dvh - ${isPC ? "0px" : "56px"})`,
+          height: {
+            sm: `100%`,
+            xs: `calc(100% - 64px)`,
+          },
           flex: 1,
           overflow: "auto",
         }}
@@ -235,7 +240,7 @@ export default function Layout({
           height={"100%"}
         />
       </Box>
-      {!isPC ? <MobileSideBar /> : null}
+      <MobileSideBar />
     </Stack>
   );
 }

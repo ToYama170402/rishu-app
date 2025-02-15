@@ -20,7 +20,7 @@ export default function TimeTable({
     setAppBar(
       <Filter lectures={timeTable} applyFilter={setFilteredTimeTable} />
     );
-  }, []);
+  }, [setAppBar, timeTable]);
   return (
     <TimeTableLiteral
       data={filteredTimeTable}

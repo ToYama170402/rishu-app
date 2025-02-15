@@ -5,9 +5,10 @@ import PcAppBar from "@/features/AppBar/PcAppBar";
 import MobileAppBar from "@/features/AppBar/MobileAppBar";
 
 export default function Layout({
-  timeTable,
+  children,
 }: {
   timeTable: lecture[];
+  children?: React.ReactNode;
 }): JSX.Element {
   return (
     <Stack
@@ -25,12 +26,7 @@ export default function Layout({
           overflow: "auto",
         }}
       >
-        <TimeTable
-          timeTable={timeTableData}
-          filter={filters}
-          width={"100%"}
-          height={"100%"}
-        />
+        {children}
       </Box>
       <MobileAppBar />
     </Stack>

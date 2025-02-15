@@ -37,33 +37,31 @@ const TimeTable = <T,>({
     <TimeTableContainer>
       {xArray.map((xFragment) => (
         <RenderColumn xFragment={xFragment} key={xFragment}>
-          <>
-            {yArray.map((yFragment) => {
-              const course = data.filter((dataFragment) => {
-                const xValue = xKey
-                  .split(".")
-                  .reduce(
-                    (acc, key) => (acc as { [key: string]: any })[key],
-                    dataFragment
-                  );
-                const yValue = yKey
-                  .split(".")
-                  .reduce(
-                    (acc, key) => (acc as { [key: string]: any })[key],
-                    dataFragment
-                  );
-                return xValue === xFragment && yValue === yFragment;
-              });
-              return (
-                <RenderCell
-                  xFragment={xFragment}
-                  yFragment={yFragment}
-                  dataFragment={course}
-                  key={yFragment}
-                />
-              );
-            })}
-          </>
+          {yArray.map((yFragment) => {
+            const course = data.filter((dataFragment) => {
+              const xValue = xKey
+                .split(".")
+                .reduce(
+                  (acc, key) => (acc as { [key: string]: any })[key],
+                  dataFragment
+                );
+              const yValue = yKey
+                .split(".")
+                .reduce(
+                  (acc, key) => (acc as { [key: string]: any })[key],
+                  dataFragment
+                );
+              return xValue === xFragment && yValue === yFragment;
+            });
+            return (
+              <RenderCell
+                xFragment={xFragment}
+                yFragment={yFragment}
+                dataFragment={course}
+                key={yFragment}
+              />
+            );
+          })}
         </RenderColumn>
       ))}
     </TimeTableContainer>

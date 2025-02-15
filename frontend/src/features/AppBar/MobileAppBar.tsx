@@ -11,11 +11,14 @@ import HelpIcon from "@mui/icons-material/Help";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuOpen from "@mui/icons-material/MenuOpen";
 import { useTheme } from "@mui/material";
-import React, { useState, useContext } from "react";
+import React, { useState, ReactNode } from "react";
 import HelpDialog from "@/components/HelpDialog";
-import { useAppBarContents } from "./useAppBarContents";
 
-const MobileAppBar = (): React.ReactNode => {
+const MobileAppBar = ({
+  children,
+}: {
+  children?: ReactNode;
+}): React.ReactNode => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
@@ -25,7 +28,6 @@ const MobileAppBar = (): React.ReactNode => {
   const handleHelpOpen = () => {
     setHelpOpen(!isHelpOpen);
   };
-  const [appBarContent] = useAppBarContents();
 
   return (
     <>
@@ -73,7 +75,7 @@ const MobileAppBar = (): React.ReactNode => {
         sx={{ display: { md: "none", sm: "block" }, width: "80vw" }}
       >
         <Box p={1} sx={{ width: "80vw" }}>
-          {appBarContent}
+          {children}
         </Box>
       </SwipeableDrawer>
     </>

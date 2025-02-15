@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, ReactNode } from "react";
 import {
   Box,
   Paper,
@@ -12,13 +12,11 @@ import HelpIcon from "@mui/icons-material/Help";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useTheme } from "@mui/material/styles";
 import HelpDialog from "@/components/HelpDialog";
-import { useAppBarContents } from "./useAppBarContents";
 
-const PcAppBar = (): React.ReactNode => {
+const PcAppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [isHelpOpen, setHelpOpen] = useState(false);
-  const [appBarContent] = useAppBarContents();
 
   return (
     <>
@@ -61,7 +59,7 @@ const PcAppBar = (): React.ReactNode => {
             height={"calc(100% - 48px)"}
             sx={{ overflowX: "hidden" }}
           >
-            {appBarContent}
+            {children}
             <Stack p={2} mb={1} direction={"column"}>
               <Button
                 variant={"text"}

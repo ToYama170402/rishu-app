@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import { ResponsiveStyleValue } from "@mui/system";
 import React, { useState, useContext, useEffect } from "react";
 import { lecture } from "../../util/timeTable";
 import ApplicantsBar from "../../components/ApplicantsBar";
@@ -14,8 +13,6 @@ import type {
 } from "@/components/TimeTable/TimeTable";
 import Filter from "./Filter";
 import appBarContext from "@/features/AppBar/appBarContext";
-
-type sizing = ResponsiveStyleValue<string | number>;
 
 const TimeTableContainer = ({
   children,
@@ -100,7 +97,6 @@ export default function RishuTimeTable({
 }: {
   timeTable: lecture[];
 }): JSX.Element {
-  const isDisplayLaterLecture = false;
   const [filteredTimeTable, setFilteredTimeTable] =
     useState<lecture[]>(timeTable);
   const setAppBar = useContext(appBarContext);

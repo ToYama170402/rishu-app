@@ -1,6 +1,6 @@
 "use client";
 import { Box, Stack } from "@mui/material";
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useState } from "react";
 import { lecture } from "../util/timeTable";
 import PcAppBar from "@/features/AppBar/PcAppBar";
 import MobileAppBar from "@/features/AppBar/MobileAppBar";

@@ -6,7 +6,7 @@ import Stack from "@mui/material/Stack";
 import React, { useState, useContext, useEffect } from "react";
 import { lecture } from "../../util/timeTable";
 import ApplicantsBar from "../../components/ApplicantsBar";
-import TimeTable from "@/components/TimeTable/TimeTable";
+import TimeTableLiteral from "@/components/TimeTable/TimeTable";
 import type {
   RenderCellProps,
   RenderColumnProps,
@@ -92,7 +92,7 @@ const Period = ({
   </Box>
 );
 
-export default function RishuTimeTable({
+export default function TimeTable({
   timeTable,
 }: {
   timeTable: lecture[];
@@ -106,7 +106,7 @@ export default function RishuTimeTable({
     );
   }, []);
   return (
-    <TimeTable
+    <TimeTableLiteral
       data={filteredTimeTable}
       xArray={["月", "火", "水", "木", "金", "土", "日"]}
       yArray={[1, 2, 3, 4, 5, 6, 7, 8]}

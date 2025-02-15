@@ -3,9 +3,9 @@ import TimeTableLiteral from "@/components/TimeTable/TimeTable";
 import appBarContext from "@/features/AppBar/appBarContext";
 import React, { useContext, useEffect, useState } from "react";
 import { lecture } from "../../util/timeTable";
-import Period from "./component/Period";
-import TimeTableContainer from "./component/TimeTableContainer";
-import TimeTableDayItem from "./component/TimeTableDayItem";
+import Period from "./components/Period";
+import TimeTableContainer from "./components/TimeTableContainer";
+import TimeTableDayItem from "./components/TimeTableDayItem";
 import Filter from "./Filter";
 
 export default function TimeTable({

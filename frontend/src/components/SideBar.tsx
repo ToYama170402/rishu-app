@@ -19,19 +19,22 @@ import { useTheme } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import { fetchAll } from "../util/rishu";
 import {
+  array2LectureArray,
   array2WeekTimeTable,
   filters,
+  lecture,
+  lectureArray2Filter,
   weekTimeTable,
   weekTimeTable2Filters,
 } from "../util/timeTable";
 import DrawerContents from "./DrawerContents";
 import HelpDialog from "./HelpDialog";
-import TimeTable from "./TimeTable";
+import TimeTable from "../features/TimeTable/TimeTable";
 
 export default function Layout({
   timeTable,
 }: {
-  timeTable: weekTimeTable;
+  timeTable: lecture[];
 }): JSX.Element {
   const theme = useTheme();
   const isPC = useMediaQuery(theme.breakpoints.up("sm"));
@@ -56,7 +59,7 @@ export default function Layout({
     setInterval(async () => {
       const newTimeTable = await fetchAll();
       newTimeTable.shift()?.shift();
-      setTimeTableData(array2WeekTimeTable(newTimeTable));
+      setTimeTableData(array2LectureArray(newTimeTable));
     }, 50000);
   }, []);
 
@@ -73,14 +76,15 @@ export default function Layout({
     targetStudent: false,
   });
 
-  const [filters, setFilters] = useState(weekTimeTable2Filters(timeTable));
+  const [filters, setFilters] = useState(lectureArray2Filter(timeTable));
   const PcSideBar = (): React.ReactNode => {
     return (
       <>
         <Paper
           elevation={3}
           sx={{
-            width: currentDrawerWidth,
+            flex: "0 0 200px",
+            flexBasis: currentDrawerWidth,
             overflow: "hidden",
             textWrap: "nowrap",
             borderRadius: "0px 4px 4px 0px",
@@ -211,12 +215,17 @@ export default function Layout({
   };
 
   return (
-    <Stack direction={isPC ? "row" : "column"} sx={{ height: "100%" }}>
+    <Stack
+      direction={isPC ? "row" : "column"}
+      sx={{ height: "100%", width: "100%" }}
+    >
       {isPC ? <PcSideBar /> : null}
       <Box
         sx={{
-          width: `calc(100% - ${isPC ? currentDrawerWidth : "0px"})`,
+          // width: `calc(100% - ${isPC ? currentDrawerWidth : "0px"})`,
           height: `calc(100dvh - ${isPC ? "0px" : "56px"})`,
+          flex: 1,
+          overflow: "auto",
         }}
       >
         <TimeTable

@@ -1,14 +1,14 @@
 import SideBar from "@/components/SideBar";
-import { array2WeekTimeTable } from "@/util/timeTable";
+import { array2LectureArray } from "@/util/timeTable";
 import { fetchAll } from "../util/rishu";
 
 export default async function Home(): Promise<JSX.Element> {
   const datas = await fetchAll();
   datas.shift()?.shift();
-  const weekTimeTableData = array2WeekTimeTable(datas);
+  const lectures = array2LectureArray(datas);
   return (
     <>
-      <SideBar timeTable={weekTimeTableData} />
+      <SideBar timeTable={lectures} />
     </>
   );
 }

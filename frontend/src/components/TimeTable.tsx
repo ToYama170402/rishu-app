@@ -8,6 +8,7 @@ import { ResponsiveStyleValue } from "@mui/system";
 import * as React from "react";
 import * as TimeTableData from "../util/timeTable";
 import DetailPopup from "./DetailPopup";
+import ApplicantsBar from "./ApplicantsBar";
 
 type sizing = ResponsiveStyleValue<string | number>;
 
@@ -94,43 +95,6 @@ const Period = ({ children }: { children: React.ReactNode }): JSX.Element => (
   </Box>
 );
 
-const ApplicantsBar = ({
-  applicantsAmount,
-  capacity,
-}: {
-  applicantsAmount: TimeTableData.applicantsAmount;
-  capacity: number;
-}): JSX.Element => (
-  <Stack direction={"row"} sx={{ overflow: "hidden", height: "100%" }}>
-    <Box
-      width={(applicantsAmount.primary / capacity) * 100 + "%"}
-      sx={{ backgroundColor: colors.amber[100], flexShrink: 0 }}
-    ></Box>
-    <Box
-      width={
-        ((applicantsAmount.first - applicantsAmount.primary) / capacity) * 100 +
-        "%"
-      }
-      sx={{ bgcolor: colors.blue[100], flexShrink: 0 }}
-    ></Box>
-    <Box
-      width={(applicantsAmount.second / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.orange[100], flexShrink: 0 }}
-    ></Box>
-    <Box
-      width={(applicantsAmount.third / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.green[100], flexShrink: 0 }}
-    ></Box>
-    <Box
-      width={(applicantsAmount.forth / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.purple[100], flexShrink: 0 }}
-    ></Box>
-    <Box
-      width={(applicantsAmount.fifth / capacity) * 100 + "%"}
-      sx={{ bgcolor: colors.grey[100], flexShrink: 0 }}
-    ></Box>
-  </Stack>
-);
 const LectureInfo = ({
   lecture,
   filters,
@@ -193,6 +157,7 @@ const LectureInfo = ({
             <ApplicantsBar
               applicantsAmount={lecture.applicants}
               capacity={lecture.capacity}
+              base="capacity"
             />
           </Box>
         </Box>

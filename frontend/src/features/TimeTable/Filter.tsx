@@ -15,46 +15,46 @@ import {
 import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
 import React from "react";
-import { filters } from "../util/timeTable";
+import { lecture, lectureArray2Filter } from "@/util/timeTable";
 
 export default function DrawerContent({
-  filters,
-  setFilters,
-  isFilterOpen,
-  setFiltersOpen,
+  lectures,
+  applyFilter,
 }: {
-  filters: filters;
-  setFilters: Function;
-  isFilterOpen: {
+  lectures: lecture[];
+  applyFilter: React.Dispatch<React.SetStateAction<lecture[]>>;
+}): React.ReactNode {
+  type isFilterOpen = {
     filter: boolean;
     category: boolean;
     teacher: boolean;
     targetStudent: boolean;
   };
-  setFiltersOpen: Function;
-}): React.ReactNode {
-  function handleFilerOpen(
-    category: "filter" | "category" | "teacher" | "targetStudent"
-  ) {
-    switch (category) {
-      case "filter":
-        isFilterOpen.filter = !isFilterOpen.filter;
-        setFiltersOpen({ ...isFilterOpen });
-        break;
-      case "category":
-        isFilterOpen.category = !isFilterOpen.category;
-        setFiltersOpen({ ...isFilterOpen });
-        break;
-      case "teacher":
-        isFilterOpen.teacher = !isFilterOpen.teacher;
-        setFiltersOpen({ ...isFilterOpen });
-        break;
-      case "targetStudent":
-        isFilterOpen.targetStudent = !isFilterOpen.targetStudent;
-        setFiltersOpen({ ...isFilterOpen });
-        break;
-    }
-  }
+
+  const [isFilterOpen, setIsFilterOpen] = React.useState<isFilterOpen>({
+    filter: true,
+    category: true,
+    teacher: true,
+    targetStudent: true,
+  });
+
+  const handleFilerOpen = (key: keyof isFilterOpen) => {
+    setIsFilterOpen({ ...isFilterOpen, [key]: !isFilterOpen[key] });
+  };
+  const filterTarget = lectureArray2Filter(lectures);
+  const [filter, setFilters] = React.useState(filterTarget);
+
+  React.useEffect(() => {
+    applyFilter(
+      lectures.filter((lec) => {
+        if (filter.category[lec.category] === false) return false;
+        if (filter.teacher[lec.teacher] === false) return false;
+        if (filter.targetStudent[lec.target] === false) return false;
+        return true;
+      })
+    );
+  }, [filter, lectures, applyFilter]);
+
   return (
     <Box sx={{ overflowY: "auto", overflowX: "hidden" }}>
       <List dense>
@@ -73,21 +73,21 @@ export default function DrawerContent({
               </ListItemButton>
               <Collapse in={isFilterOpen.category} timeout="auto" unmountOnExit>
                 <List disablePadding dense>
-                  {Object.keys(filters.category)
+                  {Object.keys(filter.category)
                     .sort()
                     .map((category) => (
                       <ListItem sx={{ display: "block" }} key={category}>
                         <ListItemButton
                           onClick={() => {
-                            filters.category[category] =
-                              !filters.category[category];
-                            setFilters({ ...filters });
+                            filter.category[category] =
+                              !filter.category[category];
+                            setFilters({ ...filter });
                           }}
                           dense
                         >
                           <Checkbox
                             edge="start"
-                            checked={filters.category[category]}
+                            checked={filter.category[category]}
                             disableRipple
                             size="small"
                           />
@@ -106,21 +106,20 @@ export default function DrawerContent({
               </ListItemButton>
               <Collapse in={isFilterOpen.teacher} timeout="auto" unmountOnExit>
                 <List disablePadding dense>
-                  {Object.keys(filters.teacher)
+                  {Object.keys(filter.teacher)
                     .sort()
                     .map((teacher) => (
                       <ListItem sx={{ display: "block" }} key={teacher}>
                         <ListItemButton
                           onClick={() => {
-                            filters.teacher[teacher] =
-                              !filters.teacher[teacher];
-                            setFilters({ ...filters });
+                            filter.teacher[teacher] = !filter.teacher[teacher];
+                            setFilters({ ...filter });
                           }}
                           dense
                         >
                           <Checkbox
                             edge="start"
-                            checked={filters.teacher[teacher]}
+                            checked={filter.teacher[teacher]}
                             disableRipple
                             size="small"
                           />
@@ -143,21 +142,21 @@ export default function DrawerContent({
                 unmountOnExit
               >
                 <List disablePadding dense>
-                  {Object.keys(filters.targetStudent)
+                  {Object.keys(filter.targetStudent)
                     .sort()
                     .map((targetStudent) => (
                       <ListItem sx={{ display: "block" }} key={targetStudent}>
                         <ListItemButton
                           onClick={() => {
-                            filters.targetStudent[targetStudent] =
-                              !filters.targetStudent[targetStudent];
-                            setFilters({ ...filters });
+                            filter.targetStudent[targetStudent] =
+                              !filter.targetStudent[targetStudent];
+                            setFilters({ ...filter });
                           }}
                           dense
                         >
                           <Checkbox
                             edge="start"
-                            checked={filters.targetStudent[targetStudent]}
+                            checked={filter.targetStudent[targetStudent]}
                             disableRipple
                             size="small"
                           />

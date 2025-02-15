@@ -4,14 +4,16 @@ import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { ResponsiveStyleValue } from "@mui/system";
-import * as React from "react";
-import * as TimeTableData from "../../util/timeTable";
+import React, { useState, useContext, useEffect } from "react";
+import { lecture } from "../../util/timeTable";
 import ApplicantsBar from "../../components/ApplicantsBar";
 import TimeTable from "@/components/TimeTable/TimeTable";
 import type {
   RenderCellProps,
   RenderColumnProps,
 } from "@/components/TimeTable/TimeTable";
+import Filter from "./Filter";
+import appBarContext from "@/features/AppBar/appBarContext";
 
 type sizing = ResponsiveStyleValue<string | number>;
 
@@ -77,7 +79,7 @@ const Period = ({
   xFragment,
   yFragment,
   dataFragment,
-}: RenderCellProps<TimeTableData.lecture>): JSX.Element => (
+}: RenderCellProps<lecture>): JSX.Element => (
   <Box
     padding="0 4px"
     sx={{
@@ -96,12 +98,20 @@ const Period = ({
 export default function RishuTimeTable({
   timeTable,
 }: {
-  timeTable: TimeTableData.lecture[];
+  timeTable: lecture[];
 }): JSX.Element {
   const isDisplayLaterLecture = false;
+  const [filteredTimeTable, setFilteredTimeTable] =
+    useState<lecture[]>(timeTable);
+  const setAppBar = useContext(appBarContext);
+  useEffect(() => {
+    setAppBar(
+      <Filter lectures={timeTable} applyFilter={setFilteredTimeTable} />
+    );
+  }, []);
   return (
     <TimeTable
-      data={timeTable}
+      data={filteredTimeTable}
       xArray={["月", "火", "水", "木", "金", "土", "日"]}
       yArray={[1, 2, 3, 4, 5, 6, 7, 8]}
       xKey="dateTime.date"

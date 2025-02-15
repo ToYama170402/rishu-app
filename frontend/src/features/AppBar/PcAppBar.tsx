@@ -59,7 +59,7 @@ const PcAppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
             height={"calc(100% - 48px)"}
             sx={{ overflowX: "hidden" }}
           >
-            {children}
+            <Box sx={{ flex: 1 }}>{children}</Box>
             <Stack p={2} mb={1} direction={"column"}>
               <Button
                 variant={"text"}

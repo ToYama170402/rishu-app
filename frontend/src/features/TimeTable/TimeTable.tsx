@@ -1,5 +1,4 @@
 "use client";
-import { colors } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
@@ -7,7 +6,6 @@ import Stack from "@mui/material/Stack";
 import { ResponsiveStyleValue } from "@mui/system";
 import * as React from "react";
 import * as TimeTableData from "../../util/timeTable";
-import DetailPopup from "@/features/DetailPopup/DetailPopup";
 import ApplicantsBar from "../../components/ApplicantsBar";
 import TimeTable from "@/components/TimeTable/TimeTable";
 import type {
@@ -97,14 +95,8 @@ const Period = ({
 
 export default function RishuTimeTable({
   timeTable,
-  filter,
-  width,
-  height,
 }: {
   timeTable: TimeTableData.lecture[];
-  filter: TimeTableData.filters;
-  width: sizing;
-  height: sizing;
 }): JSX.Element {
   const isDisplayLaterLecture = false;
   return (

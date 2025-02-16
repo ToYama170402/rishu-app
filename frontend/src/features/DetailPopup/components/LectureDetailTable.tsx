@@ -11,6 +11,7 @@ import {
 import { colors } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { lecture, calcApplicantsRatio } from "@/util/timeTable";
+import UnderLinedText from "./UnderLinedText";
 
 const LectureDetailTable = ({ lecture }: { lecture: lecture }) => {
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -37,132 +38,50 @@ const LectureDetailTable = ({ lecture }: { lecture: lecture }) => {
         <TableBody>
           <StyledTableRow>
             <TableCell>
-              <Box sx={{ position: "relative " }} width={"fit-content"}>
-                <Box position={"relative"} zIndex={1}>
-                  優先指定
-                </Box>
-                <Box
-                  width={"100%"}
-                  height={"50%"}
-                  position={"absolute"}
-                  top={"50%"}
-                  left={0}
-                  zIndex={0}
-                  sx={{
-                    backgroundImage: `repeating-linear-gradient(135deg, #00000000, ${colors.amber[100]} 0px 5px, #00000000 5px 10px)`,
-                  }}
-                ></Box>
-              </Box>
+              <UnderLinedText color={colors.amber[100]}>
+                優先指定
+              </UnderLinedText>
             </TableCell>
             <TableCell align="right">{lecture.applicants.primary}</TableCell>
             <TableCell align="right">{applicantsRatio[0]}</TableCell>
           </StyledTableRow>
           <StyledTableRow>
             <TableCell>
-              <Box sx={{ position: "relative " }} width={"fit-content"}>
-                <Box position={"relative"} zIndex={1}>
-                  第１希望
-                </Box>
-                <Box
-                  width={"100%"}
-                  height={"50%"}
-                  position={"absolute"}
-                  top={"50%"}
-                  left={0}
-                  zIndex={0}
-                  sx={{
-                    backgroundImage: `repeating-linear-gradient(135deg, #00000000, ${colors.blue[100]} 0px 5px, #00000000 5px 10px)`,
-                  }}
-                ></Box>
-              </Box>
+              <UnderLinedText color={colors.blue[100]}>第１希望</UnderLinedText>
             </TableCell>
             <TableCell align="right">{lecture.applicants.first}</TableCell>
             <TableCell align="right">{applicantsRatio[1]}</TableCell>
           </StyledTableRow>
           <StyledTableRow>
             <TableCell>
-              <Box sx={{ position: "relative " }} width={"fit-content"}>
-                <Box position={"relative"} zIndex={1}>
-                  第2希望
-                </Box>
-                <Box
-                  width={"100%"}
-                  height={"50%"}
-                  position={"absolute"}
-                  top={"50%"}
-                  left={0}
-                  zIndex={0}
-                  sx={{
-                    backgroundImage: `repeating-linear-gradient(135deg, #00000000, ${colors.orange[100]} 0px 5px, #00000000 5px 10px)`,
-                  }}
-                ></Box>
-              </Box>
+              <UnderLinedText color={colors.orange[100]}>
+                第２希望
+              </UnderLinedText>
             </TableCell>
             <TableCell align="right">{lecture.applicants.second}</TableCell>
             <TableCell align="right">{applicantsRatio[2]}</TableCell>
           </StyledTableRow>
           <StyledTableRow>
             <TableCell>
-              <Box sx={{ position: "relative " }} width={"fit-content"}>
-                <Box position={"relative"} zIndex={1}>
-                  第３希望
-                </Box>
-                <Box
-                  width={"100%"}
-                  height={"50%"}
-                  position={"absolute"}
-                  top={"50%"}
-                  left={0}
-                  zIndex={0}
-                  sx={{
-                    backgroundImage: `repeating-linear-gradient(135deg, #00000000, ${colors.green[100]} 0px 5px, #00000000 5px 10px)`,
-                  }}
-                ></Box>
-              </Box>
+              <UnderLinedText color={colors.green[100]}>
+                第３希望
+              </UnderLinedText>
             </TableCell>
             <TableCell align="right">{lecture.applicants.third}</TableCell>
             <TableCell align="right">{applicantsRatio[3]}</TableCell>
           </StyledTableRow>
           <StyledTableRow>
             <TableCell>
-              <Box sx={{ position: "relative " }} width={"fit-content"}>
-                <Box position={"relative"} zIndex={1}>
-                  第４希望
-                </Box>
-                <Box
-                  width={"100%"}
-                  height={"50%"}
-                  position={"absolute"}
-                  top={"50%"}
-                  left={0}
-                  zIndex={0}
-                  sx={{
-                    backgroundImage: `repeating-linear-gradient(135deg, #00000000, ${colors.purple[100]} 0px 5px, #00000000 5px 10px)`,
-                  }}
-                ></Box>
-              </Box>
+              <UnderLinedText color={colors.purple[100]}>
+                第４希望
+              </UnderLinedText>
             </TableCell>
             <TableCell align="right">{lecture.applicants.forth}</TableCell>
             <TableCell align="right">{applicantsRatio[4]}</TableCell>
           </StyledTableRow>
           <StyledTableRow>
             <TableCell>
-              <Box sx={{ position: "relative " }} width={"fit-content"}>
-                <Box position={"relative"} zIndex={1}>
-                  第５希望
-                </Box>
-                <Box
-                  width={"100%"}
-                  height={"50%"}
-                  position={"absolute"}
-                  top={"50%"}
-                  left={0}
-                  zIndex={0}
-                  sx={{
-                    backgroundImage: `repeating-linear-gradient(135deg, #00000000, ${colors.grey[100]} 0px 5px, #00000000 5px 10px)`,
-                  }}
-                ></Box>
-              </Box>
+              <UnderLinedText color={colors.grey[100]}>第５希望</UnderLinedText>
             </TableCell>
             <TableCell align="right">{lecture.applicants.fifth}</TableCell>
             <TableCell align="right">{applicantsRatio[5]}</TableCell>

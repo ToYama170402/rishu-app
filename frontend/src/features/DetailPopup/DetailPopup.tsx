@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { lecture } from "@/util/timeTable";
+import { lecture, lectureWithApplicantsAmount } from "@/types/lecture";
 import ApplicantsBar from "@/components/ApplicantsBar/ApplicantsBar";
 import LectureDetailTable from "./components/LectureDetailTable";
 
@@ -23,7 +23,7 @@ export default function DetailPopup({
   open,
   onClose,
 }: {
-  lecture: lecture;
+  lecture: lectureWithApplicantsAmount;
   open: boolean;
   onClose: () => void;
 }): React.ReactNode {

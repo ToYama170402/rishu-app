@@ -15,14 +15,17 @@ import {
 import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
 import React from "react";
-import { lecture, lectureArray2Filter } from "@/util/timeTable";
+import { lectureArray2Filter } from "@/util/timeTable";
+import { lectureWithApplicantsAmount } from "@/types/lecture";
 
 export default function DrawerContent({
   lectures,
   applyFilter,
 }: {
-  lectures: lecture[];
-  applyFilter: React.Dispatch<React.SetStateAction<lecture[]>>;
+  lectures: lectureWithApplicantsAmount[];
+  applyFilter: React.Dispatch<
+    React.SetStateAction<lectureWithApplicantsAmount[]>
+  >;
 }): React.ReactNode {
   type isFilterOpen = {
     filter: boolean;

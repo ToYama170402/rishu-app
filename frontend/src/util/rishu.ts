@@ -1,7 +1,9 @@
 import { parseSV } from "./helper";
+import endpoint from "@/const/endpoint";
+
 async function fetchAll() {
   try {
-    const response = await fetch("https://kurisyushien.org/api?mode=&word=", {
+    const response = await fetch(endpoint.TSV, {
       mode: "cors",
       redirect: "follow",
       next: { revalidate: 50 },
@@ -18,7 +20,7 @@ async function fetchAll() {
 async function fetchDetail(lectureNumber: string) {
   try {
     const response = await fetch(
-      `https://kurisyushien.org/api?mode=search&word=${lectureNumber}`,
+      `${endpoint.TSV}?mode=search&word=${lectureNumber}`,
       {
         mode: "cors",
         redirect: "follow",

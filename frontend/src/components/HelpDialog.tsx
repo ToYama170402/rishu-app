@@ -14,8 +14,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import exampleGraphImage from "/public/how-to-understand-graph.png";
-import usingFilter from "/public/how-to-use-filter.png";
+import exampleGraphImage from "@/../public/how-to-understand-graph.png";
+import usingFilter from "@/../public/how-to-use-filter.png";
 export default function HelpDialog({
   open,
   setOpen,

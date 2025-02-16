@@ -1,9 +1,12 @@
 import { parseSV } from "./helper";
-import endpoint from "@/const/endpoint";
+import endpoints from "@/const/endpoint";
+import nodeEnv from "./nodeEnv";
 
 async function fetchAll() {
+  const endpoint =
+    nodeEnv() === "development" ? endpoints.TSVDemo : endpoints.TSV;
   try {
-    const response = await fetch(endpoint.TSV, {
+    const response = await fetch(endpoint, {
       mode: "cors",
       redirect: "follow",
       next: { revalidate: 50 },
@@ -18,9 +21,11 @@ async function fetchAll() {
   }
 }
 async function fetchDetail(lectureNumber: string) {
+  const endpoint =
+    nodeEnv() === "development" ? endpoints.TSVDemo : endpoints.TSV;
   try {
     const response = await fetch(
-      `${endpoint.TSV}?mode=search&word=${lectureNumber}`,
+      `${endpoint}?mode=search&word=${lectureNumber}`,
       {
         mode: "cors",
         redirect: "follow",

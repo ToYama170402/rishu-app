@@ -9,6 +9,7 @@ services:
     environment:
       - GTM=${GTM}
       - GOOGLE_SITE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
+      - NODE_ENV=production
     networks:
       - rishu-app_network
     depends_on:

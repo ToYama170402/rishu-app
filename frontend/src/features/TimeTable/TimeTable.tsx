@@ -2,7 +2,7 @@
 import TimeTableLiteral from "@/components/TimeTable/TimeTable";
 import appBarContext from "@/features/AppBar/appBarContext";
 import React, { useContext, useEffect, useState } from "react";
-import { lecture } from "../../util/timeTable";
+import { lectureWithApplicantsAmount } from "../../util/timeTable";
 import Period from "./components/Period";
 import TimeTableContainer from "./components/TimeTableContainer";
 import TimeTableDayItem from "./components/TimeTableDayItem";
@@ -11,10 +11,10 @@ import Filter from "./components/Filter";
 export default function TimeTable({
   timeTable,
 }: {
-  timeTable: lecture[];
+  timeTable: lectureWithApplicantsAmount[];
 }): JSX.Element {
   const [filteredTimeTable, setFilteredTimeTable] =
-    useState<lecture[]>(timeTable);
+    useState<lectureWithApplicantsAmount[]>(timeTable);
   const setAppBar = useContext(appBarContext);
   useEffect(() => {
     setAppBar(

@@ -10,7 +10,7 @@ export default async function Home(): Promise<JSX.Element> {
 
   return (
     <>
-      <Layout timeTable={lectures}>
+      <Layout>
         <RishuTimeTable timeTable={lectures} />
       </Layout>
     </>

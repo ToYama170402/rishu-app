@@ -10,10 +10,15 @@ import {
 } from "@mui/material";
 import { colors } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { lecture, calcApplicantsRatio } from "@/util/timeTable";
+import { calcApplicantsRatio } from "@/util/timeTable";
+import { lectureWithApplicantsAmount } from "@/types/lecture";
 import UnderLinedText from "./UnderLinedText";
 
-const LectureDetailTable = ({ lecture }: { lecture: lecture }) => {
+const LectureDetailTable = ({
+  lecture,
+}: {
+  lecture: lectureWithApplicantsAmount;
+}) => {
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,

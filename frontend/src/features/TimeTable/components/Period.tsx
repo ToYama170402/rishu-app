@@ -1,13 +1,13 @@
 import ApplicantsBar from "@/components/ApplicantsBar/ApplicantsBar";
 import type { RenderCellProps } from "@/components/TimeTable/TimeTable";
-import { lecture } from "@/util/timeTable";
+import { lectureWithApplicantsAmount } from "@/types/lecture";
 import { Box } from "@mui/material";
 
 const Period = ({
   xFragment,
   yFragment,
   dataFragment,
-}: RenderCellProps<lecture>): JSX.Element => (
+}: RenderCellProps<lectureWithApplicantsAmount>): JSX.Element => (
   <Box
     padding="0 4px"
     sx={{

@@ -1,7 +1,7 @@
-import { lecture } from "@/util/timeTable";
+import { lectureWithApplicantsAmount } from "@/types/lecture";
 
 type ApplicantsBarProps = {
-  lecture: lecture;
+  lecture: lectureWithApplicantsAmount;
   base: "capacity" | "allApplicants";
 };
 export default ApplicantsBarProps;

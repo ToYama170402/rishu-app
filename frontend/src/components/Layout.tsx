@@ -1,7 +1,7 @@
 "use client";
 import { Box, Stack } from "@mui/material";
 import { ReactNode, useState } from "react";
-import { lecture } from "../util/timeTable";
+import { lectureWithApplicantsAmount } from "@/types/lecture";
 import PcAppBar from "@/features/AppBar/PcAppBar";
 import MobileAppBar from "@/features/AppBar/MobileAppBar";
 import appBarContext from "@/features/AppBar/appBarContext";

@@ -3,6 +3,8 @@ import type { RenderCellProps } from "@/components/TimeTable/TimeTable";
 import { lectureWithApplicantsAmount } from "@/types/lecture";
 import { Box } from "@mui/material";
 
+import type { JSX } from "react";
+
 const Period = ({
   xFragment,
   yFragment,

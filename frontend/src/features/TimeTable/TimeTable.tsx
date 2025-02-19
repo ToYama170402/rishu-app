@@ -1,7 +1,7 @@
 "use client";
 import TimeTableLiteral from "@/components/TimeTable/TimeTable";
 import appBarContext from "@/features/AppBar/appBarContext";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, type JSX } from "react";
 import { lectureWithApplicantsAmount } from "@/types/lecture";
 import Period from "./components/Period";
 import TimeTableContainer from "./components/TimeTableContainer";

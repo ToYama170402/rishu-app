@@ -3,6 +3,8 @@ import { array2LectureArray } from "@/util/timeTable";
 import { fetchAll } from "../util/rishu";
 import RishuTimeTable from "@/features/TimeTable/TimeTable";
 
+import type { JSX } from "react";
+
 export default async function Home(): Promise<JSX.Element> {
   const datas = await fetchAll();
   datas.shift()?.shift();

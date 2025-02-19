@@ -1,5 +1,6 @@
 import { RenderColumnProps } from "@/components/TimeTable/TimeTable";
 import { Box, Divider, Paper, Stack } from "@mui/material";
+import type { JSX } from "react";
 const TimeTableDayItem = ({
   xFragment,
   children,

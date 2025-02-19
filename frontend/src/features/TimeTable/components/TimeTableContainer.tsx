@@ -1,5 +1,7 @@
 import { Stack } from "@mui/material";
 
+import type { JSX } from "react";
+
 const TimeTableContainer = ({
   children,
 }: {

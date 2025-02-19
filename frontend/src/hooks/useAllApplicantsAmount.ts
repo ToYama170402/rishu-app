@@ -1,9 +1,11 @@
 import { fetchAll } from "@/util/rishu";
-import { lecture, array2LectureArray } from "@/util/timeTable";
+import { array2LectureArray } from "@/util/timeTable";
+import { lectureWithApplicantsAmount } from "@/types/lecture";
 import { useEffect, useState } from "react";
 
-const useAllApplicantsAmount = (lectures: lecture[]) => {
-  const [applicantsAmount, setApplicantsAmount] = useState<lecture[]>(lectures);
+const useAllApplicantsAmount = (lectures: lectureWithApplicantsAmount[]) => {
+  const [applicantsAmount, setApplicantsAmount] =
+    useState<lectureWithApplicantsAmount[]>(lectures);
 
   useEffect(() => {
     const fetch = () => {

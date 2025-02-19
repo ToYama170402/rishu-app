@@ -25,6 +25,8 @@ const PcAppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
         sx={{
           flex: "0 0 200px",
           flexBasis: open ? "200px" : "56px",
+          transition: "flex-basis 0.1s",
+          transitionTimingFunction: "ease-out",
           overflow: "hidden",
           textWrap: "nowrap",
           borderRadius: "0px 4px 4px 0px",

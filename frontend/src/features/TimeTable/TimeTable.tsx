@@ -2,7 +2,7 @@
 import TimeTableLiteral from "@/components/TimeTable/TimeTable";
 import appBarContext from "@/features/AppBar/appBarContext";
 import React, { useContext, useEffect, useState } from "react";
-import { lectureWithApplicantsAmount } from "../../util/timeTable";
+import { lectureWithApplicantsAmount } from "@/types/lecture";
 import Period from "./components/Period";
 import TimeTableContainer from "./components/TimeTableContainer";
 import TimeTableDayItem from "./components/TimeTableDayItem";

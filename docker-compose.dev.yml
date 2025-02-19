@@ -23,6 +23,7 @@ services:
     environment:
       - GTM=${GTM}
       - GOOGLE_SITE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
+      - NODE_ENV=development
     depends_on:
       - backend
 

@@ -6,9 +6,13 @@ const useAllApplicantsAmount = (lectures: lecture[]) => {
   const [applicantsAmount, setApplicantsAmount] = useState<lecture[]>(lectures);
 
   useEffect(() => {
-    fetchAll().then((data) => {
-      setApplicantsAmount(array2LectureArray(data));
-    });
+    const fetch = () => {
+      fetchAll().then((data) => {
+        setApplicantsAmount(array2LectureArray(data));
+      });
+      setTimeout(fetch, 50000);
+    };
+    fetch();
   }, []);
 
   return applicantsAmount;

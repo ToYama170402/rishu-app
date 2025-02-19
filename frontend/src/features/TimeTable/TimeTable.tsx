@@ -7,12 +7,14 @@ import Period from "./components/Period";
 import TimeTableContainer from "./components/TimeTableContainer";
 import TimeTableDayItem from "./components/TimeTableDayItem";
 import Filter from "./components/Filter";
+import useAllApplicantsAmount from "@/hooks/useAllApplicantsAmount";
 
 export default function TimeTable({
   timeTable,
 }: {
   timeTable: lectureWithApplicantsAmount[];
 }): JSX.Element {
+  const applicantsAmount = useAllApplicantsAmount(timeTable);
   const [filteredTimeTable, setFilteredTimeTable] =
     useState<lectureWithApplicantsAmount[]>(timeTable);
   const setAppBar = useContext(appBarContext);

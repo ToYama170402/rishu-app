@@ -9,7 +9,6 @@ import appBarContext from "@/features/AppBar/appBarContext";
 export default function Layout({
   children,
 }: {
-  timeTable: lectureWithApplicantsAmount[];
   children?: React.ReactNode;
 }): JSX.Element {
   const [appBarContents, setAppBarContents] = useState<ReactNode>(null);

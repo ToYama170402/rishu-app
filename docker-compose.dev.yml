@@ -16,7 +16,7 @@ services:
         target: /workspace/frontend/node_modules
 
     ports:
-      - 3000:300P0
+      - 3000:3000
     networks:
       - rishu-app_network
     environment:

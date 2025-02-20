@@ -1,6 +1,6 @@
 import { lectureWithApplicantsAmount } from "@/types/lecture";
 import { datePeriod } from "@/types/datePeriod";
-import { filters } from "@/types/filter";
+import { filters } from "@/features/TimeTable/types/filter";
 import { applicantsAmount } from "@/types/applicantsAmount";
 
 export function array2LectureArray(

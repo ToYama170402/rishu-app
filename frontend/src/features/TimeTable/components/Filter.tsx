@@ -15,7 +15,7 @@ import {
 import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
 import React from "react";
-import { lectureArray2Filter } from "../util/lectureArray2Filter";
+import { lectureArray2Filter } from "../utils/lectureArray2Filter";
 import { lectureWithApplicantsAmount } from "@/types/lecture";
 
 export default function DrawerContent({

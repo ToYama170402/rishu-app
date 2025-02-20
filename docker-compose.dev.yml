@@ -1,6 +1,5 @@
 services:
   frontend:
-    container_name: frontend
     user: node
 
     build:
@@ -17,7 +16,7 @@ services:
         target: /workspace/frontend/node_modules
 
     ports:
-      - 3000:3000
+      - 3000:300P0
     networks:
       - rishu-app_network
     environment:
@@ -28,7 +27,6 @@ services:
       - backend
 
   backend:
-    container_name: backend
 
     build:
       context: ./backend

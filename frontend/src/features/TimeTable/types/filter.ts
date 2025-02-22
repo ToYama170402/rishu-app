@@ -1,9 +1,8 @@
+import type { lecture } from "@/types/lecture";
+
 export type filterElement = {
-  [key: string]: boolean;
+  key: keyof lecture;
+  value: lecture[keyof Omit<lecture, "dateTime" | "capacity">];
 };
 
-export type filters = {
-  category: filterElement;
-  teacher: filterElement;
-  targetStudent: filterElement;
-};
+export type filters = filterElement[];

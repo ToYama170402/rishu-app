@@ -1,8 +1,10 @@
 import type { lecture } from "@/types/lecture";
 
+export type filterTarget = Omit<lecture, "dateTime" | "capacity">;
+
 export type filterElement = {
-  key: keyof lecture;
-  value: lecture[keyof Omit<lecture, "dateTime" | "capacity">];
+  key: keyof filterTarget;
+  value: lecture[keyof filterTarget];
 };
 
 export type filters = filterElement[];

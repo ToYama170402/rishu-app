@@ -1,4 +1,4 @@
-import { parseSV } from "./helper";
+import { parseSV } from "@/util/parseSV";
 import endpoints from "@/const/endpoint";
 import nodeEnv from "./nodeEnv";
 

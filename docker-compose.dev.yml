@@ -57,9 +57,39 @@ services:
     networks:
       - rishu-app_network
 
+  syllabus:
+    build:
+      context: ./syllabus
+      dockerfile: Dockerfile.dev
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+    networks:
+      - rishu-app_network
+    ports:
+      - 8080:8080
+
+  syllabus-db:
+    image: postgres:17.4-bullseye
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - syllabus-db:/var/lib/postgresql/data
+    networks:
+      - rishu-app_network
+
 volumes:
   node-modules:
     name: frontend_node_modules
+  syllabus-db:
+    name: syllabus_db
 
 networks:
   rishu-app_network:

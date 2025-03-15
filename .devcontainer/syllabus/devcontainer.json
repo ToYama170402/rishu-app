@@ -1,0 +1,27 @@
+{
+  "name": "syllabus",
+  "dockerComposeFile": [
+    "../../docker-compose.dev.yml",
+    "../docker-compose.yml"
+  ],
+  "service": "syllabus",
+  "workspaceFolder": "/workspace/syllabus",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1":{}
+  },
+  "postAttachCommand": "git config --global --add safe.directory /workspace",
+  "customizations": {
+    "vscode": {
+      // 拡張機能を追加
+      "extensions": [
+        "golang.Go", // Go
+        "streetsidesoftware.code-spell-checker", // Code Spell Checker
+        "yzhang.dictionary-completion", // Dictionary Completion
+        "mhutchie.git-graph", // Git Graph
+        "mosapride.zenkaku", // zenkaku
+        "shardulm94.trailing-spaces", // Trailing Spaces
+        "christian-kohler.path-intellisense", // Path Intellisense
+      ]
+    }
+  }
+}

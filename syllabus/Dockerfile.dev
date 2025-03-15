@@ -1,0 +1,16 @@
+# ベースイメージ
+FROM golang:1.24.0-bullseye
+
+# 作業ディレクトリを作成
+WORKDIR /workspace/syllabus
+
+# Goのモジュールキャッシュを永続化するためのボリュームを設定
+VOLUME /go/pkg/mod
+
+# プロキシを無効化
+RUN go env -w GOPROXY=direct
+
+# 必要なファイルをコピー
+COPY go.mod .
+COPY go.sum .
+RUN go mod download

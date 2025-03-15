@@ -3,3 +3,5 @@ services:
     command: sleep infinity
   backend:
     command: sleep infinity
+  syllabus:
+    command: sleep infinity

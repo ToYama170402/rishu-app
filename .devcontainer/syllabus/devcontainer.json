@@ -1,8 +1,8 @@
 {
   "name": "syllabus",
   "dockerComposeFile": [
-    "../../docker-compose.dev.yml",
-    "../docker-compose.yml"
+    "../../docker-compose.yml",
+    "../../docker-compose.dev.yml"
   ],
   "service": "syllabus",
   "workspaceFolder": "/workspace/syllabus",

@@ -35,6 +35,13 @@ services:
       - 4444:4444
       - 7900:7900
 
+  mock-page:
+    build:
+      context: ./mock-page
+      dockerfile: Dockerfile.dev
+    ports:
+      - 1313:1313
+
   syllabus:
     build:
       context: ./syllabus

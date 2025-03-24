@@ -27,11 +27,18 @@ def scrapeRegistrationStatus() -> List[List[str]]:
     logger.info("Accessing the target page...")
     driver.get("about:blank")
     driver.delete_all_cookies()
-    driver.get(
-        "https://eduweb.sta.kanazawa-u.ac.jp/portal/Public/Regist/RegistrationStatus.aspx?year=2024&lct_term_cd=21"
-    )
 
     try:
+        env=os.environ.get("ENV")
+        if env == "development":
+            driver.get(
+                "http://mock-page:1313/registration-term.html"
+            )
+        else:
+            driver.get(
+                "https://eduweb.kanazawa-u.ac.jp/portal/Public/Regist/RegistrationStatus.aspx?year=2024&lct_term_cd=21"
+            )
+
         # ドロップダウンリストの要素を取得
         logger.info("Selecting the dropdown list...")
         dropdown = Select(

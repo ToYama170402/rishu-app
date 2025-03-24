@@ -59,7 +59,9 @@
         "christian-kohler.path-intellisense", // Path Intellisense
         "ms-python.black-formatter", // Black
         "ms-python.isort", // isort
-        "ms-python.python" // Python
+        "ms-python.python", // Python
+        "ms-python.vscode-pylance", // Pylance
+        "ms-python.black-formatter" // Black
       ]
     }
   }

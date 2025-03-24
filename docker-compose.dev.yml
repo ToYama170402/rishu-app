@@ -1,11 +1,11 @@
 services:
   frontend:
     user: node
-
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
-
+    environment:
+      - NODE_ENV=development
     volumes:
       - type: bind
         source: .
@@ -14,46 +14,35 @@ services:
       - type: volume
         source: node-modules
         target: /workspace/frontend/node_modules
-
     ports:
       - 3000:3000
-    networks:
-      - rishu-app_network
-    environment:
-      - GTM=${GTM}
-      - GOOGLE_SITE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
-      - NODE_ENV=development
-    depends_on:
-      - backend
+    command: sleep infinity
 
   backend:
-
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
+    environment:
+      - ENV=development
     volumes:
       - type: bind
         source: .
         target: /workspace
     ports:
       - 8000:8000
-    networks:
-      - rishu-app_network
-    depends_on:
-      - selenium
-    environment:
-      SELENIUM_URL: http://selenium:4444/wd/hub
+    command: sleep infinity
 
   selenium:
-    image: selenium/standalone-chrome:4.1.4-20220427
     ports:
       - 4444:4444
       - 7900:7900
-    shm_size: 2g
-    cpus: 2
-    mem_limit: 4g
-    volumes:
-      - /dev/shm:/dev/shm
+
+  mock-page:
+    build:
+      context: ./mock-page
+      dockerfile: Dockerfile.dev
+    ports:
+      - 1313:1313
     networks:
       - rishu-app_network
 
@@ -61,37 +50,14 @@ services:
     build:
       context: ./syllabus
       dockerfile: Dockerfile.dev
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - type: bind
         source: .
         target: /workspace
-    networks:
-      - rishu-app_network
     ports:
       - 8080:8080
-
-  syllabus-db:
-    image: postgres:17.4-bullseye
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    volumes:
-      - syllabus-db:/var/lib/postgresql/data
-    networks:
-      - rishu-app_network
+    command: sleep infinity
 
 volumes:
   node-modules:
     name: frontend_node_modules
-  syllabus-db:
-    name: syllabus_db
-
-networks:
-  rishu-app_network:
-    name: rishu-app_network
-    driver: bridge

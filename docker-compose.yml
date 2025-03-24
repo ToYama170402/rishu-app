@@ -29,6 +29,7 @@ services:
       - selenium
     environment:
       SELENIUM_URL: http://selenium:4444/wd/hub
+      ENV: production
 
   selenium:
     image: selenium/standalone-chrome:4.1.4-20220427
@@ -49,6 +50,10 @@ services:
       - 80:80
     networks:
       - rishu-app_network
+    depends_on:
+      - frontend
+      - backend
+      - syllabus
 
   syllabus:
     build:
@@ -61,6 +66,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     networks:
       - rishu-app_network
+    depends_on:
+      - syllabus-db
 
   syllabus-db:
     image: postgres:17.4-bullseye

@@ -43,6 +43,8 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 1313:1313
+    networks:
+      - rishu-app_network
 
   syllabus:
     build:
@@ -55,11 +57,6 @@ services:
     ports:
       - 8080:8080
     command: sleep infinity
-
-networks:
-  rishu-app_network:
-    name: rishu-app_network
-    driver: bridge
 
 volumes:
   node-modules:

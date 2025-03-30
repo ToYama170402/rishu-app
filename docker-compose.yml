@@ -82,7 +82,6 @@ services:
 
 networks:
   rishu-app_network:
-    name: rishu-app_network
     driver: bridge
 
 volumes:

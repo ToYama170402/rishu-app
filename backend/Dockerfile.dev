@@ -3,7 +3,17 @@ ENV PYTHONUNBUFFERD=1
 
 WORKDIR /workspace/backend
 
+# 非rootユーザーを作成
+RUN groupadd -g 1000 pythongroup && \
+  useradd -m -u 1000 -g pythongroup python
+
+# 必要なファイルをコピー
 COPY ./requirements.txt .
-RUN pip install --upgrade pip\
-  && pip install --upgrade setuptools\
+
+# パッケージをインストール
+RUN pip install --upgrade pip \
+  && pip install --upgrade setuptools \
   && pip install --no-cache-dir -r requirements.txt
+
+# ユーザーを切り替え
+USER python

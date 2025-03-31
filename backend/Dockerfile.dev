@@ -10,10 +10,11 @@ RUN groupadd -g 1000 pythongroup && \
 # 必要なファイルをコピー
 COPY ./requirements.txt .
 
+# ユーザーを切り替え
+USER python
+
 # パッケージをインストール
 RUN pip install --upgrade pip \
   && pip install --upgrade setuptools \
   && pip install --no-cache-dir -r requirements.txt
 
-# ユーザーを切り替え
-USER python

@@ -17,7 +17,7 @@
     "@mui/material": "^6.0.2",
     "@mui/system": "^6.4.3",
     "@next/third-parties": "15.1.7",
-    "next": "15.2.3",
+    "next": "15.2.4",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },

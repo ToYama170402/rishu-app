@@ -1,7 +1,7 @@
 "use client";
-import { Box, Stack } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { ReactNode, useState, type JSX } from "react";
-import { lectureWithApplicantsAmount } from "@/types/lecture";
 import PcAppBar from "@/features/AppBar/PcAppBar";
 import MobileAppBar from "@/features/AppBar/MobileAppBar";
 import appBarContext from "@/features/AppBar/appBarContext";

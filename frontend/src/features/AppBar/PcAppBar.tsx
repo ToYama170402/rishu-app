@@ -1,16 +1,14 @@
 import { useState, ReactNode } from "react";
-import {
-  Box,
-  Paper,
-  Stack,
-  Typography,
-  Button,
-  IconButton,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import HelpIcon from "@mui/icons-material/Help";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useTheme } from "@mui/material/styles";
+import useTheme from "@mui/material/styles/useTheme";
 import HelpDialog from "@/components/HelpDialog";
 
 const PcAppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {

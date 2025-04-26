@@ -1,6 +1,7 @@
 import { lectureWithApplicantsAmount } from "@/types/lecture";
 import { datePeriod } from "@/types/datePeriod";
-import { filters } from "@/types/filter";
+import { filters } from "@/features/TimeTable/types/filter";
+import { applicantsAmount } from "@/types/applicantsAmount";
 
 export function array2LectureArray(
   arr: string[][]
@@ -35,26 +36,4 @@ export function array2LectureArray(
     }
   }
   return lectures;
-}
-
-export function lectureArray2Filter(
-  lectures: lectureWithApplicantsAmount[]
-): filters {
-  let filters: filters = {
-    category: {},
-    teacher: {},
-    targetStudent: {},
-  };
-  for (const lec of lectures) {
-    if (!filters.category[lec.category]) {
-      filters.category[lec.category] = true;
-    }
-    if (!filters.teacher[lec.teacher]) {
-      filters.teacher[lec.teacher] = true;
-    }
-    if (!filters.targetStudent[lec.target]) {
-      filters.targetStudent[lec.target] = true;
-    }
-  }
-  return filters;
 }

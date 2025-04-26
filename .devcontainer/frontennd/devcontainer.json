@@ -1,8 +1,8 @@
 {
   "name": "frontend",
   "dockerComposeFile": [
-    "../../docker-compose.dev.yml",
-    "../docker-compose.yml"
+    "../../docker-compose.yml",
+    "../../docker-compose.dev.yml"
   ],
   "service": "frontend",
   "workspaceFolder": "/workspace/frontend",
@@ -60,7 +60,9 @@
         "shardulm94.trailing-spaces", // Trailing Spaces
         "christian-kohler.path-intellisense", // Path Intellisense
         "christian-kohler.npm-intellisense", // NPM Intellisense
-        "YoavBls.pretty-ts-errors" // Pretty TS Errors
+        "YoavBls.pretty-ts-errors", // Pretty TS Errors
+        "dsznajder.es7-react-js-snippets", // ES7 React/Redux/GraphQL/React-Native snippets
+        "xabikos.JavaScriptSnippets" // JavaScript (ES6) code snippets
       ]
     }
   }

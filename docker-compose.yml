@@ -29,6 +29,7 @@ services:
       - selenium
     environment:
       SELENIUM_URL: http://selenium:4444/wd/hub
+      ENV: production
 
   selenium:
     image: selenium/standalone-chrome:4.1.4-20220427
@@ -49,11 +50,40 @@ services:
       - 80:80
     networks:
       - rishu-app_network
+    depends_on:
+      - frontend
+      - backend
+      - syllabus
+
+  syllabus:
+    build:
+      context: ./syllabus
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - rishu-app_network
+    depends_on:
+      - syllabus-db
+
+  syllabus-db:
+    image: postgres:17.4-bullseye
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - syllabus-db:/var/lib/postgresql/data
+    networks:
+      - rishu-app_network
 
 networks:
   rishu-app_network:
-    name: rishu-app_network
     driver: bridge
 
 volumes:
   db:
+  syllabus-db:

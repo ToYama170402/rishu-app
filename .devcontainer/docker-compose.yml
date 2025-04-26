@@ -1,5 +1,0 @@
-services:
-  frontend:
-    command: sleep infinity
-  backend:
-    command: sleep infinity

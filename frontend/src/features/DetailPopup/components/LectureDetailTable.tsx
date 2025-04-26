@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { colors } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { calcApplicantsRatio } from "@/util/timeTable";
+import { calcApplicantsRatio } from "../utils/calcApplicantsRatio";
 import { lectureWithApplicantsAmount } from "@/types/lecture";
 import UnderLinedText from "./UnderLinedText";
 

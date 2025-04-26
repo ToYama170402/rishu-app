@@ -5,6 +5,8 @@ import React from "react";
 import { lectureArray2Filter } from "../utils/lectureArray2Filter";
 import { lectureWithApplicantsAmount } from "@/types/lecture";
 import { filters } from "../types/filter";
+import { Stack } from "@mui/system";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 const keyLabelDict = {
   title: "講義名",
@@ -36,26 +38,32 @@ export default function DrawerContent({
   }, [filter, lectures, applyFilter]);
 
   return (
-    <Autocomplete
-      value={filter}
-      onChange={(event, newValue) => {
-        setFilters(newValue);
-      }}
-      multiple
-      options={filterTarget}
-      groupBy={(option) =>
-        keyLabelDict[option.key as keyof typeof keyLabelDict]
-      }
-      getOptionLabel={(option) => option.value}
-      filterSelectedOptions
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="フィルター"
-          placeholder="フィルター"
-          variant="outlined"
-        />
-      )}
-    />
+    <Stack direction={"row"} alignItems={"center"} width={"100%"} p={1} gap={2}>
+      <FilterListIcon />
+      <Autocomplete
+        value={filter}
+        onChange={(event, newValue) => {
+          setFilters(newValue);
+        }}
+        multiple
+        options={filterTarget}
+        groupBy={(option) =>
+          keyLabelDict[option.key as keyof typeof keyLabelDict]
+        }
+        getOptionLabel={(option) => option.value}
+        filterSelectedOptions
+        sx={{
+          flex: 1,
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="フィルター"
+            placeholder="フィルター"
+            variant="outlined"
+          />
+        )}
+      />
+    </Stack>
   );
 }

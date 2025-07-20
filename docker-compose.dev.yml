@@ -15,7 +15,7 @@ services:
       - type: volume
         source: node-modules
         target: /workspace/frontend/node_modules
-      - type : volume
+      - type: volume
         source: pnpm-store
         target: /workspace/.pnpm-store
     ports:

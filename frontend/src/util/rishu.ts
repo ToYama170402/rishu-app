@@ -5,6 +5,7 @@ import nodeEnv from "./nodeEnv";
 async function fetchAll() {
   const endpoint =
     nodeEnv() === "development" ? endpoints.TSVDemo : endpoints.TSV;
+  console.log(`Fetching data from: ${endpoint}`);
   try {
     const response = await fetch(endpoint, {
       mode: "cors",

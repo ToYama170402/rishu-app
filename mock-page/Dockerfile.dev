@@ -6,4 +6,4 @@ WORKDIR /workspace/mock-page
 
 COPY . /workspace/mock-page
 
-CMD [ "http-server","./pages", "-p", "1313","-a", "0.0.0.0"]
+CMD [ "http-server","./pages", "-p", "1313","-a", "0.0.0.0","--mimetypes", "./mimeType.json"]

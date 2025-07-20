@@ -1,5 +1,5 @@
 const endpoint = {
   TSV: "https://kurisyushien.org/api",
-  TSVDemo: "http://localhost:3000/api",
+  TSVDemo: "http://mock-page:1313/dammy-data.tsv",
 };
 export default endpoint;

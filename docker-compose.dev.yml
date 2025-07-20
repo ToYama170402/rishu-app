@@ -4,6 +4,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
+    restart: no
     environment:
       - NODE_ENV=development
     volumes:
@@ -14,6 +15,9 @@ services:
       - type: volume
         source: node-modules
         target: /workspace/frontend/node_modules
+      - type : volume
+        source: pnpm-store
+        target: /workspace/.pnpm-store
     ports:
       - 3000:3000
     command: sleep infinity
@@ -22,6 +26,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
+    restart: no
     environment:
       - ENV=development
     volumes:
@@ -50,6 +55,7 @@ services:
     build:
       context: ./syllabus
       dockerfile: Dockerfile.dev
+    restart: no
     volumes:
       - type: bind
         source: .
@@ -60,3 +66,4 @@ services:
 
 volumes:
   node-modules:
+  pnpm-store:

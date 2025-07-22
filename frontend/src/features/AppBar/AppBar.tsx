@@ -1,5 +1,5 @@
 import {
-  AppBar,
+  AppBar as AooBarLiteral,
   Box,
   IconButton,
   Stack,
@@ -14,11 +14,7 @@ import { useTheme } from "@mui/material";
 import React, { useState, ReactNode } from "react";
 import HelpDialog from "@/components/HelpDialog";
 
-const MobileAppBar = ({
-  children,
-}: {
-  children?: ReactNode;
-}): React.ReactNode => {
+const AppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
@@ -31,12 +27,11 @@ const MobileAppBar = ({
 
   return (
     <>
-      <AppBar
+      <AooBarLiteral
         sx={{
           position: "static",
           color: theme.palette.primary.contrastText,
           borderRadius: "4px 4px 0px 0px",
-          display: { xs: "block", sm: "none" },
         }}
       >
         <Toolbar>
@@ -60,13 +55,16 @@ const MobileAppBar = ({
                   sx={{ color: theme.palette.primary.contrastText }}
                 />
               </IconButton>
-              <IconButton onClick={handleDrawerOpen}>
+              <IconButton
+                onClick={handleDrawerOpen}
+                sx={{ display: { xs: "block", sm: "none" } }}
+              >
                 <MenuOpen sx={{ color: theme.palette.primary.contrastText }} />
               </IconButton>
             </Stack>
           </Stack>
         </Toolbar>
-      </AppBar>
+      </AooBarLiteral>
       <SwipeableDrawer
         onClose={handleDrawerOpen}
         onOpen={handleDrawerOpen}
@@ -81,4 +79,4 @@ const MobileAppBar = ({
     </>
   );
 };
-export default MobileAppBar;
+export default AppBar;

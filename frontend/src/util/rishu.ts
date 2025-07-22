@@ -4,7 +4,12 @@ import nodeEnv from "./nodeEnv";
 
 async function fetchAll() {
   const endpoint =
-    nodeEnv() === "development" ? endpoints.TSVDemo : endpoints.TSV;
+    nodeEnv() === "production"
+      ? endpoints.TSV
+      : typeof window === "undefined" // SSRの場合windowはundefined
+      ? endpoints.TSVDemoFromServer
+      : endpoints.TSVDemoFromBrowser;
+
   try {
     const response = await fetch(endpoint, {
       mode: "cors",
@@ -22,7 +27,7 @@ async function fetchAll() {
 }
 async function fetchDetail(lectureNumber: string) {
   const endpoint =
-    nodeEnv() === "development" ? endpoints.TSVDemo : endpoints.TSV;
+    nodeEnv() === "development" ? endpoints.TSVDemoFromBrowser : endpoints.TSV;
   try {
     const response = await fetch(
       `${endpoint}?mode=search&word=${lectureNumber}`,

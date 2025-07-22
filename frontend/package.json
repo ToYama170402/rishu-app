@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "analyze": "ANALYZE=true NODE_ENV=production next build",
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "react-dom": "19.0.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.3.1",
     "@types/node": "^20",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",

@@ -1,7 +1,7 @@
 import ApplicantsBar from "@/components/ApplicantsBar/ApplicantsBar";
 import type { RenderCellProps } from "@/components/TimeTable/TimeTable";
 import { lectureWithApplicantsAmount } from "@/types/lecture";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 
 import type { JSX } from "react";
 

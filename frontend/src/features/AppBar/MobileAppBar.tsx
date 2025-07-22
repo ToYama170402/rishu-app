@@ -1,16 +1,14 @@
-import {
-  AppBar,
-  Box,
-  IconButton,
-  Stack,
-  SwipeableDrawer,
-  Typography,
-  Toolbar,
-} from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Typography from "@mui/material/Typography";
+import Toolbar from "@mui/material/Toolbar";
 import HelpIcon from "@mui/icons-material/Help";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuOpen from "@mui/icons-material/MenuOpen";
-import { useTheme } from "@mui/material";
+import useTheme from "@mui/material/styles/useTheme";
 import React, { useState, ReactNode } from "react";
 import HelpDialog from "@/components/HelpDialog";
 

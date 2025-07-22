@@ -1,18 +1,18 @@
 "use client";
-import { Link } from "@mui/icons-material";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Stack,
-  Tab,
-  Typography,
-} from "@mui/material";
+import Link from "@mui/icons-material/Link";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
 import React from "react";
 import { lecture, lectureWithApplicantsAmount } from "@/types/lecture";
 import ApplicantsBar from "@/components/ApplicantsBar/ApplicantsBar";

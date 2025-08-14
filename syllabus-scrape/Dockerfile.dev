@@ -6,10 +6,13 @@ COPY --chown=node:node package.json pnpm-lock.yaml ./
 
 RUN mkdir -p /workspace/syllabus-scrape/node_modules && \
   chown -R node:node /workspace && \
-  mkdir -p /workspace/.pnpm-store && \
-  chown -R node:node /workspace/.pnpm-store
+  mkdir -p /workspace/syllabus-scrape/.pnpm-store && \
+  chown -R node:node /workspace/syllabus-scrape/.pnpm-store
+
 
 RUN npm install -g pnpm
+
+RUN pnpm config set store-dir /workspace/syllabus-scrape/.pnpm-store
 
 USER node
 RUN pnpm install

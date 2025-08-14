@@ -78,7 +78,7 @@ services:
         target: /workspace/syllabus-scrape/node_modules
       - type: volume
         source: pnpm-store
-        target: /workspace/.pnpm-store
+        target: /workspace/syllabus-scrape/.pnpm-store
     command: sleep infinity
     environment:
       - NODE_ENV=development

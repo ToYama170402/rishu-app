@@ -17,7 +17,7 @@ services:
         target: /workspace/frontend/node_modules
       - type: volume
         source: pnpm-store
-        target: /workspace/.pnpm-store
+        target: /workspace/frontend/.pnpm-store
     ports:
       - 3000:3000
     command: sleep infinity

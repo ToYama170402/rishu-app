@@ -3,13 +3,18 @@ FROM node:20-bullseye-slim
 WORKDIR /workspace/frontend
 
 # 依存関係をインストール
-COPY --chown=user:node package.json pnpm-lock.yaml ./
+COPY --chown=node:node package.json pnpm-lock.yaml ./
 
-RUN mkdir -p /workspace/frontend/node_modules && chown -R node:node /workspace && \
-  mkdir -p /workspace/.pnpm-store && chown -R node:node /workspace/.pnpm-store
+RUN mkdir -p /workspace/frontend/node_modules && \
+  chown -R node:node /workspace && \
+  mkdir -p /workspace/frontend/.pnpm-store && \
+  chown -R node:node /workspace/frontend/.pnpm-store
 RUN npm install -g pnpm
 
 USER node
+
+RUN pnpm config set store-dir /workspace/frontend/.pnpm-store
+
 RUN pnpm install
 
 # Next.jsによってテレメトリデータを収集するのを無効にする

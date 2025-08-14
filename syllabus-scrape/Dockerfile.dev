@@ -1,0 +1,15 @@
+FROM node:20-bullseye-slim
+
+WORKDIR /workspace/syllabus-scrape
+
+COPY --chown=node:node package.json pnpm-lock.yaml ./
+
+RUN mkdir -p /workspace/syllabus-scrape/node_modules && \
+  chown -R node:node /workspace && \
+  mkdir -p /workspace/.pnpm-store && \
+  chown -R node:node /workspace/.pnpm-store
+
+RUN npm install -g pnpm
+
+USER node
+RUN pnpm install

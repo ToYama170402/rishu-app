@@ -1,0 +1,29 @@
+import type { Instructor } from "./instructor";
+import type { DayPeriod } from "./dayPeriod";
+import type { Faculty } from "./department";
+import type { Semester } from "./semester";
+
+export type Course = {
+  year: number;
+  title: string;
+  numbering: string;
+  courseNumber: string;
+  numberOfProper: number;
+  semester: Semester[];
+  numberOfCredits: number;
+  note: string;
+  englishUrl: string;
+  japaneseUrl: string;
+  keywords: string[];
+  openAccount: string;
+  max60CreditsFlag: string;
+  subjectDistinguished: string;
+  courseDescription: string;
+  instructors: Instructor[];
+  schedule: DayPeriod[];
+  classFormat: string;
+  lectureForm: string;
+  targetStudents: string;
+  lectureRoomInfo: string;
+  faculty: Faculty;
+};

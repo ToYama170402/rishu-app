@@ -7,7 +7,7 @@
   "service": "frontend",
   "workspaceFolder": "/workspace/frontend",
   "features": {
-    "ghcr.io/devcontainers/features/git:1":{}
+    "ghcr.io/devcontainers/features/git:1": {}
   },
   "postAttachCommand": "git config --global --add safe.directory /workspace",
   "customizations": {

@@ -13,7 +13,7 @@ services:
         target: /workspace
 
       - type: volume
-        source: node-modules
+        source: frontend-node-modules
         target: /workspace/frontend/node_modules
       - type: volume
         source: pnpm-store
@@ -74,7 +74,7 @@ services:
         source: .
         target: /workspace
       - type: volume
-        source: node-modules
+        source: syllabus-scrape-node-modules
         target: /workspace/syllabus-scrape/node_modules
       - type: volume
         source: pnpm-store
@@ -86,5 +86,6 @@ services:
       - rishu-app_network
 
 volumes:
-  node-modules:
   pnpm-store:
+  frontend-node-modules:
+  syllabus-scrape-node-modules:

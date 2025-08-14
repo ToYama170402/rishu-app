@@ -64,6 +64,27 @@ services:
       - 8080:8080
     command: sleep infinity
 
+  syllabus-scrape:
+    build:
+      context: ./syllabus-scrape
+      dockerfile: Dockerfile.dev
+    restart: no
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+      - type: volume
+        source: node-modules
+        target: /workspace/syllabus-scrape/node_modules
+      - type: volume
+        source: pnpm-store
+        target: /workspace/syllabus-scrape/.pnpm-store
+    command: sleep infinity
+    environment:
+      - NODE_ENV=development
+    networks:
+      - rishu-app_network
+
 volumes:
   node-modules:
   pnpm-store:

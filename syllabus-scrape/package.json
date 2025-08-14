@@ -1,0 +1,16 @@
+{
+  "name": "syllabus-scrape",
+  "type": "module",
+  "scripts": {
+    "start": "tsx ./src/main.ts",
+    "build": "tsc",
+    "clean": "rm -rf ./dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "@types/node": "^24.2.1",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2"
+  }
+}

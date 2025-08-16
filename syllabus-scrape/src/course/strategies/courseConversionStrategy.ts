@@ -1,7 +1,7 @@
-import type { Course } from "@/types/course";
-import type { SyllabusCourse } from "@/types/syllabusCourse";
-import type { SyllabusSearchResult } from "@/types/syllabusSearchResult";
-import { CourseBuilder } from "@/patterns/builders/courseBuilder";
+import type { Course } from "@/course/types/course";
+import type { SyllabusCourse } from "@/course/types/syllabusCourse";
+import type { SyllabusSearchResult } from "@/course/types/syllabusSearchResult";
+import { CourseBuilder } from "@/course/builders/courseBuilder";
 
 export interface CourseConversionStrategy {
   convert(data: unknown): Course | Course[];
@@ -44,7 +44,11 @@ export class CsvConversionStrategy implements CourseConversionStrategy {
       try {
         return this.convertRow(row);
       } catch (error) {
-        throw new Error(`CSVの${index + startIndex + 1}行目の変換中にエラーが発生しました: ${error}`);
+        throw new Error(
+          `CSVの${
+            index + startIndex + 1
+          }行目の変換中にエラーが発生しました: ${error}`
+        );
       }
     });
   }
@@ -55,7 +59,7 @@ export class CsvConversionStrategy implements CourseConversionStrategy {
       .withBasicInfo(
         this.parseString(row[1] || ""), // title
         this.parseString(row[2] || ""), // numbering
-        this.parseString(row[3] || "")  // courseNumber
+        this.parseString(row[3] || "") // courseNumber
       )
       .withCredits(this.parseNumber(row[4] || ""))
       .withDescription(this.parseString(row[5] || ""))
@@ -88,7 +92,9 @@ export class JsonConversionStrategy implements CourseConversionStrategy {
       try {
         return this.convertJsonItem(item);
       } catch (error) {
-        throw new Error(`JSONデータの${index + 1}項目の変換中にエラーが発生しました: ${error}`);
+        throw new Error(
+          `JSONデータの${index + 1}項目の変換中にエラーが発生しました: ${error}`
+        );
       }
     });
   }
@@ -110,7 +116,7 @@ export class JsonConversionStrategy implements CourseConversionStrategy {
   }
 
   private parseYear(value: any): number {
-    if (typeof value === 'number') return value;
+    if (typeof value === "number") return value;
     const year = parseInt(String(value));
     if (isNaN(year) || year < 1900 || year > 2100) {
       throw new Error(`無効な年度です: ${value}`);
@@ -119,7 +125,7 @@ export class JsonConversionStrategy implements CourseConversionStrategy {
   }
 
   private parseNumber(value: any): number {
-    if (typeof value === 'number') return value;
+    if (typeof value === "number") return value;
     const num = parseInt(String(value));
     return isNaN(num) ? 0 : num;
   }
@@ -130,10 +136,13 @@ export class JsonConversionStrategy implements CourseConversionStrategy {
 
   private parseArray(value: any): string[] {
     if (Array.isArray(value)) {
-      return value.map(v => String(v).trim()).filter(Boolean);
+      return value.map((v) => String(v).trim()).filter(Boolean);
     }
-    if (typeof value === 'string') {
-      return value.split(',').map(v => v.trim()).filter(Boolean);
+    if (typeof value === "string") {
+      return value
+        .split(",")
+        .map((v) => v.trim())
+        .filter(Boolean);
     }
     return [];
   }
@@ -143,9 +152,9 @@ export class BatchConversionStrategy implements CourseConversionStrategy {
   private strategies = new Map<string, CourseConversionStrategy>();
 
   constructor() {
-    this.strategies.set('syllabus', new SyllabusConversionStrategy());
-    this.strategies.set('csv', new CsvConversionStrategy());
-    this.strategies.set('json', new JsonConversionStrategy());
+    this.strategies.set("syllabus", new SyllabusConversionStrategy());
+    this.strategies.set("csv", new CsvConversionStrategy());
+    this.strategies.set("json", new JsonConversionStrategy());
   }
 
   convert(data: { type: string; data: unknown }[]): Course[] {
@@ -198,7 +207,7 @@ export class SyllabusDataValidationStrategy implements DataValidationStrategy {
 
   getErrors(data: unknown): string[] {
     const errors: string[] = [];
-    
+
     if (!this.isSyllabusConversionData(data)) {
       errors.push("無効なSyllabusConversionDataです");
       return errors;
@@ -219,13 +228,15 @@ export class SyllabusDataValidationStrategy implements DataValidationStrategy {
     return errors;
   }
 
-  private isSyllabusConversionData(data: unknown): data is SyllabusConversionData {
+  private isSyllabusConversionData(
+    data: unknown
+  ): data is SyllabusConversionData {
     return (
-      typeof data === 'object' &&
+      typeof data === "object" &&
       data !== null &&
-      'syllabusCourse' in data &&
-      'searchResult' in data &&
-      'year' in data
+      "syllabusCourse" in data &&
+      "searchResult" in data &&
+      "year" in data
     );
   }
 }

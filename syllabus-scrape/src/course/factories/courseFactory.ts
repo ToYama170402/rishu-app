@@ -1,7 +1,7 @@
-import type { Course } from "@/types/course";
-import type { SyllabusCourse } from "@/types/syllabusCourse";
-import type { SyllabusSearchResult } from "@/types/syllabusSearchResult";
-import { CourseBuilder } from "@/patterns/builders/courseBuilder";
+import type { Course } from "@/course/types/course";
+import type { SyllabusCourse } from "@/course/types/syllabusCourse";
+import type { SyllabusSearchResult } from "@/course/types/syllabusSearchResult";
+import { CourseBuilder } from "@/course/builders/courseBuilder";
 
 export interface CourseFactoryData {
   syllabusCourse: SyllabusCourse;
@@ -38,7 +38,7 @@ export class BatchCourseFactory extends CourseFactory {
   private syllabusFactory = new SyllabusCourseFactory();
 
   createCourse(data: BatchCourseData): Course[] {
-    return data.courses.map(courseData => 
+    return data.courses.map((courseData) =>
       this.syllabusFactory.createCourse(courseData)
     );
   }
@@ -53,14 +53,16 @@ export class CsvCourseFactory extends CourseFactory {
           .withBasicInfo(
             this.parseString(row[1] || ""), // title
             this.parseString(row[2] || ""), // numbering
-            this.parseString(row[3] || "")  // courseNumber
+            this.parseString(row[3] || "") // courseNumber
           )
           .withCredits(this.parseNumber(row[4] || ""))
           .withDescription(this.parseString(row[5] || ""))
           .withDefaults()
           .build();
       } catch (error) {
-        throw new Error(`CSVの${index + 1}行目の処理中にエラーが発生しました: ${error}`);
+        throw new Error(
+          `CSVの${index + 1}行目の処理中にエラーが発生しました: ${error}`
+        );
       }
     });
   }
@@ -105,9 +107,9 @@ export class CourseFactoryRegistry {
 
   // デフォルトファクトリーを登録
   static initialize(): void {
-    this.register('syllabus', new SyllabusCourseFactory());
-    this.register('batch', new BatchCourseFactory());
-    this.register('csv', new CsvCourseFactory());
+    this.register("syllabus", new SyllabusCourseFactory());
+    this.register("batch", new BatchCourseFactory());
+    this.register("csv", new CsvCourseFactory());
   }
 }
 

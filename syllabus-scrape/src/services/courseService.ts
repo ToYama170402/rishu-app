@@ -1,17 +1,17 @@
-import type { Course } from "@/course/types/course";
-import type { SyllabusCourse } from "@/course/types/syllabusCourse";
-import type { SyllabusSearchResult } from "@/course/types/syllabusSearchResult";
 import { CourseBuilder } from "@/course/builders";
 import {
-  SyllabusCourseFactory,
-  CourseFactoryRegistry,
   type CourseFactoryData,
+  CourseFactoryRegistry,
+  SyllabusCourseFactory,
 } from "@/course/factories";
 import {
   CourseConverter,
-  SyllabusConversionStrategy,
   type SyllabusConversionData,
+  SyllabusConversionStrategy,
 } from "@/course/strategies";
+import type { Course } from "@/course/types/course";
+import type { SyllabusCourse } from "@/course/types/syllabusCourse";
+import type { SyllabusSearchResult } from "@/course/types/syllabusSearchResult";
 
 export class CourseService {
   private factory = new SyllabusCourseFactory();

@@ -1,1 +1,1 @@
-export { CourseBuilder } from './courseBuilder';
+export { CourseBuilder } from "./courseBuilder";

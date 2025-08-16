@@ -1,7 +1,7 @@
+import { CourseBuilder } from "@/course/builders/courseBuilder";
 import type { Course } from "@/course/types/course";
 import type { SyllabusCourse } from "@/course/types/syllabusCourse";
 import type { SyllabusSearchResult } from "@/course/types/syllabusSearchResult";
-import { CourseBuilder } from "@/course/builders/courseBuilder";
 
 export interface CourseConversionStrategy {
   convert(data: unknown): Course | Course[];

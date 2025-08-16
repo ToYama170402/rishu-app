@@ -1,7 +1,7 @@
+import { CourseBuilder } from "@/course/builders/courseBuilder";
 import type { Course } from "@/course/types/course";
 import type { SyllabusCourse } from "@/course/types/syllabusCourse";
 import type { SyllabusSearchResult } from "@/course/types/syllabusSearchResult";
-import { CourseBuilder } from "@/course/builders/courseBuilder";
 
 export interface CourseFactoryData {
   syllabusCourse: SyllabusCourse;
@@ -90,11 +90,11 @@ export class CourseFactoryRegistry {
   private static factories = new Map<string, CourseFactory>();
 
   static register(type: string, factory: CourseFactory): void {
-    this.factories.set(type, factory);
+    CourseFactoryRegistry.factories.set(type, factory);
   }
 
   static create(type: string): CourseFactory {
-    const factory = this.factories.get(type);
+    const factory = CourseFactoryRegistry.factories.get(type);
     if (!factory) {
       throw new Error(`未登録のファクトリータイプです: ${type}`);
     }
@@ -102,14 +102,14 @@ export class CourseFactoryRegistry {
   }
 
   static getAvailableTypes(): string[] {
-    return Array.from(this.factories.keys());
+    return Array.from(CourseFactoryRegistry.factories.keys());
   }
 
   // デフォルトファクトリーを登録
   static initialize(): void {
-    this.register("syllabus", new SyllabusCourseFactory());
-    this.register("batch", new BatchCourseFactory());
-    this.register("csv", new CsvCourseFactory());
+    CourseFactoryRegistry.register("syllabus", new SyllabusCourseFactory());
+    CourseFactoryRegistry.register("batch", new BatchCourseFactory());
+    CourseFactoryRegistry.register("csv", new CsvCourseFactory());
   }
 }
 

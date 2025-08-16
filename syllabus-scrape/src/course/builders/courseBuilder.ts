@@ -1,10 +1,10 @@
 import type { Course } from "@/course/types/course";
+import type { DayPeriod } from "@/course/types/dayPeriod";
+import type { Department, Faculty } from "@/course/types/department";
+import type { Instructor } from "@/course/types/instructor";
+import type { Semester } from "@/course/types/semester";
 import type { SyllabusCourse } from "@/course/types/syllabusCourse";
 import type { SyllabusSearchResult } from "@/course/types/syllabusSearchResult";
-import type { Faculty, Department } from "@/course/types/department";
-import type { Instructor } from "@/course/types/instructor";
-import type { DayPeriod } from "@/course/types/dayPeriod";
-import type { Semester } from "@/course/types/semester";
 
 export class CourseBuilder {
   private course: Partial<Course> = {};

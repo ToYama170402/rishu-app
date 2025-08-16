@@ -1,6 +1,6 @@
-import type { Instructor } from "./instructor";
 import type { DayPeriod } from "./dayPeriod";
 import type { Faculty } from "./department";
+import type { Instructor } from "./instructor";
 import type { Semester } from "./semester";
 
 export type Course = {

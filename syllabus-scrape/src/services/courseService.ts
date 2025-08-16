@@ -1,7 +1,7 @@
 import { CourseBuilder } from "@/course/builders";
 import {
   type CourseFactoryData,
-  CourseFactoryRegistry,
+  createCourseFactory,
   SyllabusCourseFactory,
 } from "@/course/factories";
 import {
@@ -46,18 +46,25 @@ export class CourseService {
   // Strategy パターンを使用してデータを変換
   convertCourseData(data: SyllabusConversionData): Course {
     const result = this.converter.convert(data);
-    return Array.isArray(result) ? result[0]! : result;
+    if (Array.isArray(result)) {
+      const firstResult = result[0];
+      if (!firstResult) {
+        throw new Error("変換結果が空です");
+      }
+      return firstResult;
+    }
+    return result;
   }
 
   // 複数のコースを一括作成
   createMultipleCourses(courseDataList: CourseFactoryData[]): Course[] {
-    const batchFactory = CourseFactoryRegistry.create("batch");
+    const batchFactory = createCourseFactory("batch");
     return batchFactory.createCourse({ courses: courseDataList }) as Course[];
   }
 
   // CSVデータからコースを作成
   createCoursesFromCsv(csvRows: string[][]): Course[] {
-    const csvFactory = CourseFactoryRegistry.create("csv");
+    const csvFactory = createCourseFactory("csv");
     return csvFactory.createCourse({ csvRows }) as Course[];
   }
 
@@ -181,7 +188,7 @@ export class CourseService {
         const hasInstructor = course.instructors.some((instructor) =>
           instructor.name
             ?.toLowerCase()
-            .includes(filters.instructor!.toLowerCase())
+            .includes(filters.instructor?.toLowerCase() ?? "")
         );
         if (!hasInstructor) {
           return false;

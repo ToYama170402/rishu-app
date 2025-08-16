@@ -20,7 +20,7 @@ export interface CsvConversionData {
 }
 
 export interface JsonConversionData {
-  jsonData: any[];
+  jsonData: Record<string, unknown>[];
 }
 
 export class SyllabusConversionStrategy implements CourseConversionStrategy {
@@ -69,16 +69,16 @@ export class CsvConversionStrategy implements CourseConversionStrategy {
   }
 
   private parseYear(value: string): number {
-    const year = parseInt(value.trim());
-    if (isNaN(year) || year < 1900 || year > 2100) {
+    const year = parseInt(value.trim(), 10);
+    if (Number.isNaN(year) || year < 1900 || year > 2100) {
       throw new Error(`無効な年度です: ${value}`);
     }
     return year;
   }
 
   private parseNumber(value: string): number {
-    const num = parseInt(value.trim());
-    return isNaN(num) ? 0 : num;
+    const num = parseInt(value.trim(), 10);
+    return Number.isNaN(num) ? 0 : num;
   }
 
   private parseString(value: string): string {
@@ -99,7 +99,7 @@ export class JsonConversionStrategy implements CourseConversionStrategy {
     });
   }
 
-  private convertJsonItem(item: any): Course {
+  private convertJsonItem(item: Record<string, unknown>): Course {
     return CourseBuilder.create()
       .withYear(this.parseYear(item.year))
       .withBasicInfo(
@@ -115,26 +115,26 @@ export class JsonConversionStrategy implements CourseConversionStrategy {
       .build();
   }
 
-  private parseYear(value: any): number {
+  private parseYear(value: unknown): number {
     if (typeof value === "number") return value;
-    const year = parseInt(String(value));
-    if (isNaN(year) || year < 1900 || year > 2100) {
+    const year = parseInt(String(value), 10);
+    if (Number.isNaN(year) || year < 1900 || year > 2100) {
       throw new Error(`無効な年度です: ${value}`);
     }
     return year;
   }
 
-  private parseNumber(value: any): number {
+  private parseNumber(value: unknown): number {
     if (typeof value === "number") return value;
-    const num = parseInt(String(value));
-    return isNaN(num) ? 0 : num;
+    const num = parseInt(String(value), 10);
+    return Number.isNaN(num) ? 0 : num;
   }
 
-  private parseString(value: any): string {
+  private parseString(value: unknown): string {
     return String(value || "").trim();
   }
 
-  private parseArray(value: any): string[] {
+  private parseArray(value: unknown): string[] {
     if (Array.isArray(value)) {
       return value.map((v) => String(v).trim()).filter(Boolean);
     }

@@ -9,7 +9,7 @@ export interface ParsingContext {
   url?: string;
   encoding?: string;
   selector?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export abstract class BaseParser<TInput, TOutput> {
@@ -52,14 +52,14 @@ export abstract class BaseParser<TInput, TOutput> {
     this.errors = [];
   }
 
-  protected extractText(element: any, selector?: string): string {
+  protected extractText(element: unknown, selector?: string): string {
     // 基本的なテキスト抽出（実装は具象クラスで）
     // パラメータを使用して警告を回避
     if (!element && selector) return "";
     return "";
   }
 
-  protected extractArray(elements: any, selector?: string): string[] {
+  protected extractArray(elements: unknown, selector?: string): string[] {
     // 基本的な配列抽出（実装は具象クラスで）
     // パラメータを使用して警告を回避
     if (!elements && selector) return [];
@@ -67,13 +67,13 @@ export abstract class BaseParser<TInput, TOutput> {
   }
 
   protected extractNumber(
-    element: any,
+    element: unknown,
     selector?: string,
     defaultValue: number = 0
   ): number {
     const text = this.extractText(element, selector);
     const number = parseFloat(text.replace(/[^0-9.-]/g, ""));
-    return isNaN(number) ? defaultValue : number;
+    return Number.isNaN(number) ? defaultValue : number;
   }
 
   protected sanitizeText(text: string): string {
@@ -91,7 +91,7 @@ export abstract class BaseParser<TInput, TOutput> {
     console[level](`[${timestamp}] [${this.constructor.name}] ${message}`);
   }
 
-  protected validateRequired(value: any, fieldName: string): boolean {
+  protected validateRequired(value: unknown, fieldName: string): boolean {
     if (value === null || value === undefined || value === "") {
       this.addError(`必須フィールドが不足しています: ${fieldName}`);
       return false;

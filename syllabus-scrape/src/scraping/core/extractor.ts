@@ -15,7 +15,7 @@ export interface DOMParser {
 export interface ExtractionContext {
   url?: string;
   pageType?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ExtractionResult<T> {
@@ -87,8 +87,8 @@ export abstract class BaseExtractor<TOutput> {
 
   protected extractNumber(element: DOMElement): number {
     const text = this.extractText(element);
-    const number = parseInt(text.replace(/[^\d]/g, ""));
-    return isNaN(number) ? 0 : number;
+    const number = parseInt(text.replace(/[^\d]/g, ""), 10);
+    return Number.isNaN(number) ? 0 : number;
   }
 
   protected extractArray(

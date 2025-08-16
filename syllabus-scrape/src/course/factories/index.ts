@@ -3,8 +3,10 @@ export {
   BatchCourseFactory,
   CourseFactory,
   type CourseFactoryData,
-  CourseFactoryRegistry,
   type CsvCourseData,
   CsvCourseFactory,
+  createCourseFactory,
+  getAvailableFactoryTypes,
+  registerCourseFactory,
   SyllabusCourseFactory,
 } from "./courseFactory";

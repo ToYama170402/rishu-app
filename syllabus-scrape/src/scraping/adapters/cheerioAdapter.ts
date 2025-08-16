@@ -5,6 +5,7 @@ import type { DOMElement, DOMParser } from "@/scraping/core";
  * CheerioのAPIをDOMElementインターフェースに適合させるアダプター
  */
 export class CheerioDOMElement implements DOMElement {
+  // biome-ignore lint/suspicious/noExplicitAny: Cheerio library requires any type for proper functionality
   constructor(private $element: cheerio.Cheerio<any>) {}
 
   text(): string {

@@ -12,5 +12,8 @@
     "@types/node": "^24.2.1",
     "tsx": "^4.20.4",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "puppeteer": "^24.16.2"
   }
 }

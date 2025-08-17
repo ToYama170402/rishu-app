@@ -1,7 +1,19 @@
 export interface ParseResult<T> {
+  /**
+   * 解析されたデータ
+   */
   data: T;
+  /**
+   * 警告メッセージのリスト
+   */
   warnings: string[];
+  /**
+   * エラーメッセージのリスト
+   */
   errors: string[];
+  /**
+   * 解析にかかった時間（ミリ秒）
+   */
   parseTime: number;
 }
 

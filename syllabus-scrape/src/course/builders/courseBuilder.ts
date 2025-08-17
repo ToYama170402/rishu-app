@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import type { Course } from "@/course/types/course";
 import type { DayPeriod } from "@/course/types/dayPeriod";
 import type { Department, Faculty } from "@/course/types/department";
@@ -137,7 +138,9 @@ export class CourseBuilder {
   }
 
   build(): Course {
+    // Generate and assign id before validation
     this.validate();
+    this.course.id = this.generateId(this.course as Omit<Course, "id">);
     return this.course as Course;
   }
 
@@ -180,6 +183,11 @@ export class CourseBuilder {
         `必須フィールドが不足しています: ${missingFields.join(", ")}`
       );
     }
+  }
+
+  generateId(course: Omit<Course, "id">): string {
+    const key = `${course.year}-${course.title}-${course.faculty.faculty}`;
+    return crypto.createHash("sha256").update(key).digest("hex");
   }
 
   // デフォルト値で不足フィールドを補完するメソッド

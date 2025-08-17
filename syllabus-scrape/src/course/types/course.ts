@@ -4,6 +4,7 @@ import type { Instructor } from "./instructor";
 import type { Semester } from "./semester";
 
 export type Course = {
+  id: string;
   year: number;
   title: string;
   numbering: string;

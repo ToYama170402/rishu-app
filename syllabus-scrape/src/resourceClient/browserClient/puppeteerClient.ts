@@ -24,6 +24,17 @@ export class PuppeteerClient implements BrowserClient {
     }
   }
 
+  async evaluate<T>(pageFunction: () => T, args: unknown[] = []): Promise<T> {
+    if (!this.page) throw new Error("Page is not initialized");
+    try {
+      return await this.page.evaluate(pageFunction, args);
+    } catch (err) {
+      throw new Error(
+        `Failed to evaluate page function: ${err instanceof Error ? err.message : String(err)}`
+      );
+    }
+  }
+
   async savePageAsHTML(): Promise<string> {
     if (!this.page) throw new Error("Page is not initialized");
     try {

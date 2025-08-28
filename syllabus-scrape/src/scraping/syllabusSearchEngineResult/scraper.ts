@@ -1,7 +1,9 @@
 import type { Department } from "@/course";
 import type { BrowserClient } from "@/resourceClient/core/browserClient";
 import { BaseScraper, type ScrapingResult } from "../core";
-import { syllabusSearchEngineUrl } from "./urls";
+
+const SYLLABUS_SEARCH_ENGINE_URL =
+  "https://eduweb.sta.kanazawa-u.ac.jp/portal/Public/Syllabus/SearchMain.aspx";
 
 export class SyllabusSearchResultScraper extends BaseScraper<
   BrowserClient,
@@ -15,7 +17,7 @@ export class SyllabusSearchResultScraper extends BaseScraper<
   ): Promise<ScrapingResult<string>> {
     const { result, duration } = await this.measurePerformance(async () => {
       await input.init();
-      await input.goto(syllabusSearchEngineUrl);
+      await input.goto(SYLLABUS_SEARCH_ENGINE_URL);
       await input.evaluate(
         async (
           departmentSelectSelector,
@@ -94,6 +96,10 @@ export class SyllabusSearchResultScraper extends BaseScraper<
       );
       return input.savePageAsHTML();
     });
-    return this.createResult<string>(result, syllabusSearchEngineUrl, duration);
+    return this.createResult<string>(
+      result,
+      SYLLABUS_SEARCH_ENGINE_URL,
+      duration
+    );
   }
 }

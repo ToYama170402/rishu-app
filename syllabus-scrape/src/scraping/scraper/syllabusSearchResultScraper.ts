@@ -38,6 +38,7 @@ export class SyllabusSearchResultScraper extends BaseScraper<
             });
           await ready();
 
+          // 学域を選択する要素を取得
           const departmentSelect = document.querySelector(
             departmentSelectSelector as string
           );
@@ -48,21 +49,19 @@ export class SyllabusSearchResultScraper extends BaseScraper<
             throw new Error("Department select element is not a select");
           }
 
+          // 学域を選択する
           const departmentOption = Array.from(
             departmentSelect.querySelectorAll("option")
           ).find((option) => option.textContent === department);
           if (!departmentOption) {
             throw new Error("Department option not found");
           }
-
           departmentSelect.value = departmentOption.value;
+
+          // 検索する
           const searchButton = document.querySelector(
             searchButtonSelector as string
           );
-          if (!searchButton) {
-            throw new Error("Search button not found");
-          }
-
           if (!searchButton) {
             throw new Error("Search button not found");
           }
@@ -72,6 +71,7 @@ export class SyllabusSearchResultScraper extends BaseScraper<
           searchButton.click();
           await ready();
 
+          // 表示件数を設定する
           const itemsPerPageSelect = document.querySelector(
             itemsPerPageSelector as string
           );
@@ -81,8 +81,8 @@ export class SyllabusSearchResultScraper extends BaseScraper<
           if (!(itemsPerPageSelect instanceof HTMLSelectElement)) {
             throw new Error("Items per page select element is not a select");
           }
-          itemsPerPageSelect.value = "0"; // Set items per page to all
-          itemsPerPageSelect.dispatchEvent(new Event("change"));
+          itemsPerPageSelect.value = "0"; // 全件表示に設定
+          itemsPerPageSelect.dispatchEvent(new Event("change")); // 全件表示に変更
           await ready();
         },
         [

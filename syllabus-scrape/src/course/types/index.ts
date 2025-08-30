@@ -4,6 +4,7 @@ export type { Department, Faculty } from "./department";
 export type { Instructor } from "./instructor";
 export { isDayPeriod } from "./isDayPeriod";
 export { isFaculty } from "./isFaculty";
+export { isInstructor } from "./isInstructor";
 export { isSemester } from "./isSemester";
 export type { Semester } from "./semester";
 export type { SyllabusCourse } from "./syllabusCourse";

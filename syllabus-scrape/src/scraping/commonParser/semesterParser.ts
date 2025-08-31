@@ -17,7 +17,8 @@ export class SemesterParser extends BaseParser<string, Semester[]> {
             case "後期":
               return [3, 4];
             default:
-              return [Number(trimmed)];
+              // Q1のような形式を想定
+              return [Number(trimmed[1])];
           }
         })
         .map((s) => {

@@ -8,7 +8,7 @@ import type {
 import { zenToHan } from "@/utils/zenToHan";
 import { BaseParser, type ParsingContext } from "../core";
 
-type Input = {
+export type SyllabusParserInput = {
   title: string;
   instructors: Instructor[];
   numbering: string;
@@ -30,8 +30,11 @@ type Input = {
   detail: string;
 };
 
-export class SyllabusParser extends BaseParser<Input, SyllabusCourse> {
-  parse(input: Input, context?: ParsingContext) {
+export class SyllabusParser extends BaseParser<
+  SyllabusParserInput,
+  SyllabusCourse
+> {
+  parse(input: SyllabusParserInput, context?: ParsingContext) {
     const { result, duration } = this.measureParseTime(() => {
       return {
         title: input.title.replace(/\[.*?\]/g, ""),

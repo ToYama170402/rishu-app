@@ -9,7 +9,7 @@ export type Course = {
   title: string;
   numbering: string;
   courseNumber: string;
-  numberOfProper: number;
+  numberOfProper: number | null;
   semester: Semester[];
   numberOfCredits: number;
   note: string;
@@ -27,4 +27,5 @@ export type Course = {
   targetStudents: string;
   lectureRoomInfo: string;
   faculty: Faculty;
+  detail: string;
 };

@@ -113,10 +113,7 @@ export abstract class BaseExtractor<TOutput> {
   }
 
   protected sanitizeText(text: string): string {
-    return text
-      .replace(/\s+/g, " ")
-      .replace(/^\s+|\s+$/g, "")
-      .replace(/[^\x20-\x7E\u3000-\u9FAF]/g, "");
+    return text.replace(/(\s)+/g, "$1").replace(/^\s+|\s+$/g, "");
   }
 
   protected validateRequired<T>(

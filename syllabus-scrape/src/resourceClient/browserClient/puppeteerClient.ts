@@ -9,7 +9,11 @@ export class PuppeteerClient implements BrowserClient {
     if (this.browser) {
       await this.close();
     }
-    this.browser = await puppeteer.launch();
+    this.browser = await puppeteer.launch({
+      executablePath: "/usr/bin/google-chrome-stable",
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
     this.page = await this.browser.newPage();
   }
 

@@ -9,7 +9,9 @@ export class CheerioDOMElement implements DOMElement {
   constructor(private $element: cheerio.Cheerio<any>) {}
 
   text(): string {
-    return this.$element.text();
+    const $clone = this.$element.clone();
+    $clone.find("style,script").remove();
+    return $clone.text();
   }
 
   attr(name: string): string | undefined {

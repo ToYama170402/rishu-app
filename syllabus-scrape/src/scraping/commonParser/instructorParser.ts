@@ -2,7 +2,7 @@ import type { Instructor } from "@/course";
 import { isInstructor } from "@/course";
 import { BaseParser } from "../core";
 
-export class TeatureNameParser extends BaseParser<string, Instructor[]> {
+export class InstructorParser extends BaseParser<string, Instructor[]> {
   parse(input: string) {
     const { result, duration } = this.measureParseTime(() => {
       return input

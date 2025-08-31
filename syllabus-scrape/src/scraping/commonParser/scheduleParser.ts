@@ -2,7 +2,7 @@ import { type DayPeriod, isDayPeriod } from "@/course";
 import { zenToHan } from "@/utils/zenToHan";
 import { BaseParser, type ParseResult } from "../core";
 
-export class DayPeriodParser extends BaseParser<string, DayPeriod[]> {
+export class ScheduleParser extends BaseParser<string, DayPeriod[]> {
   parse(input: string): ParseResult<DayPeriod[]> {
     const { result, duration } = this.measureParseTime(() => {
       return zenToHan(input)

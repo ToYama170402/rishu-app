@@ -8,7 +8,13 @@ export class SyllabusSearchResultExtractor extends BaseExtractor<string[][]> {
   ) {
     const { result, duration } = this.measureExtraction(() => {
       return parser.find(selector).map((row) => {
-        const columns = row.find("td").map((cell) => cell.text());
+        const columns = row.find("td").map((cell) => {
+          if (cell.find("a").length === 0) {
+            return cell.text();
+          } else {
+            return cell.find("a")[0]?.attr("href") ?? "";
+          }
+        });
         return columns;
       });
     });

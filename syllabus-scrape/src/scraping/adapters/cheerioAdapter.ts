@@ -37,6 +37,10 @@ export class CheerioDOMElement implements DOMElement {
   length(): number {
     return this.$element.length;
   }
+
+  html(): string {
+    return this.$element.html() || "";
+  }
 }
 
 /**

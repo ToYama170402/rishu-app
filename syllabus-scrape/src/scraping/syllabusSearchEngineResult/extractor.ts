@@ -10,7 +10,7 @@ export class SyllabusSearchResultExtractor extends BaseExtractor<string[][]> {
       return parser.find(selector).map((row) => {
         const columns = row.find("td").map((cell) => {
           if (cell.find("a").length === 0) {
-            return cell.text();
+            return cell.html().replace(/<br>/g, "\n");
           } else {
             return cell.find("a")[0]?.attr("href") ?? "";
           }

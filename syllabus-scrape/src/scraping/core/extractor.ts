@@ -5,6 +5,7 @@ export interface DOMElement {
   find(selector: string): DOMElement[];
   each(callback: (index: number, element: DOMElement) => void): void;
   length(): number;
+  html(): string;
 }
 
 export interface DOMParser {

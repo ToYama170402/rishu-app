@@ -34,7 +34,9 @@ export class PuppeteerClient implements BrowserClient {
   ): Promise<T> {
     if (!this.page) throw new Error("Page is not initialized");
     try {
-      return await this.page.evaluate(pageFunction, ...args);
+      const returnValue = await this.page.evaluate(pageFunction, ...args);
+      await this.waitForNavigator();
+      return returnValue;
     } catch (err) {
       throw new Error(
         `Failed to evaluate page function: ${err instanceof Error ? err.message : String(err)}`
@@ -58,6 +60,17 @@ export class PuppeteerClient implements BrowserClient {
       await this.browser.close();
       this.browser = null;
       this.page = null;
+    }
+  }
+
+  private async waitForNavigator(): Promise<void> {
+    if (!this.page) throw new Error("Page is not initialized");
+    try {
+      await this.page.waitForNavigation();
+    } catch (err) {
+      throw new Error(
+        `Failed to wait for navigation: ${err instanceof Error ? err.message : String(err)}`
+      );
     }
   }
 }

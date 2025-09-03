@@ -18,29 +18,24 @@ export class SyllabusSearchResultScraper extends BaseScraper<
     const { result, duration } = await this.measurePerformance(async () => {
       await input.init();
       await input.goto(SYLLABUS_SEARCH_ENGINE_URL);
-      await input.evaluate(
-        async (
-          departmentSelectSelector,
-          searchButtonSelector,
-          itemsPerPageSelector,
-          department
-        ) => {
-          // Wait for the page to load completely
-          const READY_STATE_CHECK_INTERVAL = 100;
-          const ready = async () =>
-            new Promise<void>((resolve) => {
-              const checkReadyState = () => {
-                if (document.readyState === "complete") {
-                  resolve();
-                } else {
-                  setTimeout(checkReadyState, READY_STATE_CHECK_INTERVAL);
-                }
-              };
-              checkReadyState();
-            });
-          await ready();
 
-          // 学域を選択する要素を取得
+      await input.evaluate(
+        async (departmentSelectSelector, searchButtonSelector, department) => {
+          await new Promise<void>((resolve) => {
+            ((self) => {
+              if (document.readyState === "complete") {
+                resolve();
+              } else {
+                setTimeout(self(self), 100);
+              }
+            })((self) => {
+              if (document.readyState === "complete") {
+                resolve();
+              } else {
+                setTimeout(self(self), 100);
+              }
+            });
+          });
           const departmentSelect = document.querySelector(
             departmentSelectSelector as string
           );
@@ -50,8 +45,6 @@ export class SyllabusSearchResultScraper extends BaseScraper<
           if (!(departmentSelect instanceof HTMLSelectElement)) {
             throw new Error("Department select element is not a select");
           }
-
-          // 学域を選択する
           const departmentOption = Array.from(
             departmentSelect.querySelectorAll("option")
           ).find((option) => option.textContent === department);
@@ -60,20 +53,40 @@ export class SyllabusSearchResultScraper extends BaseScraper<
           }
           departmentSelect.value = departmentOption.value;
 
-          // 検索する
           const searchButton = document.querySelector(
             searchButtonSelector as string
           );
           if (!searchButton) {
             throw new Error("Search button not found");
           }
-          if (!(searchButton instanceof HTMLButtonElement)) {
+          if (!(searchButton instanceof HTMLInputElement)) {
             throw new Error("Search button is not a button");
           }
           searchButton.click();
-          await ready();
-
-          // 表示件数を設定する
+        },
+        [
+          "#ctl00_phContents_ddl_fac",
+          "#ctl00_phContents_ctl06_btnSearch",
+          "融合学域",
+        ]
+      );
+      await input.evaluate(
+        async (itemsPerPageSelector: unknown) => {
+          await new Promise<void>((resolve) => {
+            ((self) => {
+              if (document.readyState === "complete") {
+                resolve();
+              } else {
+                setTimeout(self(self), 100);
+              }
+            })((self) => {
+              if (document.readyState === "complete") {
+                resolve();
+              } else {
+                setTimeout(self(self), 100);
+              }
+            });
+          });
           const itemsPerPageSelect = document.querySelector(
             itemsPerPageSelector as string
           );
@@ -83,17 +96,12 @@ export class SyllabusSearchResultScraper extends BaseScraper<
           if (!(itemsPerPageSelect instanceof HTMLSelectElement)) {
             throw new Error("Items per page select element is not a select");
           }
-          itemsPerPageSelect.value = "0"; // 全件表示に設定
-          itemsPerPageSelect.dispatchEvent(new Event("change")); // 全件表示に変更
-          await ready();
+          itemsPerPageSelect.value = "0";
+          itemsPerPageSelect.dispatchEvent(new Event("change"));
         },
-        [
-          this.departmentSelectSelector,
-          this.searchButtonSelector,
-          this.itemsPerPageSelector,
-          input.department,
-        ]
+        ["#ctl00_phContents_ucGrid_ddlLines"]
       );
+
       return input.savePageAsHTML();
     });
     return this.createResult<string>(

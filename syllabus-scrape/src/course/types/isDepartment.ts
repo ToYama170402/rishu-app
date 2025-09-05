@@ -1,12 +1,8 @@
 import type { Department } from "./department";
+import { facultyMap } from "./department";
 
 export function isDepartment(value: unknown): value is Department {
-  const validDepartment = [
-    "融合学域",
-    "理工学域",
-    "人間社会学域",
-    "医薬保健学域",
-  ];
+  const validDepartment = Object.keys(facultyMap) as Department[];
 
   return (
     typeof value === "string" && validDepartment.includes(value as Department)

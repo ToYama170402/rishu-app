@@ -1,6 +1,11 @@
 export type { Course } from "./course";
 export type { DayPeriod } from "./dayPeriod";
-export type { Department, Faculty } from "./department";
+export type {
+  Department,
+  Faculty,
+  FacultyName,
+  facultyMap,
+} from "./department";
 export type { Instructor } from "./instructor";
 export { isDayPeriod } from "./isDayPeriod";
 export { isFaculty } from "./isFaculty";

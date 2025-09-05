@@ -21,6 +21,7 @@ export class SyllabusSearchResultScraper extends BaseScraper<
 
       await input.evaluate(
         async (departmentSelectSelector, searchButtonSelector, department) => {
+          // ページの読み込み完了まで待つ
           await new Promise<void>((resolve) => {
             ((self) => {
               if (document.readyState === "complete") {
@@ -70,6 +71,7 @@ export class SyllabusSearchResultScraper extends BaseScraper<
           "融合学域",
         ]
       );
+      // ページ遷移が発生するためevaluateを分割
       await input.evaluate(
         async (itemsPerPageSelector: unknown) => {
           await new Promise<void>((resolve) => {

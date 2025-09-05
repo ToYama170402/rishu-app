@@ -47,7 +47,12 @@ export class JsonFileCourseRepositoryAdapter
     }
     const existingCourses = (await readJsonFile<Course[]>(this.filePath)) ?? [];
     // 既存コース一覧から同じIDのものを除外
-    const updatedCourses = existingCourses.filter((c) => c.id !== course.id);
+    const updatedCourses = existingCourses.filter(
+      (c) =>
+        c.id !== course.id &&
+        c.title !== course.title &&
+        c.faculty.faculty !== course.faculty.faculty
+    );
     // 新しいコースを追加して保存
     return writeJsonFile<Course[]>(this.filePath, [...updatedCourses, course]);
   }

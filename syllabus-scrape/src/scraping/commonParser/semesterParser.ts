@@ -17,8 +17,11 @@ export class SemesterParser extends BaseParser<string, Semester[]> {
             case "後期":
               return [3, 4];
             default:
-              // Q1のような形式を想定
-              return [Number(trimmed[1])];
+              if (/^Q\d$/.test(trimmed)) {
+                // Q1, Q2, Q3, Q4 の場合
+                return [Number(trimmed[1])];
+              }
+              throw new Error(`Invalid semester format: ${s}`);
           }
         })
         .map((s) => {

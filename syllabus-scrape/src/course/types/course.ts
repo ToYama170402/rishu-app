@@ -27,5 +27,4 @@ export type Course = {
   targetStudents: string;
   lectureRoomInfo: string;
   faculty: Faculty;
-  detail: string;
 };

@@ -20,5 +20,5 @@ export type SyllabusCourse = Pick<
   | "lectureRoomInfo"
   | "openAccount"
   | "note"
-  | "detail"
+  | "courseDescription"
 > & { department: Department };

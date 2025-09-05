@@ -16,6 +16,6 @@ export const SYLLABUS_SELECTORS = {
   lectureRoomInfo: "#ctl00_phContents_Detail_lbl_lecture_room_infomation",
   openAccount: "#ctl00_phContents_Detail_lbl_open_account",
   note: "#ctl00_phContents_Detail_lbl_note",
-  detail: "#ctl00_phContents_Detail_LctDetail",
+  courseDescription: "#ctl00_phContents_Detail_LctDetail",
   department: "#ctl00_phContents_Detail_lbl_faculty_name",
 };

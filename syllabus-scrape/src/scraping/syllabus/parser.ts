@@ -27,7 +27,7 @@ export type SyllabusParserInput = {
   openAccount: string;
   note: string;
   department: Department;
-  detail: string;
+  courseDescription: string;
 };
 
 export class SyllabusParser extends BaseParser<
@@ -43,7 +43,9 @@ export class SyllabusParser extends BaseParser<
         courseNumber: input.courseNumber,
         lectureForm: input.lectureForm,
         numberOfProper: (() => {
-          const n = Number(zenToHan(input.numberOfProper));
+          const n = Number(
+            zenToHan(input.numberOfProper).replace(/[^0-9]/g, "")
+          );
           return Number.isNaN(n) ? null : n;
         })(),
         schedule: input.schedule,
@@ -67,7 +69,7 @@ export class SyllabusParser extends BaseParser<
         openAccount: input.openAccount,
         note: input.note,
         department: input.department,
-        detail: input.detail,
+        courseDescription: input.courseDescription,
       };
     });
     return this.createParseResult(result, duration);

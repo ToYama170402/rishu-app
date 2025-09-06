@@ -188,5 +188,5 @@ for (const syllabusSearchResult of syllabusSearchResults) {
       "error"
     );
   }
-  await sleep(2000 + Math.floor(Math.random() * 8000));
+  await sleep(20000 + Math.floor(Math.random() * 40000));
 }

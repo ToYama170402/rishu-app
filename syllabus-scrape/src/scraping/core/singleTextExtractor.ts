@@ -34,7 +34,6 @@ export class SingleTextExtractor extends BaseExtractor<string> {
       errors,
       confidence
     );
-    // DOM操作を抽象化したインターフェース
   }
 
   protected extractSingleText(

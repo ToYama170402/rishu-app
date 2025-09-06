@@ -83,7 +83,7 @@ async function scrapeSyllabus(syllabusUrl: string) {
     );
     logger.log(`Syllabus URL: ${syllabusUrl}`, "error");
     logger.log(
-      `Extracted Data: ${JSON.stringify(scrapeSyllabusSearchResult, null, 2)}`,
+      `Extracted Data: ${JSON.stringify(extractedData, null, 2)}`,
       "error"
     );
     return null;

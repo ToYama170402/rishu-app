@@ -64,7 +64,7 @@ export class SyllabusParser extends BaseParser<
         })(),
         max60CreditsFlag: input.max60CreditsFlag,
         targetStudents: input.targetStudents,
-        keywords: input.keywords.split(/[,、]/).map((kw) => kw.trim()),
+        keywords: input.keywords.split(/[,、](?![^()]*\))/).map((kw) => kw.trim()),
         lectureRoomInfo: input.lectureRoomInfo,
         openAccount: input.openAccount,
         note: input.note,

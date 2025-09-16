@@ -1,4 +1,4 @@
-import type { Course } from "../../course/types";
+import type { Course } from "@/course/types";
 
 export interface CourseRepositoryAdapter {
   /**

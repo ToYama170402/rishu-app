@@ -154,7 +154,11 @@ async function scrapeSyllabusSearchResult(department: Department) {
 
 logger.log("start scraping syllabus...");
 
-const timeRangeScheduler = new TimeRangeScheduler(23, 3, 60000);
+const timeRangeScheduler = new TimeRangeScheduler(
+  23,
+  3,
+  () => (50 + Math.random() * 20) * 1000
+);
 
 const courseService = new CourseService();
 const jsonFileCourseRepositoryAdapter = new JsonFileCourseRepositoryAdapter(

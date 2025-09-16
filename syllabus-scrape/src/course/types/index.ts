@@ -4,8 +4,8 @@ export type {
   Department,
   Faculty,
   FacultyName,
-  facultyMap,
 } from "./department";
+export { facultyMap } from "./department";
 export type { Instructor } from "./instructor";
 export { isDayPeriod } from "./isDayPeriod";
 export { isFaculty } from "./isFaculty";

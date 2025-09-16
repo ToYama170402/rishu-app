@@ -7,7 +7,7 @@ export class TimeRangeScheduler implements Scheduler {
   constructor(
     private startHour: number,
     private endHour: number,
-    private intervalMs: number
+    private intervalMs: number | (() => number)
   ) {}
 
   addTask(task: Task): void {
@@ -32,7 +32,11 @@ export class TimeRangeScheduler implements Scheduler {
           await task();
         }
       }
-      await this.sleep(this.intervalMs);
+      await this.sleep(
+        typeof this.intervalMs === "function"
+          ? this.intervalMs()
+          : this.intervalMs
+      );
     }
   }
   private async sleep(ms: number): Promise<void> {

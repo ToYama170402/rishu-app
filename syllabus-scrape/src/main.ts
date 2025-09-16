@@ -1,7 +1,9 @@
 import * as fs from "node:fs";
-import type { Course, Department } from "./course";
+import type { Department } from "./course";
+import { facultyMap } from "./course";
 import { Logger } from "./logger";
 import { PuppeteerClient } from "./resourceClient/browserClient/puppeteerClient";
+import { TimeRangeScheduler } from "./scheduler/timeRangeScheduler";
 import { CheerioDOMParser } from "./scraping/adapters";
 import { FacultyParser } from "./scraping/commonParser/facultyParser";
 import { InstructorParser } from "./scraping/commonParser/instructorParser";
@@ -20,6 +22,7 @@ import { SyllabusSearchResultScraper } from "./scraping/syllabusSearchEngineResu
 import { CourseService } from "./services/courseService";
 import { JsonFileCourseRepositoryAdapter } from "./storage/adapters";
 import { CourseRepository } from "./storage/repositories";
+
 const logger = Logger.getInstance();
 
 const logFile = "./data/log";
@@ -150,43 +153,60 @@ async function scrapeSyllabusSearchResult(department: Department) {
 }
 
 logger.log("start scraping syllabus...");
-const syllabusSearchResults = (
-  await scrapeSyllabusSearchResult("融合学域")
-).filter((e) => e !== null);
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-await sleep(5000);
 
-for (const syllabusSearchResult of syllabusSearchResults) {
-  try {
-    const syllabusData = await scrapeSyllabus(
-      syllabusSearchResult?.japaneseUrl || ""
-    );
-    if (!syllabusData) continue;
-    const courseService = new CourseService();
-    const course = courseService.createCourseFromSyllabusData(
-      syllabusData.data,
-      syllabusSearchResult,
-      2025,
-      syllabusData.data.courseDescription
-    );
+const timeRangeScheduler = new TimeRangeScheduler(23, 3, 60000);
 
-    const jsonFileCourseRepositoryAdapter = new JsonFileCourseRepositoryAdapter(
-      "./data/courses.json"
-    );
-    const courseRepository = new CourseRepository(
-      jsonFileCourseRepositoryAdapter
-    );
-    await courseRepository.saveCourse(course);
-  } catch (error) {
-    logger.log(`Error scraping syllabus: ${error}`, "error");
-    logger.log(
-      `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
-      "error"
-    );
-    logger.log(
-      `Error occurred at: ${JSON.stringify(syllabusSearchResult, null, 2)}`,
-      "error"
-    );
-  }
-  await sleep(20000 + Math.floor(Math.random() * 40000));
-}
+const courseService = new CourseService();
+const jsonFileCourseRepositoryAdapter = new JsonFileCourseRepositoryAdapter(
+  "./data/courses.json"
+);
+const courseRepository = new CourseRepository(jsonFileCourseRepositoryAdapter);
+
+Object.keys(facultyMap).forEach((key) => {
+  timeRangeScheduler.addTask(async () => {
+    try {
+      const syllabusSearchResults = await scrapeSyllabusSearchResult(
+        key as Department
+      );
+      syllabusSearchResults
+        .filter((e) => e !== null)
+        .forEach((syllabusSearchResult) => {
+          timeRangeScheduler.addTask(async () => {
+            try {
+              const syllabusData = await scrapeSyllabus(
+                syllabusSearchResult?.japaneseUrl || ""
+              );
+              if (!syllabusData) return;
+              const course = courseService.createCourseFromSyllabusData(
+                syllabusData.data,
+                syllabusSearchResult,
+                2025,
+                syllabusData.data.courseDescription
+              );
+
+              await courseRepository.saveCourse(course);
+            } catch (error) {
+              logger.log(`Error scraping syllabus: ${error}`, "error");
+              logger.log(
+                `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
+                "error"
+              );
+              logger.log(
+                `Error occurred at: ${JSON.stringify(syllabusSearchResult, null, 2)}`,
+                "error"
+              );
+            }
+          });
+        });
+    } catch (error) {
+      logger.log(`Error scraping syllabus search results: ${error}`, "error");
+      logger.log(
+        `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
+        "error"
+      );
+      logger.log(`Faculty: ${key}`, "error");
+    }
+  });
+});
+
+timeRangeScheduler.start();

@@ -5,7 +5,7 @@ import (
 
 	"github.com/ToYama170402/rishu-app/syllabus/src/api/routes"
 	"github.com/ToYama170402/rishu-app/syllabus/src/internal/config"
-	"github.com/ToYama170402/rishu-app/syllabus/src/internal/models"
+	"github.com/ToYama170402/rishu-app/syllabus/src/internal/schema"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,19 +19,19 @@ func main() {
 	config.ConnectDatabase(dbHost, dbPort, dbUser, dbPassword, dbName)
 
 	config.MigrateDatabase(
-		&models.Responsible{},
-		&models.Instructor{},
-		&models.Schedule{},
-		&models.DayPeriod{},
-		&models.CourseKeywordRelation{},
-		&models.Keyword{},
-		&models.Course{},
-		&models.ClassFormat{},
-		&models.LectureForm{},
-		&models.TargetStudents{},
-		&models.LectureRoomInfo{},
-		&models.Department{},
-		&models.Faculty{},
+		&schema.Responsible{},
+		&schema.Instructor{},
+		&schema.Schedule{},
+		&schema.DayPeriod{},
+		&schema.CourseKeywordRelation{},
+		&schema.Keyword{},
+		&schema.Course{},
+		&schema.ClassFormat{},
+		&schema.LectureForm{},
+		&schema.TargetStudents{},
+		&schema.LectureRoomInfo{},
+		&schema.Department{},
+		&schema.Faculty{},
 	)
 
 	router := gin.Default()

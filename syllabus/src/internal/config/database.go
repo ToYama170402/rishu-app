@@ -18,12 +18,12 @@ func ConnectDatabase(host, port, user, password, dbname string) {
 	}
 }
 
-func MigrateDatabase(model interface{}) {
+func MigrateDatabase(model ...interface{}) {
 	if db == nil {
 		log.Fatal("Database connection is not established")
 	}
 
-	db.AutoMigrate(&model)
+	db.AutoMigrate(model...)
 }
 
 func GetDB() *gorm.DB {

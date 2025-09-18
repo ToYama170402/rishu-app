@@ -1,11 +1,11 @@
 {
-  "name": "frontend",
+  "name": "syllabus-scrape",
   "dockerComposeFile": [
     "../../docker-compose.yml",
     "../../docker-compose.dev.yml"
   ],
-  "service": "frontend",
-  "workspaceFolder": "/workspace/frontend",
+  "service": "syllabus-scrape",
+  "workspaceFolder": "/workspace/syllabus-scrape",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },

@@ -13,11 +13,11 @@ services:
         target: /workspace
 
       - type: volume
-        source: node-modules
+        source: frontend-node-modules
         target: /workspace/frontend/node_modules
       - type: volume
         source: pnpm-store
-        target: /workspace/.pnpm-store
+        target: /workspace/frontend/.pnpm-store
     ports:
       - 3000:3000
     command: sleep infinity
@@ -73,7 +73,28 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=syllabus
+  syllabus-scrape:
+    build:
+      context: ./syllabus-scrape
+      dockerfile: Dockerfile.dev
+    restart: no
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+      - type: volume
+        source: syllabus-scrape-node-modules
+        target: /workspace/syllabus-scrape/node_modules
+      - type: volume
+        source: pnpm-store
+        target: /workspace/syllabus-scrape/.pnpm-store
+    command: sleep infinity
+    environment:
+      - NODE_ENV=development
+    networks:
+      - rishu-app_network
 
 volumes:
-  node-modules:
   pnpm-store:
+  frontend-node-modules:
+  syllabus-scrape-node-modules:

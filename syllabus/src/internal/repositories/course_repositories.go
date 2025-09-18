@@ -13,20 +13,20 @@ func GetCourses(db *gorm.DB) ([]model.Course, error) {
 	}
 	rawQuery := `
 SELECT jsonb_build_object(
-    'course_id', courses.course_id,
+    'courseId', courses.course_id,
     'year', courses.year,
     'title', courses.title,
     'numbering', courses.numbering,
-    'course_number', courses.course_number,
-    'number_of_proper', courses.number_of_proper,
-    'number_of_credits', courses.number_of_credits,
+    'courseNumber', courses.course_number,
+    'numberOfProper', courses.number_of_proper,
+    'numberOfCredits', courses.number_of_credits,
     'note', courses.note,
-    'japanese_url', courses.japanese_url,
-    'english_url', courses.english_url,
-    'open_account', courses.open_account,
-    'max60_credits_flag', courses.max60_credits_flag,
-    'subject_distinguished', courses.subject_distinguished,
-    'course_description', courses.course_description,
+    'japaneseUrl', courses.japanese_url,
+    'englishUrl', courses.english_url,
+    'openAccount', courses.open_account,
+    'max60CreditsFlag', courses.max60_credits_flag,
+    'subjectDistinguished', courses.subject_distinguished,
+    'courseDescription', courses.course_description,
     'instructors', (
         SELECT json_agg(
                 json_build_object('name', i.name)
@@ -55,11 +55,11 @@ SELECT jsonb_build_object(
                     schedules.course_id = courses.course_id
             ) s
     ),
-    'class_format', class_formats.class_format,
-    'lecture_form', lecture_forms.lecture_form,
-    'target_students', target_students.target_students,
-    'lecture_room_info', lecture_room_infos.lecture_room_info,
-    'department_name', departments.department_name,
+    'classFormat', class_formats.class_format,
+    'lectureForm', lecture_forms.lecture_form,
+    'targetStudents', target_students.target_students,
+    'lectureRoomInfo', lecture_room_infos.lecture_room_info,
+    'departmentName', departments.department_name,
     'faculty', json_build_object(
         'faculty', faculties.faculty, 'department', departments.department_name
     ),

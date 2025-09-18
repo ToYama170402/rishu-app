@@ -9,5 +9,6 @@ func SetupRoutes(router *gin.Engine) {
 	courses := router.Group("/courses")
 	{
 		courses.GET("", controllers.GetCourses)
+		courses.POST("", controllers.SaveCourse)
 	}
 }

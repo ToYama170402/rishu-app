@@ -19,7 +19,6 @@ SELECT jsonb_build_object(
     'numbering', courses.numbering,
     'course_number', courses.course_number,
     'number_of_proper', courses.number_of_proper,
-    'semester', ARRAY[courses.semester], -- 必要に応じて修正
     'number_of_credits', courses.number_of_credits,
     'note', courses.note,
     'japanese_url', courses.japanese_url,
@@ -29,46 +28,62 @@ SELECT jsonb_build_object(
     'subject_distinguished', courses.subject_distinguished,
     'course_description', courses.course_description,
     'instructors', (
-        SELECT json_agg(json_build_object('name', i.name))
+        SELECT json_agg(
+                json_build_object('name', i.name)
+            )
         FROM (
-            SELECT DISTINCT instructors.name
-            FROM responsibles
-            LEFT JOIN instructors ON responsibles.instructor_id = instructors.instructor_id
-            WHERE responsibles.course_id = courses.course_id
-        ) i
+                SELECT DISTINCT
+                    instructors.name
+                FROM responsibles
+                    LEFT JOIN instructors ON responsibles.instructor_id = instructors.instructor_id
+                WHERE
+                    responsibles.course_id = courses.course_id
+            ) i
     ),
     'schedules', (
-        SELECT json_agg(json_build_object('day', s.day, 'period', s.period))
+        SELECT json_agg(
+                json_build_object(
+                    'day', s.day, 'period', s.period
+                )
+            )
         FROM (
-            SELECT DISTINCT day_periods.day, day_periods.period
-            FROM schedules
-            LEFT JOIN day_periods ON schedules.day_period_id = day_periods.day_period_id
-            WHERE schedules.course_id = courses.course_id
-        ) s
+                SELECT DISTINCT
+                    day_periods.day, day_periods.period
+                FROM schedules
+                    LEFT JOIN day_periods ON schedules.day_period_id = day_periods.day_period_id
+                WHERE
+                    schedules.course_id = courses.course_id
+            ) s
     ),
     'class_format', class_formats.class_format,
     'lecture_form', lecture_forms.lecture_form,
     'target_students', target_students.target_students,
     'lecture_room_info', lecture_room_infos.lecture_room_info,
     'department_name', departments.department_name,
-    'faculty', json_build_object('faculty', faculties.faculty, 'department', departments.department_name),
+    'faculty', json_build_object(
+        'faculty', faculties.faculty, 'department', departments.department_name
+    ),
     'keyword', (
         SELECT json_agg(k.keyword)
         FROM (
-            SELECT DISTINCT keywords.keyword
-            FROM course_keyword_relations
-            LEFT JOIN keywords ON course_keyword_relations.keyword_id = keywords.keyword_id
-            WHERE course_keyword_relations.course_id = courses.course_id
-        ) k
+                SELECT DISTINCT
+                    keywords.keyword
+                FROM
+                    course_keyword_relations
+                    LEFT JOIN keywords ON course_keyword_relations.keyword_id = keywords.keyword_id
+                WHERE
+                    course_keyword_relations.course_id = courses.course_id
+            ) k
     )
 ) AS jsonb_build_object
-FROM courses
-LEFT JOIN class_formats ON courses.class_format_id = class_formats.class_format_id
-LEFT JOIN lecture_forms ON courses.lecture_form_id = lecture_forms.lecture_form_id
-LEFT JOIN target_students ON courses.target_students_id = target_students.target_students_id
-LEFT JOIN lecture_room_infos ON courses.lecture_room_info_id = lecture_room_infos.lecture_room_info_id
-LEFT JOIN departments ON courses.department_id = departments.department_id
-LEFT JOIN faculties ON departments.faculty_id = faculties.faculty_id
+FROM
+    courses
+    LEFT JOIN class_formats ON courses.class_format_id = class_formats.class_format_id
+    LEFT JOIN lecture_forms ON courses.lecture_form_id = lecture_forms.lecture_form_id
+    LEFT JOIN target_students ON courses.target_students_id = target_students.target_students_id
+    LEFT JOIN lecture_room_infos ON courses.lecture_room_info_id = lecture_room_infos.lecture_room_info_id
+    LEFT JOIN departments ON courses.department_id = departments.department_id
+    LEFT JOIN faculties ON departments.faculty_id = faculties.faculty_id
 GROUP BY
     courses.course_id,
     courses.year,
@@ -76,7 +91,6 @@ GROUP BY
     courses.numbering,
     courses.course_number,
     courses.number_of_proper,
-    courses.semester,
     courses.number_of_credits,
     courses.note,
     courses.japanese_url,

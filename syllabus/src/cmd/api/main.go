@@ -32,6 +32,8 @@ func main() {
 		&schema.LectureRoomInfo{},
 		&schema.Department{},
 		&schema.Faculty{},
+		&schema.Semester{},
+		&schema.CourseSemesterRelation{},
 	)
 
 	router := gin.Default()

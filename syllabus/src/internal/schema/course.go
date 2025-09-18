@@ -7,7 +7,6 @@ type Course struct {
 	Numbering            string           `gorm:"column:numbering"`
 	CourseNumber         string           `gorm:"column:course_number"`
 	NumberOfProper       int              `gorm:"column:number_of_proper"`
-	Semester             int              `gorm:"column:semester"`
 	NumberOfCredits      int              `gorm:"column:number_of_credits"`
 	Note                 string           `gorm:"column:note"`
 	EnglishURL           string           `gorm:"column:english_url"`

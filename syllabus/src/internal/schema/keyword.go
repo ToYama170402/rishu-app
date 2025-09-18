@@ -1,4 +1,4 @@
-package models
+package schema
 
 type Keyword struct {
 	KeywordID int    `gorm:"primaryKey;autoIncrement;column:keyword_id"`

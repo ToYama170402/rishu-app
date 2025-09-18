@@ -1,4 +1,4 @@
-package models
+package schema
 
 type Course struct {
 	CourseID             int              `gorm:"column:course_id;primaryKey"`
@@ -17,13 +17,13 @@ type Course struct {
 	SubjectDistinguished string           `gorm:"column:subject_distinguished"`
 	CourseDescription    string           `gorm:"column:course_description"`
 	ClassFormatID        int              `gorm:"column:class_format_id"`
-	ClassFormat          *ClassFormat     `gorm:"foreignKey:ClassFormatID"`
+	ClassFormat          *ClassFormat     `gorm:"reference:ClassFormatID"`
 	LectureFormID        int              `gorm:"column:lecture_form_id"`
-	LectureForm          *LectureForm     `gorm:"foreignKey:LectureFormID"`
+	LectureForm          *LectureForm     `gorm:"reference:LectureFormID"`
 	TargetStudentsID     int              `gorm:"column:target_students_id"`
-	TargetStudents       *TargetStudents  `gorm:"foreignKey:TargetStudentsID"`
+	TargetStudents       *TargetStudents  `gorm:"reference:TargetStudentsID"`
 	LectureRoomInfoID    int              `gorm:"column:lecture_room_info_id"`
-	LectureRoomInfo      *LectureRoomInfo `gorm:"foreignKey:LectureRoomInfoID"`
+	LectureRoomInfo      *LectureRoomInfo `gorm:"reference:LectureRoomInfoID"`
 	DepartmentID         int              `gorm:"column:department_id"`
-	Department           *Department      `gorm:"foreignKey:DepartmentID"`
+	Department           *Department      `gorm:"reference:DepartmentID"`
 }

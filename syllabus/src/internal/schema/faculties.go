@@ -1,4 +1,4 @@
-package models
+package schema
 
 type Faculty struct {
 	FacultyID int    `gorm:"primaryKey;autoIncrement;column:faculty_id"`

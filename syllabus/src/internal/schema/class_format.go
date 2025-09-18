@@ -1,4 +1,4 @@
-package models
+package schema
 
 type ClassFormat struct {
 	ClassFormatID int    `gorm:"primaryKey;autoIncrement;column:class_format_id"`

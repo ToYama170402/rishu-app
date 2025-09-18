@@ -1,4 +1,4 @@
-package models
+package schema
 
 type DayPeriod struct {
 	DayPeriodID int    `gorm:"primaryKey;autoIncrement;column:day_period_id"`

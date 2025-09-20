@@ -1,7 +1,21 @@
 # ベースイメージ
 FROM golang:1.24.0-bookworm
 
-RUN apt-get update && apt-get install -y postgresql-client
+
+RUN apt-get update && \
+  apt-get install -y postgresql-client && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
+
+ARG USERNAME=devuser
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+RUN groupadd --gid $USER_GID $USERNAME \
+  && useradd --uid $USER_UID --gid $USER_GID -m -s /bin/bash $USERNAME
+
+USER $USERNAME
 
 # 作業ディレクトリを作成
 WORKDIR /workspace/syllabus

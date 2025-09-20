@@ -56,6 +56,10 @@ services:
       context: ./syllabus
       dockerfile: Dockerfile.dev
     restart: no
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=syllabus
     volumes:
       - type: bind
         source: .
@@ -64,6 +68,11 @@ services:
       - 8080:8080
     command: sleep infinity
 
+  syllabus-db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=syllabus
   syllabus-scrape:
     build:
       context: ./syllabus-scrape

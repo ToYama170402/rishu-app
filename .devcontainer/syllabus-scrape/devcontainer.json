@@ -17,33 +17,14 @@
         "editor.formatOnSave": true,
         // 各ファイルのデフォルトのフォーマッターを指定
         "[javascript]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
-        "[javascriptreact]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
+          "editor.defaultFormatter": "biomejs.biome"
         },
         "[typescript]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
-        "[typescriptreact]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
+          "editor.defaultFormatter": "biomejs.biome"
         },
         "[json]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
+          "editor.defaultFormatter": "biomejs.biome"
         },
-        "[postcss]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
-        "[css]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
-        // ESLintの対象を設定
-        "eslint.validate": [
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact"
-        ],
         // VSCodeのデフォルトのフォーマッターを無効に
         "javascript.format.enable": false,
         "typescript.format.enable": false,
@@ -51,8 +32,7 @@
       },
       // 拡張機能を追加
       "extensions": [
-        "dbaeumer.vscode-eslint", // ESLint
-        "esbenp.prettier-vscode", // Prettier
+        "biomejs.biome", // Biome
         "streetsidesoftware.code-spell-checker", // Code Spell Checker
         "yzhang.dictionary-completion", // Dictionary Completion
         "mhutchie.git-graph", // Git Graph
@@ -61,7 +41,6 @@
         "christian-kohler.path-intellisense", // Path Intellisense
         "christian-kohler.npm-intellisense", // NPM Intellisense
         "YoavBls.pretty-ts-errors", // Pretty TS Errors
-        "dsznajder.es7-react-js-snippets", // ES7 React/Redux/GraphQL/React-Native snippets
         "xabikos.JavaScriptSnippets" // JavaScript (ES6) code snippets
       ]
     }

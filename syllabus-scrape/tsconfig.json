@@ -10,7 +10,7 @@
     "target": "es2020",
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": false,
-    "lib": ["ES2020"],
+    "lib": ["ES2020", "DOM"],
     "types": ["node"],
 
     // Other Outputs
@@ -33,7 +33,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    // Path Mapping
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

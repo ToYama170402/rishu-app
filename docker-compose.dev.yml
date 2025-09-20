@@ -1,6 +1,6 @@
 services:
   frontend:
-    user: node
+    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
@@ -31,6 +31,7 @@ services:
       - rishu-app_network
 
   syllabus:
+    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./syllabus
       dockerfile: Dockerfile.dev
@@ -54,6 +55,7 @@ services:
       - POSTGRES_DB=syllabus
 
   syllabus-scrape:
+    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./syllabus-scrape
       dockerfile: Dockerfile.dev

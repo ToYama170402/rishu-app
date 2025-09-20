@@ -16,7 +16,7 @@ RUN go mod download
 COPY . .
 
 # アプリケーションをビルド
-RUN go build -o main ./src
+RUN go build -o main ./src/cmd/api
 
 # アプリケーションを実行
 CMD ["./main"]

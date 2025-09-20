@@ -17,14 +17,14 @@ func GetCourses(c *gin.Context) {
 	c.JSON(200, courses)
 }
 
-func SaveCourse(c *gin.Context) {
+func SaveCourses(c *gin.Context) {
 	db := config.GetDB()
-	var course model.Course
+	var course []model.Course
 	if err := c.BindJSON(&course); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	if course, err := repositories.SaveCourse(db, &course); err != nil {
+	if course, err := repositories.SaveCourses(db, &course); err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	} else {

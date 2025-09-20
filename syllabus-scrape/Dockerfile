@@ -1,5 +1,6 @@
 FROM node:20-bullseye-slim AS base
 
+FROM base AS builder
 # Chromeと必要なフォント・ライブラリをインストール
 RUN apt-get update \
   && apt-get install -y wget gnupg \
@@ -26,6 +27,7 @@ RUN mkdir -p /workspace/syllabus-scrape/node_modules && \
   npm install -g pnpm
 
 COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY src ./src
 COPY tsconfig.json *.mjs ./

@@ -21,4 +21,4 @@ RUN pnpm install
 ARG NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_TELEMETRY_DISABLED=$NEXT_TELEMETRY_DISABLED
 
-# 注意: ポートのマッピングはdocker-composeで行うため、設定しない
+CMD [ "sleep", "infinity" ]

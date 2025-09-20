@@ -20,7 +20,7 @@ services:
         target: /workspace/frontend/.pnpm-store
     ports:
       - 3000:3000
-    command: sleep infinity
+    command: pnpm run dev
   mock-page:
     build:
       context: ./mock-page
@@ -46,7 +46,7 @@ services:
         target: /workspace
     ports:
       - 8080:8080
-    command: sleep infinity
+    command: go run src/cmd/api/main.go
 
   syllabus-db:
     environment:
@@ -70,7 +70,7 @@ services:
       - type: volume
         source: pnpm-store
         target: /workspace/syllabus-scrape/.pnpm-store
-    command: sleep infinity
+    command: pnpm start
     environment:
       - NODE_ENV=development
     networks:

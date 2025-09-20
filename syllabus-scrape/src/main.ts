@@ -26,7 +26,7 @@ import { CourseRepository } from "./storage/repositories";
 const logger = Logger.getInstance();
 
 const logFile = "./data/log";
-logger.setOutput(async (msg, level) => {
+logger.setOutput(async (msg, _level) => {
   await fs.promises.appendFile(logFile, `${msg}\n`, { flag: "a" });
 });
 

@@ -22,18 +22,19 @@ export class SyllabusSearchResultScraper extends BaseScraper<
       await input.evaluate(
         async (departmentSelectSelector, searchButtonSelector, department) => {
           // ページの読み込み完了まで待つ
+          type SelfFn = (self: SelfFn) => void;
           await new Promise<void>((resolve) => {
-            ((self) => {
+            ((self: SelfFn) => {
               if (document.readyState === "complete") {
                 resolve();
               } else {
-                setTimeout(self(self), 100);
+                setTimeout(() => self(self), 100);
               }
             })((self) => {
               if (document.readyState === "complete") {
                 resolve();
               } else {
-                setTimeout(self(self), 100);
+                setTimeout(() => self(self), 100);
               }
             });
           });
@@ -75,17 +76,18 @@ export class SyllabusSearchResultScraper extends BaseScraper<
       await input.evaluate(
         async (itemsPerPageSelector: unknown) => {
           await new Promise<void>((resolve) => {
-            ((self) => {
+            type SelfFn = (self: SelfFn) => void;
+            ((self: SelfFn) => {
               if (document.readyState === "complete") {
                 resolve();
               } else {
-                setTimeout(self(self), 100);
+                setTimeout(() => self(self), 100);
               }
             })((self) => {
               if (document.readyState === "complete") {
                 resolve();
               } else {
-                setTimeout(self(self), 100);
+                setTimeout(() => self(self), 100);
               }
             });
           });

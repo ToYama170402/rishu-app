@@ -22,7 +22,7 @@ export class SyllabusSearchResultParser extends BaseParser<
   SyllabusSearchResultParserInput,
   SyllabusSearchResult
 > {
-  parse(input: SyllabusSearchResultParserInput, context?: ParsingContext) {
+  parse(input: SyllabusSearchResultParserInput, _context?: ParsingContext) {
     const { result, duration } = this.measureParseTime(() => {
       return {
         courseNumber: input.courseNumber,

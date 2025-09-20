@@ -4,7 +4,7 @@ export class SyllabusSearchResultExtractor extends BaseExtractor<string[][]> {
   extract(
     parser: DOMParser,
     selector: string = "#ctl00_phContents_ucGrid_grv>tbody>tr",
-    context?: ExtractionContext
+    _context?: ExtractionContext
   ) {
     const { result, duration } = this.measureExtraction(() => {
       return parser.find(selector).map((row) => {

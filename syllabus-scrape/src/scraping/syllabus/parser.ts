@@ -34,7 +34,7 @@ export class SyllabusParser extends BaseParser<
   SyllabusParserInput,
   SyllabusCourse
 > {
-  parse(input: SyllabusParserInput, context?: ParsingContext) {
+  parse(input: SyllabusParserInput, _context?: ParsingContext) {
     const { result, duration } = this.measureParseTime(() => {
       return {
         title: input.title.replace(/\[.*?\]/g, ""),

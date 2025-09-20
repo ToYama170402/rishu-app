@@ -21,27 +21,6 @@ services:
     ports:
       - 3000:3000
     command: sleep infinity
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
-    restart: no
-    environment:
-      - ENV=development
-    volumes:
-      - type: bind
-        source: .
-        target: /workspace
-    ports:
-      - 8000:8000
-    command: sleep infinity
-
-  selenium:
-    ports:
-      - 4444:4444
-      - 7900:7900
-
   mock-page:
     build:
       context: ./mock-page
@@ -73,6 +52,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=syllabus
+
   syllabus-scrape:
     build:
       context: ./syllabus-scrape

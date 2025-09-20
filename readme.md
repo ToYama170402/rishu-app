@@ -48,14 +48,8 @@ Dev Containerを使用して開発環境を構築します。
 
 1. `git clone https://github.com/ToYama170402/rishu-app.git`
 2. クローンしたレポジトリをVS Codeで開く
-3. `devcontainrer.json`の`service`のキーを編集
-   - フロントエンド開発の場合は`frontend`
-4. コマンドパレット（`Ctrl+Shift+p`）から`Reopen in Container`を選択
-
-`.vscode/launch.json`にデバッグ設定が記述されています。
-VS Codeのデバッグ機能を使用して、開発サーバーをデバッグできます。
-
-devcontainer内からGitが使えないので、Gitを操作するときはホストから操作してください。
+3. コマンドパレット（`Ctrl+Shift+p`）から`Reopen in Container`を選択
+4. メニューから開発したいサービスを選択
 
 ## コントリビュート
 

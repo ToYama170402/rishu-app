@@ -123,11 +123,11 @@ ORDER BY courses.course_id;
 	return courses, nil
 }
 
-func SaveCourses(db *gorm.DB, courses *[]model.Course) ([]schema.Course, error) {
+func CreateCourses(db *gorm.DB, courses *[]model.Course) ([]schema.Course, error) {
 	var savedCourses []schema.Course
 	result := db.Transaction(func(tx *gorm.DB) error {
 		for _, course := range *courses {
-			if savedCourse, error := SaveCourse(db, &course); error != nil {
+			if savedCourse, error := CreateCourse(db, &course); error != nil {
 				return error
 			} else {
 				savedCourses = append(savedCourses, savedCourse)
@@ -142,7 +142,7 @@ func SaveCourses(db *gorm.DB, courses *[]model.Course) ([]schema.Course, error) 
 	}
 }
 
-func SaveCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
+func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 	var savedCourse schema.Course
 	result := db.Transaction(func(tx *gorm.DB) error {
 		faculty := schema.Faculty{Faculty: course.Faculty.Faculty}

@@ -5,6 +5,7 @@
     "../../docker-compose.dev.yml"
   ],
   "service": "frontend",
+  "overrideCommand": true,
   "workspaceFolder": "/workspace/frontend",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}

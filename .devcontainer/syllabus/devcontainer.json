@@ -5,6 +5,7 @@
     "../../docker-compose.dev.yml"
   ],
   "service": "syllabus",
+  "overrideCommand": true,
   "workspaceFolder": "/workspace/syllabus",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}

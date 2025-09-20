@@ -30,3 +30,5 @@ RUN mkdir -p /workspace/syllabus-scrape/node_modules && \
 
 USER node
 RUN pnpm install
+
+CMD [ "sleep", "infinity" ]

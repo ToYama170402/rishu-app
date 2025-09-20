@@ -30,3 +30,5 @@ RUN go env -w GOPROXY=direct
 COPY go.mod .
 COPY go.sum .
 RUN go mod download
+
+CMD [ "sleep", "infinity" ]

@@ -5,6 +5,7 @@
     "../../docker-compose.dev.yml"
   ],
   "service": "syllabus-scrape",
+  "overrideCommand": true,
   "workspaceFolder": "/workspace/syllabus-scrape",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}

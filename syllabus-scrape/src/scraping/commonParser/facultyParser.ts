@@ -6,7 +6,7 @@ import { BaseParser, type ParseResult, type ParsingContext } from "../core";
 type Input = { faculty: string; department: string };
 
 export class FacultyParser extends BaseParser<Input, Faculty> {
-  parse(input: Input, context?: ParsingContext): ParseResult<Faculty> {
+  parse(input: Input, _context?: ParsingContext): ParseResult<Faculty> {
     const { result, duration } = this.measureParseTime(() => {
       const faculty = { faculty: input.faculty, department: input.department };
       if (isFaculty(faculty) && isDepartment(faculty.department)) {

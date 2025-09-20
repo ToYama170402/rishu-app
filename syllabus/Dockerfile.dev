@@ -1,5 +1,7 @@
 # ベースイメージ
-FROM golang:1.24.0-bullseye
+FROM golang:1.24.0-bookworm
+
+RUN apt-get update && apt-get install -y postgresql-client
 
 # 作業ディレクトリを作成
 WORKDIR /workspace/syllabus

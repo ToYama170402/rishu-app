@@ -113,7 +113,7 @@ export class CourseService {
         updates.courseDescription || existingCourse.courseDescription
       )
       .withInstructors(updates.instructors || existingCourse.instructors)
-      .withSchedule(updates.schedule || existingCourse.schedule)
+      .withSchedule(updates.schedules || existingCourse.schedules)
       .withSemester(updates.semester || existingCourse.semester)
       .withFaculty(updates.faculty || existingCourse.faculty)
       .withUrls(

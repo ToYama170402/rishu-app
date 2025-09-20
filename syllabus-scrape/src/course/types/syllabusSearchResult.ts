@@ -8,5 +8,5 @@ export type SyllabusSearchResult = Pick<
   | "title"
   | "instructors"
   | "semester"
-  | "schedule"
+  | "schedules"
 >;

@@ -32,7 +32,7 @@ export class SyllabusSearchResultParser extends BaseParser<
         title: input.title.replace(/[.*?]/g, ""),
         instructors: input.instructors,
         semester: input.semester,
-        schedule: input.schedule,
+        schedules: input.schedule,
       };
     });
     return this.createParseResult(result, duration);

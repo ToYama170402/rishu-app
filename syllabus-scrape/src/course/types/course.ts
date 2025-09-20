@@ -21,7 +21,7 @@ export type Course = {
   subjectDistinguished: string;
   courseDescription: string;
   instructors: Instructor[];
-  schedule: DayPeriod[];
+  schedules: DayPeriod[];
   classFormat: string;
   lectureForm: string;
   targetStudents: string;

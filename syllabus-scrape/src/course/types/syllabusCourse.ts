@@ -9,7 +9,7 @@ export type SyllabusCourse = Pick<
   | "courseNumber"
   | "lectureForm"
   | "numberOfProper"
-  | "schedule"
+  | "schedules"
   | "classFormat"
   | "subjectDistinguished"
   | "semester"

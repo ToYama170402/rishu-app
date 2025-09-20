@@ -34,7 +34,7 @@ export class CourseBuilder {
       courseNumber: syllabusCourse.courseNumber,
       lectureForm: syllabusCourse.lectureForm,
       numberOfProper: syllabusCourse.numberOfProper,
-      schedule: syllabusCourse.schedule,
+      schedules: syllabusCourse.schedules,
       classFormat: syllabusCourse.classFormat,
       subjectDistinguished: syllabusCourse.subjectDistinguished,
       semester: syllabusCourse.semester,
@@ -68,8 +68,8 @@ export class CourseBuilder {
     if (searchResult.semester && !this.course.semester) {
       this.course.semester = searchResult.semester;
     }
-    if (searchResult.schedule && !this.course.schedule) {
-      this.course.schedule = searchResult.schedule;
+    if (searchResult.schedules && !this.course.schedules) {
+      this.course.schedules = searchResult.schedules;
     }
 
     return this;
@@ -86,7 +86,7 @@ export class CourseBuilder {
   }
 
   withSchedule(schedule: DayPeriod[]): this {
-    this.course.schedule = schedule;
+    this.course.schedules = schedule;
     return this;
   }
 
@@ -158,7 +158,7 @@ export class CourseBuilder {
       "subjectDistinguished",
       "courseDescription",
       "instructors",
-      "schedule",
+      "schedules",
       "targetStudents",
       "lectureRoomInfo",
       "faculty",

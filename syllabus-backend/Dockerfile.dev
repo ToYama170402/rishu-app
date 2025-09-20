@@ -18,7 +18,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 USER $USERNAME
 
 # 作業ディレクトリを作成
-WORKDIR /workspace/syllabus
+WORKDIR /workspace/syllabus-backend
 
 # Goのモジュールキャッシュを永続化するためのボリュームを設定
 VOLUME /go/pkg/mod

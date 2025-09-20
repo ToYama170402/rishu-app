@@ -24,11 +24,11 @@ services:
       - rishu-app_network
     depends_on:
       - frontend
-      - syllabus
+      - syllabus-backend
 
-  syllabus:
+  syllabus-backend:
     build:
-      context: ./syllabus
+      context: ./syllabus-backend
       dockerfile: Dockerfile
     restart: always
     environment:
@@ -56,5 +56,4 @@ networks:
     driver: bridge
 
 volumes:
-  db:
   syllabus-db:

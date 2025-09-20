@@ -3,7 +3,13 @@ server {
   server_name ~^(.+)$;
   
   location / {
-    proxy_pass http://frontend:3000;
+    proxy_pass http://frontend:3000/;
+    proxy_set_header host $host;
+    proxy_set_header x-real-ip $remote_addr;
+  }
+
+  location /api/ {
+    proxy_pass http://syllabus-backend:8080/;
     proxy_set_header host $host;
     proxy_set_header x-real-ip $remote_addr;
   }

@@ -4,9 +4,9 @@
     "../../docker-compose.yml",
     "../../docker-compose.dev.yml"
   ],
-  "service": "syllabus",
+  "service": "syllabus-backend",
   "overrideCommand": true,
-  "workspaceFolder": "/workspace/syllabus",
+  "workspaceFolder": "/workspace/syllabus-backend",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },

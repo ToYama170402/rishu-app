@@ -17,7 +17,7 @@ export class SingleTextExtractor extends BaseExtractor<string> {
   extract(
     parser: DOMParser,
     selector: string = this.selector,
-    context?: ExtractionContext
+    _context?: ExtractionContext
   ) {
     const warnings: string[] = [];
     const errors: string[] = [];
@@ -40,7 +40,7 @@ export class SingleTextExtractor extends BaseExtractor<string> {
     parser: DOMParser,
     selector: string,
     warnings: string[],
-    errors: string[],
+    _errors: string[],
     fieldName: string
   ): string {
     const element = parser.findFirst(selector);

@@ -1,0 +1,1 @@
+export { JsonFileCourseRepositoryAdapter } from "./jsonFileAdapter";

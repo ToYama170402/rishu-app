@@ -1,6 +1,0 @@
-APScheduler==3.10.4
-beautifulsoup4==4.12.3
-Django==4.2.24
-requests==2.32.4
-selenium==4.26.1
-gunicorn==23.0.0

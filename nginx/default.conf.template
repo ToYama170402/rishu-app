@@ -1,7 +1,7 @@
 server {
   listen 80;
   server_name ~^(.+)$;
-  
+
   location / {
     proxy_pass http://frontend:3000/;
     proxy_set_header host $host;
@@ -10,6 +10,18 @@ server {
 
   location /api/ {
     proxy_pass http://syllabus-backend:8080/;
+    proxy_set_header host $host;
+    proxy_set_header x-real-ip $remote_addr;
+  }
+
+  location /builder/ {
+    proxy_pass http://syllabus-frontend:3000/;
+    proxy_set_header host $host;
+    proxy_set_header x-real-ip $remote_addr;
+  }
+
+  location /_build/ {
+    proxy_pass http://syllabus-frontend:3000;
     proxy_set_header host $host;
     proxy_set_header x-real-ip $remote_addr;
   }

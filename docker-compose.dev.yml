@@ -54,6 +54,32 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=syllabus
 
+  syllabus-frontend:
+    user: "${UID:-1000}:${GID:-1000}"
+    build:
+      context: ./syllabus-frontend
+      dockerfile: Dockerfile.dev
+    restart: no
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+      - type: volume
+        source: syllabus-frontend-node-modules
+        target: /workspace/syllabus-frontend/node_modules
+      - type: volume
+        source: pnpm-store
+        target: /workspace/syllabus-frontend/.pnpm-store
+    ports:
+      - 4000:4000
+    command: pnpm run dev
+    depends_on:
+      - syllabus-backend
+    networks:
+      - rishu-app_network
+
   syllabus-scrape:
     user: "${UID:-1000}:${GID:-1000}"
     build:
@@ -80,3 +106,4 @@ volumes:
   pnpm-store:
   frontend-node-modules:
   syllabus-scrape-node-modules:
+  syllabus-frontend-node-modules:

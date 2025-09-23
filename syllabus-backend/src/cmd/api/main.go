@@ -6,6 +6,7 @@ import (
 	"github.com/ToYama170402/rishu-app/syllabus/src/api/routes"
 	"github.com/ToYama170402/rishu-app/syllabus/src/internal/config"
 	"github.com/ToYama170402/rishu-app/syllabus/src/internal/schema"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,6 +38,14 @@ func main() {
 	)
 
 	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:  []string{"*"},
+		AllowMethods:  []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:  []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders: []string{"Content-Length"},
+	}))
+
 	routes.SetupRoutes(router)
 	router.Run(":8080")
 }

@@ -23,5 +23,5 @@ type Course struct {
 	TargetStudents       string       `json:"targetStudents"`
 	LectureRoomInfo      string       `json:"lectureRoomInfo" binding:"required"`
 	Faculty              Faculty      `json:"faculty" binding:"required"`
-	Keyword              []string     `json:"keyword"`
+	Keywords             []string     `json:"keywords"`
 }

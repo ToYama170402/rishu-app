@@ -146,27 +146,27 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 	var savedCourse schema.Course
 	result := db.Transaction(func(tx *gorm.DB) error {
 		faculty := schema.Faculty{Faculty: course.Faculty.Faculty}
-		if err := tx.Model(&schema.Faculty{}).FirstOrCreate(&faculty).Error; err != nil {
+		if err := tx.Model(&schema.Faculty{}).FirstOrCreate(&faculty, &faculty).Error; err != nil {
 			return err
 		}
 
 		department := schema.Department{DepartmentName: course.Faculty.Department, Faculty: &faculty}
-		if err := tx.Model(&schema.Department{}).FirstOrCreate(&department).Error; err != nil {
+		if err := tx.Model(&schema.Department{}).FirstOrCreate(&department, &department).Error; err != nil {
 			return err
 		}
 
 		classFormat := schema.ClassFormat{ClassFormat: course.ClassFormat}
-		if err := tx.Model(&schema.ClassFormat{}).FirstOrCreate(&classFormat).Error; err != nil {
+		if err := tx.Model(&schema.ClassFormat{}).FirstOrCreate(&classFormat, &classFormat).Error; err != nil {
 			return err
 		}
 
 		lectureForm := schema.LectureForm{LectureForm: course.LectureForm}
-		if err := tx.Model(&schema.LectureForm{}).FirstOrCreate(&lectureForm).Error; err != nil {
+		if err := tx.Model(&schema.LectureForm{}).FirstOrCreate(&lectureForm, &lectureForm).Error; err != nil {
 			return err
 		}
 
 		targetStudents := schema.TargetStudents{TargetStudents: course.TargetStudents}
-		if err := tx.Model(&schema.TargetStudents{}).FirstOrCreate(&targetStudents).Error; err != nil {
+		if err := tx.Model(&schema.TargetStudents{}).FirstOrCreate(&targetStudents, &targetStudents).Error; err != nil {
 			return err
 		}
 
@@ -202,7 +202,7 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 		semesters := []schema.Semester{}
 		for _, semester := range course.Semester {
 			a := schema.Semester{Semester: semester}
-			if err := tx.Model(&schema.Semester{}).FirstOrCreate(&a).Error; err != nil {
+			if err := tx.Model(&schema.Semester{}).FirstOrCreate(&a, &a).Error; err != nil {
 				return err
 			}
 			semesters = append(semesters, a)
@@ -222,9 +222,9 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 		}
 
 		keywords := []schema.Keyword{}
-		for _, keyword := range course.Keyword {
+		for _, keyword := range course.Keywords {
 			a := schema.Keyword{Keyword: keyword}
-			if err := tx.Model(&schema.Keyword{}).FirstOrCreate(&a).Error; err != nil {
+			if err := tx.Model(&schema.Keyword{}).FirstOrCreate(&a, &a).Error; err != nil {
 				return err
 			}
 			keywords = append(keywords, a)
@@ -246,7 +246,7 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 		instructors := []schema.Instructor{}
 		for _, instructor := range course.Instructors {
 			a := schema.Instructor{Name: instructor.Name}
-			if err := tx.Model(&schema.Instructor{}).FirstOrCreate(&a).Error; err != nil {
+			if err := tx.Model(&schema.Instructor{}).FirstOrCreate(&a, &a).Error; err != nil {
 				return err
 			}
 			instructors = append(instructors, a)
@@ -268,7 +268,7 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 		dayPeriods := []schema.DayPeriod{}
 		for _, schedule := range course.Schedules {
 			dayPeriod := schema.DayPeriod{Day: schedule.Day, Period: schedule.Period}
-			if err := tx.Model(&schema.DayPeriod{}).FirstOrCreate(&dayPeriod).Error; err != nil {
+			if err := tx.Model(&schema.DayPeriod{}).FirstOrCreate(&dayPeriod, &dayPeriod).Error; err != nil {
 				return err
 			}
 			dayPeriods = append(dayPeriods, dayPeriod)

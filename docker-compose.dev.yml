@@ -72,6 +72,8 @@ services:
       - type: volume
         source: pnpm-store
         target: /workspace/syllabus-frontend/.pnpm-store
+    ports:
+      - 4000:4000
     command: pnpm run dev
     depends_on:
       - syllabus-backend

@@ -15,14 +15,9 @@ server {
   }
 
   location /builder/ {
-    proxy_pass http://syllabus-frontend:3000/;
-    proxy_set_header host $host;
-    proxy_set_header x-real-ip $remote_addr;
-  }
-
-  location /_build/ {
     proxy_pass http://syllabus-frontend:3000;
     proxy_set_header host $host;
     proxy_set_header x-real-ip $remote_addr;
   }
+
 }

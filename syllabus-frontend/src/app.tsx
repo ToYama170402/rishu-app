@@ -13,6 +13,7 @@ export default function App() {
           <Suspense>{props.children}</Suspense>
         </>
       )}
+      base="/builder"
     >
       <FileRoutes />
     </Router>

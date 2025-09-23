@@ -1,5 +1,5 @@
 {
-  "name": "syllabus",
+  "name": "syllabus-backend",
   "dockerComposeFile": [
     "../../docker-compose.yml",
     "../../docker-compose.dev.yml"
@@ -28,3 +28,4 @@
     }
   }
 }
+

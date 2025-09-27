@@ -158,7 +158,7 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 			return err
 		}
 
-		department := schema.Department{DepartmentName: course.Faculty.Department, Faculty: &faculty}
+		department := schema.Department{DepartmentName: course.Faculty.Department, FacultyID: faculty.FacultyID}
 		if err := tx.Model(&schema.Department{}).FirstOrCreate(&department, &department).Error; err != nil {
 			return err
 		}

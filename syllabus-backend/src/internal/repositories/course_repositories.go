@@ -13,59 +13,108 @@ func GetCourses(db *gorm.DB) ([]model.Course, error) {
 		Data json.RawMessage `gorm:"column:jsonb_build_object"`
 	}
 	rawQuery := `
-SELECT jsonb_build_object('courseId', courses.course_id, 'year', courses.year, 'title', courses.title, 'numbering', courses.numbering, 'courseNumber', courses.course_number, 'numberOfProper', courses.number_of_proper, 'semester',
-                            (SELECT json_agg(semesters.semester)
-                             FROM
-                               (SELECT DISTINCT semester
-                                FROM semesters
-                                LEFT JOIN course_semester_relations ON semesters.semester_id = course_semester_relations.semester_id
-                                WHERE course_semester_relations.course_id = courses.course_id ) semesters), 'numberOfCredits', courses.number_of_credits, 'note', courses.note, 'japaneseUrl', courses.japanese_url, 'englishUrl', courses.english_url, 'openAccount', courses.open_account, 'max60CreditsFlag', courses.max60_credits_flag, 'subjectDistinguished', courses.subject_distinguished, 'courseDescription', courses.course_description, 'instructors',
-                            (SELECT json_agg(json_build_object('name', instructors.name))
-                             FROM
-                               (SELECT DISTINCT instructors.name
-                                FROM responsibles
-                                LEFT JOIN instructors ON responsibles.instructor_id = instructors.instructor_id
-                                WHERE responsibles.course_id = courses.course_id ) instructors), 'schedules',
-                            (SELECT json_agg(json_build_object('day', schedules.day, 'period', schedules.period))
-                             FROM
-                               (SELECT DISTINCT day_periods.day, day_periods.period
-                                FROM schedules
-                                LEFT JOIN day_periods ON schedules.day_period_id = day_periods.day_period_id
-                                WHERE schedules.course_id = courses.course_id ) schedules), 'classFormat', class_formats.class_format, 'lectureForm', lecture_forms.lecture_form, 'targetStudents', target_students.target_students, 'lectureRoomInfo', lecture_room_infos.lecture_room_info, 'departmentName', departments.department_name, 'faculty', json_build_object('faculty', faculties.faculty, 'department', departments.department_name), 'keywords',
-                            (SELECT json_agg(keywords.keyword)
-                             FROM
-                               (SELECT DISTINCT keywords.keyword
-                                FROM course_keyword_relations
-                                LEFT JOIN keywords ON course_keyword_relations.keyword_id = keywords.keyword_id
-                                WHERE course_keyword_relations.course_id = courses.course_id ) keywords)) AS jsonb_build_object
-FROM courses
-LEFT JOIN class_formats ON courses.class_format_id = class_formats.class_format_id
-LEFT JOIN lecture_forms ON courses.lecture_form_id = lecture_forms.lecture_form_id
-LEFT JOIN target_students ON courses.target_students_id = target_students.target_students_id
-LEFT JOIN lecture_room_infos ON courses.lecture_room_info_id = lecture_room_infos.lecture_room_info_id
-LEFT JOIN departments ON courses.department_id = departments.department_id
-LEFT JOIN faculties ON departments.faculty_id = faculties.faculty_id
-GROUP BY courses.course_id,
-         courses.year,
-         courses.title,
-         courses.numbering,
-         courses.course_number,
-         courses.number_of_proper,
-         courses.number_of_credits,
-         courses.note,
-         courses.japanese_url,
-         courses.english_url,
-         courses.open_account,
-         courses.max60_credits_flag,
-         courses.subject_distinguished,
-         courses.course_description,
-         class_formats.class_format,
-         lecture_forms.lecture_form,
-         target_students.target_students,
-         lecture_room_infos.lecture_room_info,
-         departments.department_name,
-         faculties.faculty
-ORDER BY courses.course_id;
+SELECT
+  jsonb_build_object (
+    'courseId',
+    courses.course_id,
+    'year',
+    courses.year,
+    'title',
+    courses.title,
+    'numbering',
+    courses.numbering,
+    'courseNumber',
+    courses.course_number,
+    'numberOfProper',
+    courses.number_of_proper,
+    'semester',
+    json_agg (DISTINCT semesters.semester) FILTER (
+      WHERE
+        semesters.semester IS NOT NULL
+    ),
+    'numberOfCredits',
+    courses.number_of_credits,
+    'note',
+    courses.note,
+    'japaneseUrl',
+    courses.japanese_url,
+    'englishUrl',
+    courses.english_url,
+    'openAccount',
+    courses.open_account,
+    'max60CreditsFlag',
+    courses.max60_credits_flag,
+    'subjectDistinguished',
+    courses.subject_distinguished,
+    'courseDescription',
+    courses.course_description,
+    'instructors',
+    json_agg (
+      DISTINCT jsonb_build_object ('name', instructors.name)
+    ) FILTER (
+      WHERE
+        instructors.name IS NOT NULL
+    ),
+    'schedules',
+    json_agg (
+      DISTINCT jsonb_build_object (
+        'day',
+        day_periods.day,
+        'period',
+        day_periods.period
+      )
+    ) FILTER (
+      WHERE
+        day_periods.day IS NOT NULL
+        AND day_periods.period IS NOT NULL
+    ),
+    'classFormat',
+    class_formats.class_format,
+    'lectureForm',
+    lecture_forms.lecture_form,
+    'targetStudents',
+    target_students.target_students,
+    'lectureRoomInfo',
+    lecture_room_infos.lecture_room_info,
+    'faculty',
+    json_build_object (
+      'faculty',
+      faculties.faculty,
+      'department',
+      departments.department_name
+    ),
+    'keywords',
+    json_agg (DISTINCT keywords.keyword) FILTER (
+      WHERE
+        keywords.keyword IS NOT NULL
+    )
+  )
+FROM
+  courses
+  LEFT JOIN class_formats ON courses.class_format_id = class_formats.class_format_id
+  LEFT JOIN lecture_forms ON courses.lecture_form_id = lecture_forms.lecture_form_id
+  LEFT JOIN target_students ON courses.target_students_id = target_students.target_students_id
+  LEFT JOIN lecture_room_infos ON courses.lecture_room_info_id = lecture_room_infos.lecture_room_info_id
+  LEFT JOIN departments ON courses.department_id = departments.department_id
+  LEFT JOIN faculties ON departments.faculty_id = faculties.faculty_id
+  LEFT JOIN course_semester_relations on course_semester_relations.course_id = courses.course_id
+  LEFT JOIN semesters on course_semester_relations.semester_id = semesters.semester_id
+  LEFT JOIN responsibles on responsibles.course_id = courses.course_id
+  LEFT JOIN instructors on responsibles.instructor_id = instructors.instructor_id
+  LEFT JOIN schedules on courses.course_id = schedules.course_id
+  LEFT JOIN day_periods on schedules.day_period_id = day_periods.day_period_id
+  LEFT JOIN course_keyword_relations on course_keyword_relations.course_id = courses.course_id
+  LEFT JOIN keywords on keywords.keyword_id = course_keyword_relations.keyword_id
+GROUP BY
+  courses.course_id,
+  class_formats.class_format,
+  lecture_forms.lecture_form,
+  target_students.target_students,
+  lecture_room_infos.lecture_room_info,
+  faculties.faculty,
+  departments.department_name
+ORDER BY
+  courses.course_id;
 `
 	if err := db.Raw(rawQuery).Scan(&rawResults).Error; err != nil {
 		return nil, err

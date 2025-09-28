@@ -19,7 +19,8 @@ import { Course } from "@/type/course";
 import { Faculty, facultyMap } from "@/type/department";
 import { Semester } from "@/type/semester";
 import { VsFilter } from "solid-icons/vs";
-import { createSignal, For, Show } from "solid-js";
+import { For, Show } from "solid-js";
+import createSet from "@/signals/createSet";
 
 type props = {
   courses: () => Course[];
@@ -29,23 +30,11 @@ export default function CourseTimeTable({ courses }: props) {
   const columnElements = [1, 2, 3, 4, 5];
   const schoolQuarters = [1, 2, 3, 4];
 
-  const [facultyFilter, setFacultyFilter] = createSignal(
-    new Set<Faculty["faculty"]>(Object.values(facultyMap).flat())
-  );
-  const addFacultyFilter = (faculty: Faculty["faculty"]) => {
-    setFacultyFilter((prev) => {
-      const newSet = new Set(prev);
-      newSet.add(faculty);
-      return newSet;
-    });
-  };
-  const removeFacultyFilter = (faculty: Faculty["faculty"]) => {
-    setFacultyFilter((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(faculty);
-      return newSet;
-    });
-  };
+  const {
+    set: facultyFilter,
+    add: addFacultyFilter,
+    remove: removeFacultyFilter,
+  } = createSet<Faculty["faculty"]>(Object.values(facultyMap).flat());
 
   return (
     <Tabs class="h-full w-full">

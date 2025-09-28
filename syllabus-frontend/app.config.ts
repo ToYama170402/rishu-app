@@ -14,5 +14,6 @@ export default defineConfig({
         "@": resolve(__dirname, "./src"),
       },
     },
+    ssr: { noExternal: ["solid-icons"] },
   },
 });

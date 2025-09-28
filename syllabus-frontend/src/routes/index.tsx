@@ -86,7 +86,7 @@ export default function Home() {
                                   <Checkbox
                                     class="flex"
                                     onChange={(e) => {
-                                      if (e.valueOf()) {
+                                      if (e) {
                                         addFacultyFilter(f);
                                       } else {
                                         removeFacultyFilter(f);
@@ -118,18 +118,19 @@ export default function Home() {
             >
               <TimeTable
                 class="flex justify-around h-full w-full p-1 pt-0 overflow-x-auto snap-x scroll-smooth"
-                datum={
-                  courses()?.filter((course) =>
-                    course.semester.includes(quarter as Semester)
+                datum={() =>
+                  courses()?.filter(
+                    (course) =>
+                      course.semester.includes(quarter as Semester) &&
+                      facultyFilter().has(course.faculty.faculty)
                   ) || []
                 }
                 rowElements={["月", "火", "水", "木", "金"]}
                 columnElements={columnElements}
-                cellGetter={(datum, row, col) =>
-                  datum.filter((d) =>
+                cellGetter={(datum, row, col) => () =>
+                  datum().filter((d) =>
                     d.schedules.some((s) => s.day === row && s.period === col)
-                  )
-                }
+                  )}
                 rowRenderer={({ row, children }) => (
                   <Card class="mx-[2px] xl:w-[calc(20%-4px)] lg:w-[calc(33.3333%-2px)] md:w-[calc(50%-2px)] sm:w-[calc(100%-2px)] h-full overflow-hidden shrink-0 grow-0 p-1 snap-start scroll-ml-[4px]">
                     <CardHeader class="text-center p-0 h-[20px]">
@@ -145,53 +146,47 @@ export default function Home() {
                     <div class="h-1/5 py-1">
                       <div class="h-full overflow-y-auto snap-y scroll-smooth">
                         <ul>
-                          <For each={data}>
+                          <For each={data()}>
                             {(item) => (
-                              <Show
-                                when={facultyFilter().has(item.faculty.faculty)}
-                              >
-                                <li class="list-none text-nowrap text-ellipsis overflow-clip snap-start">
-                                  <Dialog>
-                                    <DialogTrigger>
-                                      {item.title} | {item.faculty.faculty}
-                                    </DialogTrigger>
-                                    <DialogContent class="bg-white">
-                                      <DialogHeader>
-                                        <DialogTitle>
-                                          {item.title} | {item.faculty.faculty}
-                                        </DialogTitle>
-                                        <DialogDescription>
-                                          <p>
-                                            {item.instructors
-                                              .map((inst) => inst.name)
-                                              .join(", ")}
-                                          </p>
-                                          <Separator class="my-2" />
-                                          <p>
-                                            単位: {item.numberOfCredits} 単位
-                                          </p>
-                                          <p>講義番号: {item.courseNumber}</p>
-                                          <p>
-                                            開講学期:{" "}
-                                            {item.semester
-                                              .map((semester) => `${semester}Q`)
-                                              .join(", ")}
-                                          </p>
-                                          <p>講義室： {item.lectureRoomInfo}</p>
-                                          <Separator class="my-2" />
-                                          <For each={item.schedules}>
-                                            {(s) => (
-                                              <p>
-                                                {s.day}曜日 {s.period}限目
-                                              </p>
-                                            )}
-                                          </For>
-                                        </DialogDescription>
-                                      </DialogHeader>
-                                    </DialogContent>
-                                  </Dialog>
-                                </li>
-                              </Show>
+                              <li class="list-none text-nowrap text-ellipsis overflow-clip snap-start">
+                                <Dialog>
+                                  <DialogTrigger>
+                                    {item.title} | {item.faculty.faculty}
+                                  </DialogTrigger>
+                                  <DialogContent class="bg-white">
+                                    <DialogHeader>
+                                      <DialogTitle>
+                                        {item.title} | {item.faculty.faculty}
+                                      </DialogTitle>
+                                      <DialogDescription>
+                                        <p>
+                                          {item.instructors
+                                            .map((inst) => inst.name)
+                                            .join(", ")}
+                                        </p>
+                                        <Separator class="my-2" />
+                                        <p>単位: {item.numberOfCredits} 単位</p>
+                                        <p>講義番号: {item.courseNumber}</p>
+                                        <p>
+                                          開講学期:{" "}
+                                          {item.semester
+                                            .map((semester) => `${semester}Q`)
+                                            .join(", ")}
+                                        </p>
+                                        <p>講義室： {item.lectureRoomInfo}</p>
+                                        <Separator class="my-2" />
+                                        <For each={item.schedules}>
+                                          {(s) => (
+                                            <p>
+                                              {s.day}曜日 {s.period}限目
+                                            </p>
+                                          )}
+                                        </For>
+                                      </DialogDescription>
+                                    </DialogHeader>
+                                  </DialogContent>
+                                </Dialog>
+                              </li>
                             )}
                           </For>
                         </ul>

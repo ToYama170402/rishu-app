@@ -1,10 +1,10 @@
 import { For, JSX } from "solid-js";
 
 type timeTableProps<T, R, C> = {
-  datum: T[];
+  datum: T;
   rowElements: R[];
   columnElements: C[];
-  cellGetter: (datum: T[], row: R, col: C) => T[];
+  cellGetter: (datum: T, row: R, col: C) => T;
   rowRenderer: ({
     row,
     children,
@@ -12,7 +12,7 @@ type timeTableProps<T, R, C> = {
     row: R;
     children: JSX.Element;
   }) => JSX.Element;
-  cellRenderer: ({ data, col }: { data: T[]; col: C }) => JSX.Element;
+  cellRenderer: ({ data, col }: { data: T; col: C }) => JSX.Element;
   rowLabel?: ({ row }: { row: R }) => JSX.Element;
   columnLabel?: ({ col }: { col: C }) => JSX.Element;
   class?: string;

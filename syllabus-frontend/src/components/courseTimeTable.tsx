@@ -21,12 +21,14 @@ import { Semester } from "@/type/semester";
 import { VsFilter } from "solid-icons/vs";
 import { For, Show } from "solid-js";
 import createSet from "@/signals/createSet";
+import { cn } from "@/libs/cn";
 
 type props = {
   courses: () => Course[];
+  class?: string;
 };
 
-export default function CourseTimeTable({ courses }: props) {
+export default function CourseTimeTable({ courses, class: className }: props) {
   const columnElements = [1, 2, 3, 4, 5];
   const schoolQuarters = [1, 2, 3, 4];
 
@@ -37,7 +39,7 @@ export default function CourseTimeTable({ courses }: props) {
   } = createSet<Faculty["faculty"]>(Object.values(facultyMap).flat());
 
   return (
-    <Tabs class="h-full w-full">
+    <Tabs class={cn("h-full w-full", className)} defaultValue="1">
       <div class="flex justify-around px-1">
         <TabsList class="gap-1">
           <For each={schoolQuarters}>

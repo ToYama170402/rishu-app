@@ -10,7 +10,7 @@ export default function App() {
       root={(props) => (
         <>
           <Header class="h-[44px]" />
-          <main class="h-[calc(100vh-44px)] w-full">
+          <main class="h-[calc(100dvh-44px)] w-full">
             <Suspense>{props.children}</Suspense>
           </main>
         </>

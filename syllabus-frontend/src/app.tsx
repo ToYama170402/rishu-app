@@ -7,10 +7,14 @@ import "./app.css";
 export default function App() {
   return (
     <Router
-      root={props => (
+      root={(props) => (
         <>
-          <Nav />
-          <Suspense>{props.children}</Suspense>
+          <header>
+            <Nav class="h-[44px]" />
+          </header>
+          <main class="h-[calc(100vh-44px)] w-full">
+            <Suspense>{props.children}</Suspense>
+          </main>
         </>
       )}
     >

@@ -54,10 +54,13 @@ export default function Home() {
     <div class="h-full w-full flex">
       <Tabs>
         <div class="flex justify-around px-1">
-          <TabsList class="pb-0">
+          <TabsList class="gap-1">
             <For each={schoolQuarters}>
               {(quarter) => (
-                <TabsTrigger class="w-fit" value={quarter.toString()}>
+                <TabsTrigger
+                  class="w-fit data-[selected]:border-gray-800 data-[selected]:border-b-2 rounded-none p-1 pb-0 leading-1"
+                  value={quarter.toString()}
+                >
                   {quarter}Q
                 </TabsTrigger>
               )}

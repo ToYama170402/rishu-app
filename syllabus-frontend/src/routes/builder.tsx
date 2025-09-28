@@ -24,7 +24,7 @@ import {
 import createSet from "@/signals/createSet";
 import { Course } from "@/type/course";
 import getCourses from "@/utils/getCourses";
-import { createResource, For, Match, Switch } from "solid-js";
+import { createEffect, createResource, For, Match, Switch } from "solid-js";
 import { VsFilter } from "solid-icons/vs";
 
 export default function Builder() {
@@ -87,6 +87,7 @@ export default function Builder() {
                       }
                     }}
                     checked={semesterFilters().has(semester)}
+                    defaultChecked={true}
                   >
                     <CheckboxControl />
                     <CheckboxLabel>
@@ -113,6 +114,7 @@ export default function Builder() {
                       }
                     }}
                     checked={facultyFilters().has(f)}
+                    defaultChecked={true}
                   >
                     <CheckboxControl />
                     <CheckboxLabel>

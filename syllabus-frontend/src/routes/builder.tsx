@@ -72,7 +72,7 @@ export default function Builder() {
           <DialogTrigger>
             <VsFilter />
           </DialogTrigger>
-          <DialogContent class="sm:max-w-[425px] bg-white">
+          <DialogContent class="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>講義追加フィルター</DialogTitle>
             </DialogHeader>
@@ -174,7 +174,8 @@ export default function Builder() {
                   <Switch>
                     <Match when={takenCourses().has(course)}>
                       <Button
-                        class="mx-auto bg-gray-800 text-gray-50"
+                        variant={"destructive"}
+                        class="mx-auto"
                         onclick={() => removeTakenCourse(course)}
                       >
                         削除

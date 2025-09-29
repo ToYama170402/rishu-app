@@ -8,7 +8,7 @@ export default function Header(props: { class?: string }) {
     <header>
       <nav
         class={cn(
-          "w-full bg-white border-b border-slate-200 flex items-center px-4",
+          "w-full border-b border-slate-200 flex items-center px-4",
           props.class
         )}
       >

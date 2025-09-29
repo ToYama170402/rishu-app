@@ -40,16 +40,11 @@ export default function CourseTimeTable({ courses, class: className }: props) {
 
   return (
     <Tabs class={cn("h-full w-full", className)} defaultValue="1">
-      <div class="flex justify-around px-1">
-        <TabsList class="gap-1">
+      <div class="flex justify-between px-1 ">
+        <TabsList class="gap-1 w-fit">
           <For each={schoolQuarters}>
             {(quarter) => (
-              <TabsTrigger
-                class="w-fit data-[selected]:border-gray-800 data-[selected]:border-b-2 rounded-none p-1 pb-0 leading-1"
-                value={quarter.toString()}
-              >
-                {quarter}Q
-              </TabsTrigger>
+              <TabsTrigger value={quarter.toString()}>{quarter}Q</TabsTrigger>
             )}
           </For>
         </TabsList>
@@ -57,7 +52,7 @@ export default function CourseTimeTable({ courses, class: className }: props) {
           <DialogTrigger>
             <VsFilter />
           </DialogTrigger>
-          <DialogContent class="bg-white">
+          <DialogContent>
             <DialogHeader>
               <DialogTitle>フィルター</DialogTitle>
               <DialogDescription>
@@ -140,7 +135,7 @@ export default function CourseTimeTable({ courses, class: className }: props) {
                                 <DialogTrigger>
                                   {item.title} | {item.faculty.faculty}
                                 </DialogTrigger>
-                                <DialogContent class="bg-white">
+                                <DialogContent>
                                   <DialogHeader>
                                     <DialogTitle>
                                       {item.title} | {item.faculty.faculty}

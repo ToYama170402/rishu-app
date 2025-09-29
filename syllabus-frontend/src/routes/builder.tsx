@@ -26,6 +26,7 @@ import { Course } from "@/type/course";
 import getCourses from "@/utils/getCourses";
 import { createEffect, createResource, For, Match, Switch } from "solid-js";
 import { VsFilter } from "solid-icons/vs";
+import { Semester } from "@/type/semester";
 
 export default function Builder() {
   const [courses] = createResource(getCourses);
@@ -38,18 +39,25 @@ export default function Builder() {
     set: semesterFilters,
     add: addSemesterFilter,
     remove: removeSemesterFilter,
-  } = createSet<number>(
-    courses()
-      ?.map((course) => course.semester)
-      .flat()
-  );
+  } = createSet<Semester>([]);
   const {
     set: facultyFilters,
     add: addFacultyFilter,
     remove: removeFacultyFilter,
-  } = createSet<Course["faculty"]["faculty"]>(
-    courses()?.map((course) => course.faculty.faculty)
-  );
+  } = createSet<Course["faculty"]["faculty"]>([]);
+
+  createEffect(() => {
+    const c = courses();
+    if (c) {
+      c.map((course) => course.semester)
+        .flat()
+        .filter((s, i, arr) => arr.indexOf(s) === i)
+        .forEach((s) => addSemesterFilter(s));
+      c.map((course) => course.faculty.faculty)
+        .filter((f, i, arr) => arr.indexOf(f) === i)
+        .forEach((f) => addFacultyFilter(f));
+    }
+  });
 
   return (
     <div class="flex h-full">

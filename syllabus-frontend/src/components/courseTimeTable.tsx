@@ -22,6 +22,7 @@ import { VsFilter } from "solid-icons/vs";
 import { For, Show } from "solid-js";
 import createSet from "@/signals/createSet";
 import { cn } from "@/libs/cn";
+import { buttonVariants } from "@/components/ui/button";
 
 type props = {
   courses: () => Course[];
@@ -164,6 +165,15 @@ export default function CourseTimeTable({ courses, class: className }: props) {
                                           </p>
                                         )}
                                       </For>
+                                      <Separator class="my-2" />
+                                      <a
+                                        href={`https://eduweb.sta.kanazawa-u.ac.jp${item.japaneseUrl}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class={cn(buttonVariants())}
+                                      >
+                                        シラバス
+                                      </a>
                                     </DialogDescription>
                                   </DialogHeader>
                                 </DialogContent>

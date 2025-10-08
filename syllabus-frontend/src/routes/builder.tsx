@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import CourseTimeTable from "@/components/courseTimeTable";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,24 +8,26 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
   Checkbox,
   CheckboxControl,
   CheckboxLabel,
 } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { createLocalStorageSignal } from "@/signals/createLocalStorage";
 import createSet from "@/signals/createSet";
 import { Course } from "@/type/course";
-import getCourses from "@/utils/getCourses";
-import { createEffect, createResource, For, Match, Switch } from "solid-js";
-import { VsFilter } from "solid-icons/vs";
 import { Semester } from "@/type/semester";
+import getCourses from "@/utils/getCourses";
+import { VsFilter } from "solid-icons/vs";
+import { createEffect, createResource, For, Match, Switch } from "solid-js";
 
 export default function Builder() {
   const [courses] = createResource(getCourses);
@@ -35,6 +36,18 @@ export default function Builder() {
     add: addTakenCourse,
     remove: removeTakenCourse,
   } = createSet<Course>([]);
+
+  const [storedTakenCourses, setStoredTakenCourses] = createLocalStorageSignal<
+    Course[]
+  >("takenCourses", []);
+
+  createEffect(() => {
+    if (storedTakenCourses().length && takenCourses().size === 0) {
+      storedTakenCourses().forEach((course) => addTakenCourse(course));
+    }
+    setStoredTakenCourses(Array.from(takenCourses().values()));
+  });
+
   const {
     set: semesterFilters,
     add: addSemesterFilter,

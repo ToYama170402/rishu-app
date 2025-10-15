@@ -21,6 +21,10 @@ services:
     ports:
       - 3000:3000
     command: pnpm run dev
+
+  web:
+    restart: no
+
   mock-page:
     build:
       context: ./mock-page

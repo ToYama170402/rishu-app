@@ -1,18 +1,19 @@
 map $host $backend_upstream {
-  # サブドメインが builder.* のとき syllabus-frontend にルーティング
+  ~^${SERVER_NAME}               frontend:3000;
   ~^builder\.${SERVER_NAME}      syllabus-frontend:4000;
-  # サブドメインが api.* のとき syllabus-backend にルーティング
   ~^api\.${SERVER_NAME}          syllabus-backend:8080;
-  # デフォルトは frontend
-  default          frontend:3000;
+  default                        "";
 }
 
 server {
   listen 80;
-  server_name ~^(.+).${SERVER_NAME}$;
+  server_name ~^(api|builder|).${SERVER_NAME}$;
   resolver 127.0.0.11 valid=30s;
 
   location / {
+    if ($backend_upstream = "") {
+      return 404;
+    }
     proxy_pass http://$backend_upstream$request_uri;
     proxy_set_header Host $host;
     proxy_set_header X-real-IP $remote_addr;

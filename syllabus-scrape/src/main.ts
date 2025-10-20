@@ -214,3 +214,15 @@ Object.keys(facultyMap).forEach((key) => {
 });
 
 timeRangeScheduler.start();
+
+process.on("SIGINT", async () => {
+  await logger.log("Received SIGINT. Shutting down...");
+  timeRangeScheduler.stop();
+  process.exit();
+});
+
+process.on("SIGTERM", async () => {
+  await logger.log("Received SIGTERM. Shutting down...");
+  timeRangeScheduler.stop();
+  process.exit();
+});

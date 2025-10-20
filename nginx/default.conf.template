@@ -1,7 +1,7 @@
 map $host $backend_upstream {
-  ~^${SERVER_NAME}               frontend:3000;
-  ~^builder\.${SERVER_NAME}      syllabus-frontend:4000;
-  ~^api\.${SERVER_NAME}          syllabus-backend:8080;
+  ~^${SERVER_NAME}$               frontend:3000;
+  ~^builder\.${SERVER_NAME}$      syllabus-frontend:4000;
+  ~^api\.${SERVER_NAME}$          syllabus-backend:8080;
   default                        "";
 }
 

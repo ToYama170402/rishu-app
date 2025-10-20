@@ -17,4 +17,8 @@ server {
     proxy_set_header Host $host;
     proxy_set_header X-real-IP $remote_addr;
   }
+  location ~ /\. {
+    deny all;
+    return 404;
+  }
 }

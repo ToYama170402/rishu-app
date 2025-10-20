@@ -1,28 +1,20 @@
+map $host $backend_upstream {
+  # サブドメインが builder.* のとき syllabus-frontend にルーティング
+  ~^builder\.      syllabus-frontend:4000;
+  # サブドメインが api.* のとき syllabus-backend にルーティング
+  ~^api\.          syllabus-backend:8080;
+  # デフォルトは frontend
+  default          frontend:3000;
+}
+
 server {
   listen 80;
   server_name ~^(.+)$;
+  resolver 127.0.0.11 valid=30s;
 
   location / {
-    proxy_pass http://frontend:3000/;
-    proxy_set_header host $host;
-    proxy_set_header x-real-ip $remote_addr;
-  }
-
-  location /api/ {
-    proxy_pass http://syllabus-backend:8080/;
-    proxy_set_header host $host;
-    proxy_set_header x-real-ip $remote_addr;
-  }
-
-  location /builder/ {
-    proxy_pass http://syllabus-frontend:3000/;
-    proxy_set_header host $host;
-    proxy_set_header x-real-ip $remote_addr;
-  }
-
-  location /_build/ {
-    proxy_pass http://syllabus-frontend:3000;
-    proxy_set_header host $host;
-    proxy_set_header x-real-ip $remote_addr;
+    proxy_pass http://$backend_upstream$request_uri;
+    proxy_set_header Host $host;
+    proxy_set_header X-real-IP $remote_addr;
   }
 }

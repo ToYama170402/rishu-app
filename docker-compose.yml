@@ -21,7 +21,7 @@ services:
     ports:
       - 80:80
     environment:
-      - SERVER_NAME=${HOST_NAME}
+      - SERVER_NAME=${SERVER_NAME}
     networks:
       - rishu-app_network
     depends_on:

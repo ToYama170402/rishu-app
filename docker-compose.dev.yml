@@ -24,6 +24,8 @@ services:
 
   web:
     restart: no
+    environment:
+      - SERVER_NAME=localhost
 
   mock-page:
     build:

@@ -1,15 +1,15 @@
 map $host $backend_upstream {
   # サブドメインが builder.* のとき syllabus-frontend にルーティング
-  ~^builder\.      syllabus-frontend:4000;
+  ~^builder\.${SERVER_NAME}      syllabus-frontend:4000;
   # サブドメインが api.* のとき syllabus-backend にルーティング
-  ~^api\.          syllabus-backend:8080;
+  ~^api\.${SERVER_NAME}          syllabus-backend:8080;
   # デフォルトは frontend
   default          frontend:3000;
 }
 
 server {
   listen 80;
-  server_name ~^(.+)$;
+  server_name ~^(.+).${SERVER_NAME}$;
   resolver 127.0.0.11 valid=30s;
 
   location / {

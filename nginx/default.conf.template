@@ -7,7 +7,7 @@ map $host $backend_upstream {
 
 server {
   listen 80;
-  server_name ~^(api|builder|).${SERVER_NAME}$;
+  server_name ~^(api\.|builder\.|)${SERVER_NAME}$;
   resolver 127.0.0.11 valid=30s;
 
   location / {

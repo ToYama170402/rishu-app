@@ -20,6 +20,8 @@ services:
     restart: always
     ports:
       - 80:80
+    environment:
+      - SERVER_NAME=${SERVER_NAME}
     networks:
       - rishu-app_network
     depends_on:

@@ -1,0 +1,242 @@
+
+openapi: "3.0.3"
+info:
+  title: Rishu Syllabus API
+  version: "1.0.0"
+  description: "API specification for syllabus-backend (subset: /courses)"
+
+servers:
+  - url: http://api.*:8080
+    description: API for rishu-app
+
+paths:
+  /courses:
+    get:
+      summary: List courses
+      operationId: GetCourses
+      responses:
+        '200':
+          description: A list of courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+    post:
+      summary: Create courses (bulk)
+      operationId: CreateCourses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: Creation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  course:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseResponse'
+        '400':
+          description: Bad request (invalid JSON)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+components:
+  schemas:
+    Course:
+      type: object
+      properties:
+        courseId:
+          type: integer
+        year:
+          type: integer
+        title:
+          type: string
+        numbering:
+          type: string
+        courseNumber:
+          type: string
+        numberOfProper:
+          type: integer
+        semester:
+          type: array
+          items:
+            type: integer
+        numberOfCredits:
+          type: integer
+        note:
+          type: string
+        japaneseUrl:
+          type: string
+        englishUrl:
+          type: string
+        openAccount:
+          type: string
+        max60CreditsFlag:
+          type: string
+        subjectDistinguished:
+          type: string
+        courseDescription:
+          type: string
+        instructors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Instructor'
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+        classFormat:
+          type: string
+        lectureForm:
+          type: string
+        targetStudents:
+          type: string
+        lectureRoomInfo:
+          type: string
+        faculty:
+          $ref: '#/components/schemas/Faculty'
+        keywords:
+          type: array
+          items:
+            type: string
+      required:
+        - year
+        - title
+        - numbering
+        - courseNumber
+        - semester
+        - numberOfCredits
+        - japaneseUrl
+        - englishUrl
+        - courseDescription
+        - instructors
+        - schedules
+        - lectureRoomInfo
+        - faculty
+
+    CourseResponse:
+      type: object
+      properties:
+        courseId:
+          type: integer
+        year:
+          type: integer
+        title:
+          type: string
+        numbering:
+          type: string
+        courseNumber:
+          type: string
+        numberOfProper:
+          type: integer
+        semester:
+          type: array
+          items:
+            type: integer
+        numberOfCredits:
+          type: integer
+        note:
+          type: string
+        japaneseUrl:
+          type: string
+        englishUrl:
+          type: string
+        openAccount:
+          type: string
+        max60CreditsFlag:
+          type: string
+        subjectDistinguished:
+          type: string
+        courseDescription:
+          type: string
+        instructors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Instructor'
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+        classFormat:
+          type: string
+        lectureForm:
+          type: string
+        targetStudents:
+          type: string
+        lectureRoomInfo:
+          type: string
+        faculty:
+          $ref: '#/components/schemas/Faculty'
+        keywords:
+          type: array
+          items:
+            type: string
+
+    Instructor:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    Schedule:
+      type: object
+      properties:
+        day:
+          type: string
+        period:
+          type: integer
+      required:
+        - day
+        - period
+
+    Faculty:
+      type: object
+      properties:
+        faculty:
+          type: string
+        department:
+          type: string
+      required:
+        - faculty
+
+

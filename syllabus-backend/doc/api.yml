@@ -93,7 +93,7 @@ paths:
               items:
                 $ref: '#/components/schemas/Course'
       responses:
-        '200':
+        '201':
           description: Creation result
           content:
             application/json:

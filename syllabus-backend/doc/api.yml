@@ -137,6 +137,115 @@ paths:
                   error:
                     type: string
 
+  /courses/{courseId}:
+    get:
+      summary: Get course by ID
+      operationId: GetCourseById
+      parameters:
+        - name: courseId
+          in: path
+          description: Unique identifier for the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Course details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseResponse'
+        '404':
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    put:
+      summary: Update course by ID
+      operationId: UpdateCourseById
+      parameters:
+        - name: courseId
+          in: path
+          description: Unique identifier for the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: Course updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseResponse'
+        '404':
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    delete:
+      summary: Delete course by ID
+      operationId: DeleteCourseById
+      parameters:
+        - name: courseId
+          in: path
+          description: Unique identifier for the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Course deleted successfully
+        '404':
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
 components:
   schemas:
     Course:

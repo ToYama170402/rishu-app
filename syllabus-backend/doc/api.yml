@@ -116,6 +116,17 @@ paths:
                 properties:
                   error:
                     type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        index:
+                          type: integer
+                        field:
+                          type: string
+                        message:
+                          type: string
         '500':
           description: Internal server error
           content:

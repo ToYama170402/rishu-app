@@ -142,8 +142,6 @@ components:
     Course:
       type: object
       properties:
-        courseId:
-          type: integer
         year:
           type: integer
         title:

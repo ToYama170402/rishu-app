@@ -59,9 +59,18 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Course'
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+                  courses:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseResponse'
         '500':
           description: Internal server error
           content:
@@ -94,7 +103,7 @@ paths:
                   status:
                     type: string
                     example: success
-                  course:
+                  courses:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseResponse'

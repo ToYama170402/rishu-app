@@ -80,7 +80,6 @@ paths:
                 properties:
                   error:
                     type: string
-
     post:
       summary: Create courses (bulk)
       operationId: CreateCourses

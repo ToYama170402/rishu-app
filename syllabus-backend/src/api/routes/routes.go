@@ -11,6 +11,7 @@ func SetupRoutes(router *gin.Engine) {
 		courses.GET("", controllers.GetCourses)
 		courses.POST("", controllers.CreateCourses)
 		courses.GET("/:courseID", controllers.GetCourseByID)
+		courses.PUT("/:courseID", controllers.UpdateCourseByID)
 		courses.DELETE("/:courseID", controllers.DeleteCourseByID)
 	}
 }

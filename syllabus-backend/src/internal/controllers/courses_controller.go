@@ -52,6 +52,27 @@ func CreateCourses(c *gin.Context) {
 	}
 }
 
+func UpdateCourseByID(c *gin.Context) {
+	db := config.GetDB()
+	var courseID courseId
+	var courseData model.Course
+
+	if err := c.ShouldBindUri(&courseID); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid course ID"})
+		return
+	}
+	if err := c.BindJSON(&courseData); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	course, err := repositories.UpdateCourseByID(db, courseID.Id, &courseData)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"status": "success", "course": course})
+}
+
 func DeleteCourseByID(c *gin.Context) {
 	db := config.GetDB()
 	var courseID courseId

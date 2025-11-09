@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"encoding/json"
+	"fmt"
 
 	_ "embed"
 
@@ -17,7 +18,8 @@ func GetCourses(db *gorm.DB) ([]model.Course, error) {
 	var rawResults []struct {
 		Data json.RawMessage `gorm:"column:jsonb_build_object"`
 	}
-	if err := db.Raw(CourseListQuery).Scan(&rawResults).Error; err != nil {
+	query := fmt.Sprintf(CourseListQuery, "")
+	if err := db.Raw(query).Scan(&rawResults).Error; err != nil {
 		return nil, err
 	}
 

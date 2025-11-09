@@ -34,6 +34,22 @@ func GetCourses(db *gorm.DB) ([]model.Course, error) {
 	return courses, nil
 }
 
+func GetCourseByID(db *gorm.DB, courseID int) (model.Course, error) {
+	var rawResult struct {
+		Data json.RawMessage `gorm:"column:jsonb_build_object"`
+	}
+	query := fmt.Sprintf(CourseListQuery, "WHERE courses.course_id = $1")
+	if err := db.Raw(query, courseID).Scan(&rawResult).Error; err != nil {
+		return model.Course{}, err
+	}
+
+	var course model.Course
+	if err := json.Unmarshal(rawResult.Data, &course); err != nil {
+		return model.Course{}, err
+	}
+	return course, nil
+}
+
 func CreateCourses(db *gorm.DB, courses *[]model.Course) ([]schema.Course, error) {
 	var savedCourses []schema.Course
 	result := db.Transaction(func(tx *gorm.DB) error {

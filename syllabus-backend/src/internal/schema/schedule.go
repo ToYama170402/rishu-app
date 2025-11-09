@@ -5,5 +5,5 @@ type Schedule struct {
 	CourseID    int       `gorm:"column:course_id;index"`
 	Course      Course    `gorm:"reference:CourseID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	DayPeriodID int       `gorm:"column:day_period_id;index"`
-	DayPeriod   DayPeriod `gorm:"reference:DayPeriodID;"`
+	DayPeriod   DayPeriod `gorm:"reference:DayPeriodID"`
 }

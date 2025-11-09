@@ -7,6 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type courseId struct {
+	Id int `uri:"courseID" binding:"required"`
+}
+
 func GetCourses(c *gin.Context) {
 	db := config.GetDB()
 	courses, err := repositories.GetCourses(db)
@@ -46,10 +50,6 @@ func CreateCourses(c *gin.Context) {
 	} else {
 		c.JSON(200, gin.H{"status": "success", "course": course})
 	}
-}
-
-type courseId struct {
-	Id int `uri:"courseID" binding:"required"`
 }
 
 func DeleteCourseByID(c *gin.Context) {

@@ -40,12 +40,12 @@ func GetCourseByID(db *gorm.DB, courseID int) (*model.Course, error) {
 	}
 	query := fmt.Sprintf(CourseListQuery, "WHERE courses.course_id = $1")
 	if err := db.Raw(query, courseID).Scan(&rawResult).Error; err != nil {
-		return &model.Course{}, err
+		return nil, err
 	}
 
 	var course model.Course
 	if err := json.Unmarshal(rawResult.Data, &course); err != nil {
-		return &model.Course{}, err
+		return nil, err
 	}
 	return &course, nil
 }
@@ -53,9 +53,10 @@ func GetCourseByID(db *gorm.DB, courseID int) (*model.Course, error) {
 func CreateCourses(db *gorm.DB, courses *[]model.Course) (*[]*model.Course, error) {
 	var savedCourses []*model.Course
 	result := db.Transaction(func(tx *gorm.DB) error {
-		for _, course := range *courses {
-			if savedCourse, error := createCourse(db, &course); error != nil {
-				return error
+		for i := range *courses {
+			course := (*courses)[i]
+			if savedCourse, err := createCourse(tx, &course); err != nil {
+				return err
 			} else {
 				savedCourses = append(savedCourses, savedCourse)
 			}
@@ -63,7 +64,7 @@ func CreateCourses(db *gorm.DB, courses *[]model.Course) (*[]*model.Course, erro
 		return nil
 	})
 	if result != nil {
-		return &savedCourses, result
+		return nil, result
 	} else {
 		return &savedCourses, nil
 	}
@@ -71,154 +72,148 @@ func CreateCourses(db *gorm.DB, courses *[]model.Course) (*[]*model.Course, erro
 
 func createCourse(db *gorm.DB, course *model.Course) (*model.Course, error) {
 	var savedCourse schema.Course
-	result := db.Transaction(func(tx *gorm.DB) error {
-		faculty := schema.Faculty{Faculty: course.Faculty.Faculty}
-		if err := tx.Model(&schema.Faculty{}).FirstOrCreate(&faculty, &faculty).Error; err != nil {
-			return err
-		}
-
-		department := schema.Department{DepartmentName: course.Faculty.Department, FacultyID: faculty.FacultyID}
-		if err := tx.Model(&schema.Department{}).FirstOrCreate(&department, &department).Error; err != nil {
-			return err
-		}
-
-		classFormat := schema.ClassFormat{ClassFormat: course.ClassFormat}
-		if err := tx.Model(&schema.ClassFormat{}).FirstOrCreate(&classFormat, &classFormat).Error; err != nil {
-			return err
-		}
-
-		lectureForm := schema.LectureForm{LectureForm: course.LectureForm}
-		if err := tx.Model(&schema.LectureForm{}).FirstOrCreate(&lectureForm, &lectureForm).Error; err != nil {
-			return err
-		}
-
-		targetStudents := schema.TargetStudents{TargetStudents: course.TargetStudents}
-		if err := tx.Model(&schema.TargetStudents{}).FirstOrCreate(&targetStudents, &targetStudents).Error; err != nil {
-			return err
-		}
-
-		lectureRoomInfo := schema.LectureRoomInfo{LectureRoomInfo: course.LectureRoomInfo}
-		if err := tx.Model(&schema.LectureRoomInfo{}).FirstOrCreate(&lectureRoomInfo, &lectureRoomInfo).Error; err != nil {
-			return err
-		}
-
-		savedCourse = schema.Course{
-			Year:                 course.Year,
-			Title:                course.Title,
-			Numbering:            course.Numbering,
-			CourseNumber:         course.CourseNumber,
-			NumberOfProper:       course.NumberOfProper,
-			NumberOfCredits:      course.NumberOfCredits,
-			Note:                 course.Note,
-			EnglishURL:           course.EnglishURL,
-			JapaneseURL:          course.JapaneseURL,
-			OpenAccount:          course.OpenAccount,
-			Max60CreditsFlag:     course.Max60CreditsFlag,
-			SubjectDistinguished: course.SubjectDistinguished,
-			CourseDescription:    course.CourseDescription,
-			ClassFormatID:        classFormat.ClassFormatID,
-			LectureFormID:        lectureForm.LectureFormID,
-			TargetStudentsID:     targetStudents.TargetStudentsID,
-			LectureRoomInfoID:    lectureRoomInfo.LectureRoomInfoID,
-			DepartmentID:         department.DepartmentID,
-		}
-		if err := tx.Model(&schema.Course{}).Create(&savedCourse).Error; err != nil {
-			return err
-		}
-
-		semesters := []schema.Semester{}
-		for _, semester := range course.Semester {
-			a := schema.Semester{Semester: semester}
-			if err := tx.Model(&schema.Semester{}).FirstOrCreate(&a, &a).Error; err != nil {
-				return err
-			}
-			semesters = append(semesters, a)
-		}
-
-		var courseSemesterRelation []schema.CourseSemesterRelation
-		for _, semester := range semesters {
-			courseSemesterRelation = append(courseSemesterRelation, schema.CourseSemesterRelation{
-				CourseID:   savedCourse.CourseID,
-				SemesterID: semester.SemesterID,
-			})
-		}
-		if len(courseSemesterRelation) > 0 {
-			if err := tx.Model(&schema.CourseSemesterRelation{}).Create(&courseSemesterRelation).Error; err != nil {
-				return err
-			}
-		}
-
-		keywords := []schema.Keyword{}
-		for _, keyword := range course.Keywords {
-			a := schema.Keyword{Keyword: keyword}
-			if err := tx.Model(&schema.Keyword{}).FirstOrCreate(&a, &a).Error; err != nil {
-				return err
-			}
-			keywords = append(keywords, a)
-		}
-
-		var courseKeywordRelation []schema.CourseKeywordRelation
-		for _, keyword := range keywords {
-			courseKeywordRelation = append(courseKeywordRelation, schema.CourseKeywordRelation{
-				CourseID:  savedCourse.CourseID,
-				KeywordID: keyword.KeywordID,
-			})
-		}
-		if len(courseKeywordRelation) > 0 {
-			if err := tx.Model(&schema.CourseKeywordRelation{}).Create(&courseKeywordRelation).Error; err != nil {
-				return err
-			}
-		}
-
-		instructors := []schema.Instructor{}
-		for _, instructor := range course.Instructors {
-			a := schema.Instructor{Name: instructor.Name}
-			if err := tx.Model(&schema.Instructor{}).FirstOrCreate(&a, &a).Error; err != nil {
-				return err
-			}
-			instructors = append(instructors, a)
-		}
-
-		var responsible []schema.Responsible
-		for _, instructor := range instructors {
-			responsible = append(responsible, schema.Responsible{
-				CourseID:     savedCourse.CourseID,
-				InstructorID: instructor.InstructorID,
-			})
-		}
-		if len(responsible) > 0 {
-			if err := tx.Model(&schema.Responsible{}).Create(&responsible).Error; err != nil {
-				return err
-			}
-		}
-
-		dayPeriods := []schema.DayPeriod{}
-		for _, schedule := range course.Schedules {
-			dayPeriod := schema.DayPeriod{Day: schedule.Day, Period: schedule.Period}
-			if err := tx.Model(&schema.DayPeriod{}).FirstOrCreate(&dayPeriod, &dayPeriod).Error; err != nil {
-				return err
-			}
-			dayPeriods = append(dayPeriods, dayPeriod)
-		}
-
-		var schedules []schema.Schedule
-		for _, dayPeriod := range dayPeriods {
-			schedules = append(schedules, schema.Schedule{
-				CourseID:    savedCourse.CourseID,
-				DayPeriodID: dayPeriod.DayPeriodID,
-			})
-		}
-		if len(schedules) > 0 {
-			if err := tx.Model(&schema.Schedule{}).Create(&schedules).Error; err != nil {
-				return err
-			}
-		}
-
-		return nil
-	})
-	if result != nil {
-		return &model.Course{}, result
+	faculty := schema.Faculty{Faculty: course.Faculty.Faculty}
+	if err := db.Model(&schema.Faculty{}).FirstOrCreate(&faculty, &faculty).Error; err != nil {
+		return nil, err
 	}
+
+	department := schema.Department{DepartmentName: course.Faculty.Department, FacultyID: faculty.FacultyID}
+	if err := db.Model(&schema.Department{}).FirstOrCreate(&department, &department).Error; err != nil {
+		return nil, err
+	}
+
+	classFormat := schema.ClassFormat{ClassFormat: course.ClassFormat}
+	if err := db.Model(&schema.ClassFormat{}).FirstOrCreate(&classFormat, &classFormat).Error; err != nil {
+		return nil, err
+	}
+
+	lectureForm := schema.LectureForm{LectureForm: course.LectureForm}
+	if err := db.Model(&schema.LectureForm{}).FirstOrCreate(&lectureForm, &lectureForm).Error; err != nil {
+		return nil, err
+	}
+
+	targetStudents := schema.TargetStudents{TargetStudents: course.TargetStudents}
+	if err := db.Model(&schema.TargetStudents{}).FirstOrCreate(&targetStudents, &targetStudents).Error; err != nil {
+		return nil, err
+	}
+
+	lectureRoomInfo := schema.LectureRoomInfo{LectureRoomInfo: course.LectureRoomInfo}
+	if err := db.Model(&schema.LectureRoomInfo{}).FirstOrCreate(&lectureRoomInfo, &lectureRoomInfo).Error; err != nil {
+		return nil, err
+	}
+
+	savedCourse = schema.Course{
+		Year:                 course.Year,
+		Title:                course.Title,
+		Numbering:            course.Numbering,
+		CourseNumber:         course.CourseNumber,
+		NumberOfProper:       course.NumberOfProper,
+		NumberOfCredits:      course.NumberOfCredits,
+		Note:                 course.Note,
+		EnglishURL:           course.EnglishURL,
+		JapaneseURL:          course.JapaneseURL,
+		OpenAccount:          course.OpenAccount,
+		Max60CreditsFlag:     course.Max60CreditsFlag,
+		SubjectDistinguished: course.SubjectDistinguished,
+		CourseDescription:    course.CourseDescription,
+		ClassFormatID:        classFormat.ClassFormatID,
+		LectureFormID:        lectureForm.LectureFormID,
+		TargetStudentsID:     targetStudents.TargetStudentsID,
+		LectureRoomInfoID:    lectureRoomInfo.LectureRoomInfoID,
+		DepartmentID:         department.DepartmentID,
+	}
+	if err := db.Model(&schema.Course{}).Create(&savedCourse).Error; err != nil {
+		return nil, err
+	}
+
+	semesters := []schema.Semester{}
+	for _, semester := range course.Semester {
+		a := schema.Semester{Semester: semester}
+		if err := db.Model(&schema.Semester{}).FirstOrCreate(&a, &a).Error; err != nil {
+			return nil, err
+		}
+		semesters = append(semesters, a)
+	}
+
+	var courseSemesterRelation []schema.CourseSemesterRelation
+	for _, semester := range semesters {
+		courseSemesterRelation = append(courseSemesterRelation, schema.CourseSemesterRelation{
+			CourseID:   savedCourse.CourseID,
+			SemesterID: semester.SemesterID,
+		})
+	}
+	if len(courseSemesterRelation) > 0 {
+		if err := db.Model(&schema.CourseSemesterRelation{}).Create(&courseSemesterRelation).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	keywords := []schema.Keyword{}
+	for _, keyword := range course.Keywords {
+		a := schema.Keyword{Keyword: keyword}
+		if err := db.Model(&schema.Keyword{}).FirstOrCreate(&a, &a).Error; err != nil {
+			return nil, err
+		}
+		keywords = append(keywords, a)
+	}
+
+	var courseKeywordRelation []schema.CourseKeywordRelation
+	for _, keyword := range keywords {
+		courseKeywordRelation = append(courseKeywordRelation, schema.CourseKeywordRelation{
+			CourseID:  savedCourse.CourseID,
+			KeywordID: keyword.KeywordID,
+		})
+	}
+	if len(courseKeywordRelation) > 0 {
+		if err := db.Model(&schema.CourseKeywordRelation{}).Create(&courseKeywordRelation).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	instructors := []schema.Instructor{}
+	for _, instructor := range course.Instructors {
+		a := schema.Instructor{Name: instructor.Name}
+		if err := db.Model(&schema.Instructor{}).FirstOrCreate(&a, &a).Error; err != nil {
+			return nil, err
+		}
+		instructors = append(instructors, a)
+	}
+
+	var responsible []schema.Responsible
+	for _, instructor := range instructors {
+		responsible = append(responsible, schema.Responsible{
+			CourseID:     savedCourse.CourseID,
+			InstructorID: instructor.InstructorID,
+		})
+	}
+	if len(responsible) > 0 {
+		if err := db.Model(&schema.Responsible{}).Create(&responsible).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	dayPeriods := []schema.DayPeriod{}
+	for _, schedule := range course.Schedules {
+		dayPeriod := schema.DayPeriod{Day: schedule.Day, Period: schedule.Period}
+		if err := db.Model(&schema.DayPeriod{}).FirstOrCreate(&dayPeriod, &dayPeriod).Error; err != nil {
+			return nil, err
+		}
+		dayPeriods = append(dayPeriods, dayPeriod)
+	}
+
+	var schedules []schema.Schedule
+	for _, dayPeriod := range dayPeriods {
+		schedules = append(schedules, schema.Schedule{
+			CourseID:    savedCourse.CourseID,
+			DayPeriodID: dayPeriod.DayPeriodID,
+		})
+	}
+	if len(schedules) > 0 {
+		if err := db.Model(&schema.Schedule{}).Create(&schedules).Error; err != nil {
+			return nil, err
+		}
+	}
+
 	return convertSchemaCourseToModelCourse(&savedCourse)
 }
 

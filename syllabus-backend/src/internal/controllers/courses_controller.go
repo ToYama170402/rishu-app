@@ -17,6 +17,22 @@ func GetCourses(c *gin.Context) {
 	c.JSON(200, courses)
 }
 
+func GetCourseByID(c *gin.Context) {
+	db := config.GetDB()
+	var courseID courseId
+
+	if err := c.ShouldBindUri(&courseID); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid course ID"})
+		return
+	}
+	course, err := repositories.GetCourseByID(db, courseID.Id)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, course)
+}
+
 func CreateCourses(c *gin.Context) {
 	db := config.GetDB()
 	var course []model.Course

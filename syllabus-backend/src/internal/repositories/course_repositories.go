@@ -222,6 +222,35 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 	return savedCourse, nil
 }
 
+func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*model.Course, error) {
+	err := db.Transaction(func(tx *gorm.DB) error {
+		var existingCourse schema.Course
+		if err := tx.Model(&schema.Course{}).Where("course_id = ?", courseID).First(&existingCourse).Error; err != nil {
+			return err
+		}
+
+		existingCourse.Title = updatedCourse.Title
+		existingCourse.Numbering = updatedCourse.Numbering
+		existingCourse.CourseNumber = updatedCourse.CourseNumber
+		existingCourse.NumberOfProper = updatedCourse.NumberOfProper
+		existingCourse.NumberOfCredits = updatedCourse.NumberOfCredits
+		existingCourse.Note = updatedCourse.Note
+		existingCourse.EnglishURL = updatedCourse.EnglishURL
+		existingCourse.JapaneseURL = updatedCourse.JapaneseURL
+		existingCourse.OpenAccount = updatedCourse.OpenAccount
+		existingCourse.Max60CreditsFlag = updatedCourse.Max60CreditsFlag
+		existingCourse.SubjectDistinguished = updatedCourse.SubjectDistinguished
+		existingCourse.CourseDescription = updatedCourse.CourseDescription
+
+		if err := tx.Model(&schema.Course{}).Save(&existingCourse).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+	return updatedCourse, err
+}
+
 func DeleteCourseByID(db *gorm.DB, courseID int) error {
 	return db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&schema.Course{}).Where("course_id = ?", courseID).Delete(&schema.Course{}).Error; err != nil {

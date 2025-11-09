@@ -14,7 +14,7 @@ import (
 //go:embed sql/course_list_json_query.sql
 var CourseListQuery string
 
-func GetCourses(db *gorm.DB) ([]model.Course, error) {
+func GetCourses(db *gorm.DB) (*[]model.Course, error) {
 	var rawResults []struct {
 		Data json.RawMessage `gorm:"column:jsonb_build_object"`
 	}
@@ -31,30 +31,30 @@ func GetCourses(db *gorm.DB) ([]model.Course, error) {
 		}
 		courses = append(courses, c)
 	}
-	return courses, nil
+	return &courses, nil
 }
 
-func GetCourseByID(db *gorm.DB, courseID int) (model.Course, error) {
+func GetCourseByID(db *gorm.DB, courseID int) (*model.Course, error) {
 	var rawResult struct {
 		Data json.RawMessage `gorm:"column:jsonb_build_object"`
 	}
 	query := fmt.Sprintf(CourseListQuery, "WHERE courses.course_id = $1")
 	if err := db.Raw(query, courseID).Scan(&rawResult).Error; err != nil {
-		return model.Course{}, err
+		return &model.Course{}, err
 	}
 
 	var course model.Course
 	if err := json.Unmarshal(rawResult.Data, &course); err != nil {
-		return model.Course{}, err
+		return &model.Course{}, err
 	}
-	return course, nil
+	return &course, nil
 }
 
-func CreateCourses(db *gorm.DB, courses *[]model.Course) ([]schema.Course, error) {
-	var savedCourses []schema.Course
+func CreateCourses(db *gorm.DB, courses *[]model.Course) (*[]*model.Course, error) {
+	var savedCourses []*model.Course
 	result := db.Transaction(func(tx *gorm.DB) error {
 		for _, course := range *courses {
-			if savedCourse, error := CreateCourse(db, &course); error != nil {
+			if savedCourse, error := createCourse(db, &course); error != nil {
 				return error
 			} else {
 				savedCourses = append(savedCourses, savedCourse)
@@ -63,13 +63,13 @@ func CreateCourses(db *gorm.DB, courses *[]model.Course) ([]schema.Course, error
 		return nil
 	})
 	if result != nil {
-		return savedCourses, result
+		return &savedCourses, result
 	} else {
-		return savedCourses, nil
+		return &savedCourses, nil
 	}
 }
 
-func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
+func createCourse(db *gorm.DB, course *model.Course) (*model.Course, error) {
 	var savedCourse schema.Course
 	result := db.Transaction(func(tx *gorm.DB) error {
 		faculty := schema.Faculty{Faculty: course.Faculty.Faculty}
@@ -217,9 +217,28 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 		return nil
 	})
 	if result != nil {
-		return savedCourse, result
+		return &model.Course{}, result
 	}
-	return savedCourse, nil
+	return convertSchemaCourseToModelCourse(&savedCourse)
+}
+
+func convertSchemaCourseToModelCourse(schemaCourse *schema.Course) (*model.Course, error) {
+	return &model.Course{
+		CourseID:             schemaCourse.CourseID,
+		Year:                 schemaCourse.Year,
+		Title:                schemaCourse.Title,
+		Numbering:            schemaCourse.Numbering,
+		CourseNumber:         schemaCourse.CourseNumber,
+		NumberOfProper:       schemaCourse.NumberOfProper,
+		NumberOfCredits:      schemaCourse.NumberOfCredits,
+		Note:                 schemaCourse.Note,
+		EnglishURL:           schemaCourse.EnglishURL,
+		JapaneseURL:          schemaCourse.JapaneseURL,
+		OpenAccount:          schemaCourse.OpenAccount,
+		Max60CreditsFlag:     schemaCourse.Max60CreditsFlag,
+		SubjectDistinguished: schemaCourse.SubjectDistinguished,
+		CourseDescription:    schemaCourse.CourseDescription,
+	}, nil
 }
 
 func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*model.Course, error) {

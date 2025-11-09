@@ -31,3 +31,22 @@ func CreateCourses(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "success", "course": course})
 	}
 }
+
+type courseId struct {
+	Id int `uri:"courseID" binding:"required"`
+}
+
+func DeleteCourseByID(c *gin.Context) {
+	db := config.GetDB()
+	var courseID courseId
+
+	if err := c.ShouldBindUri(&courseID); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid course ID"})
+		return
+	}
+	if err := repositories.DeleteCourseByID(db, courseID.Id); err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"status": "success"})
+}

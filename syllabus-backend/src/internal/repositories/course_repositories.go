@@ -302,3 +302,12 @@ func CreateCourse(db *gorm.DB, course *model.Course) (schema.Course, error) {
 	}
 	return savedCourse, nil
 }
+
+func DeleteCourseByID(db *gorm.DB, courseID int) error {
+	return db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(&schema.Course{}).Where("course_id = ?", courseID).Delete(&schema.Course{}).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+}

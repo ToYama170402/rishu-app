@@ -68,9 +68,8 @@ func CreateCourses(db *gorm.DB, courses *[]model.Course) (*[]*model.Course, erro
 	})
 	if result != nil {
 		return nil, result
-	} else {
-		return &savedCourses, nil
 	}
+	return &savedCourses, nil
 }
 
 func createCourse(db *gorm.DB, course *model.Course) (*model.Course, error) {

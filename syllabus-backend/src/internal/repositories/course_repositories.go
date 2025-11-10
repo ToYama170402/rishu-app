@@ -240,8 +240,8 @@ func convertSchemaCourseToModelCourse(schemaCourse *schema.Course) (*model.Cours
 }
 
 func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*model.Course, error) {
+	var existingCourse schema.Course
 	err := db.Transaction(func(tx *gorm.DB) error {
-		var existingCourse schema.Course
 		if err := tx.Model(&schema.Course{}).Where("course_id = ?", courseID).First(&existingCourse).Error; err != nil {
 			return err
 		}
@@ -265,7 +265,10 @@ func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*
 
 		return nil
 	})
-	return updatedCourse, err
+	if err != nil {
+		return nil, err
+	}
+	return convertSchemaCourseToModelCourse(&existingCourse)
 }
 
 func DeleteCourseByID(db *gorm.DB, courseID int) error {

@@ -42,6 +42,9 @@ func GetCourseByID(db *gorm.DB, courseID int) (*model.Course, error) {
 	if err := db.Raw(query, courseID).Scan(&rawResult).Error; err != nil {
 		return nil, err
 	}
+	if rawResult.Data == nil || len(rawResult.Data) == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
 
 	var course model.Course
 	if err := json.Unmarshal(rawResult.Data, &course); err != nil {

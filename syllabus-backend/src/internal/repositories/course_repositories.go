@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"encoding/json"
+	"errors"
 
 	_ "embed"
 
@@ -15,6 +16,8 @@ var CourseListQueryHeader string
 
 //go:embed sql/course_list_json_query_footer.sql
 var CourseListQueryFooter string
+
+var ErrCourseNotFound = errors.New("course not found")
 
 func GetCourses(db *gorm.DB) (*[]model.Course, error) {
 	var rawResults []struct {
@@ -45,7 +48,7 @@ func GetCourseByID(db *gorm.DB, courseID int) (*model.Course, error) {
 		return nil, err
 	}
 	if len(rawResult.Data) == 0 {
-		return nil, gorm.ErrRecordNotFound
+		return nil, ErrCourseNotFound
 	}
 
 	var course model.Course

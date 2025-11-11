@@ -560,10 +560,10 @@ func DeleteCourseByID(db *gorm.DB, courseID int) error {
 	return db.Transaction(func(tx *gorm.DB) error {
 		if result := tx.Model(&schema.Course{}).
 			Where("course_id = ?", courseID).
-			Delete(&schema.Course{}); result.RowsAffected == 0 {
-			return ErrCourseNotFound
-		} else if result.Error != nil {
+			Delete(&schema.Course{}); result.Error != nil {
 			return result.Error
+		} else if result.RowsAffected == 0 {
+			return ErrCourseNotFound
 		}
 		return nil
 	})

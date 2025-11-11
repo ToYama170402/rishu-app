@@ -313,7 +313,12 @@ func convertSchemaCourseToModelCourse(
 func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*model.Course, error) {
 	var existingCourse schema.Course
 	err := db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Model(&schema.Course{}).Where("course_id = ?", courseID).First(&existingCourse).Error; err != nil {
+		if err := tx.Model(&schema.Course{}).
+			Where("course_id = ?", courseID).
+			First(&existingCourse).
+			Error; errors.Is(err, gorm.ErrRecordNotFound) {
+			return ErrCourseNotFound
+		} else if err != nil {
 			return err
 		}
 

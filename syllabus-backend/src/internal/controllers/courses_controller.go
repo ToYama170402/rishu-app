@@ -72,6 +72,10 @@ func UpdateCourseByID(c *gin.Context) {
 		return
 	}
 	course, err := repositories.UpdateCourseByID(db, courseID.Id, &courseData)
+	if errors.Is(err, repositories.ErrCourseNotFound) {
+		c.JSON(404, gin.H{"error": "Course not found"})
+		return
+	}
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

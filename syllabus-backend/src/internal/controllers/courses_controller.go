@@ -47,7 +47,7 @@ func CreateCourses(c *gin.Context) {
 	db := config.GetDB()
 	var course []model.Course
 	if err := c.BindJSON(&course); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(400, gin.H{"error": "Invalid request body"})
 		return
 	}
 	if course, err := repositories.CreateCourses(db, &course); err != nil {
@@ -68,7 +68,7 @@ func UpdateCourseByID(c *gin.Context) {
 		return
 	}
 	if err := c.BindJSON(&courseData); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(400, gin.H{"error": "Invalid request body"})
 		return
 	}
 	course, err := repositories.UpdateCourseByID(db, courseID.Id, &courseData)

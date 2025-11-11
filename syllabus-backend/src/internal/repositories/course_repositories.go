@@ -59,7 +59,7 @@ func GetCourseByID(db *gorm.DB, courseID int) (*model.Course, error) {
 	return &course, nil
 }
 
-func CreateCourses(db *gorm.DB, courses *[]model.Course) (*[]*model.Course, error) {
+func CreateCourses(db *gorm.DB, courses *[]model.Course) ([]*model.Course, error) {
 	var savedCourses []*model.Course
 	result := db.Transaction(func(tx *gorm.DB) error {
 		for i := range *courses {
@@ -75,7 +75,7 @@ func CreateCourses(db *gorm.DB, courses *[]model.Course) (*[]*model.Course, erro
 	if result != nil {
 		return nil, result
 	}
-	return &savedCourses, nil
+	return savedCourses, nil
 }
 
 func createCourse(db *gorm.DB, course *model.Course) (*model.Course, error) {

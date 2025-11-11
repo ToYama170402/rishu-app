@@ -397,7 +397,7 @@ func UpdateCourseByID(
 			},
 		)
 		if err != nil {
-			return fmt.Errorf("faled to update semester: %w", err)
+			return fmt.Errorf("failed to update semester: %w", err)
 		}
 
 		// Update instructors
@@ -418,7 +418,7 @@ func UpdateCourseByID(
 			},
 		)
 		if err != nil {
-			return fmt.Errorf("faled to update instructors: %w", err)
+			return fmt.Errorf("failed to update instructors: %w", err)
 		}
 
 		// update schedules
@@ -443,7 +443,7 @@ func UpdateCourseByID(
 			},
 		)
 		if err != nil {
-			return fmt.Errorf("faled to update schedules: %w", err)
+			return fmt.Errorf("failed to update schedules: %w", err)
 		}
 
 		// update keywords
@@ -464,7 +464,7 @@ func UpdateCourseByID(
 			},
 		)
 		if err != nil {
-			return fmt.Errorf("faled to update keywords: %w", err)
+			return fmt.Errorf("failed to update keywords: %w", err)
 		}
 
 		// update class format if needed

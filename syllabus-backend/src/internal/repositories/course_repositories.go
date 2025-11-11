@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"encoding/json"
-	"fmt"
 
 	_ "embed"
 
@@ -11,14 +10,17 @@ import (
 	"gorm.io/gorm"
 )
 
-//go:embed sql/course_list_json_query.sql
-var CourseListQuery string
+//go:embed sql/course_list_json_query_header.sql
+var CourseListQueryHeader string
+
+//go:embed sql/course_list_json_query_footer.sql
+var CourseListQueryFooter string
 
 func GetCourses(db *gorm.DB) (*[]model.Course, error) {
 	var rawResults []struct {
 		Data json.RawMessage `gorm:"column:jsonb_build_object"`
 	}
-	query := fmt.Sprintf(CourseListQuery, "")
+	query := CourseListQueryHeader + CourseListQueryFooter
 	if err := db.Raw(query).Scan(&rawResults).Error; err != nil {
 		return nil, err
 	}
@@ -38,11 +40,11 @@ func GetCourseByID(db *gorm.DB, courseID int) (*model.Course, error) {
 	var rawResult struct {
 		Data json.RawMessage `gorm:"column:jsonb_build_object"`
 	}
-	query := fmt.Sprintf(CourseListQuery, "WHERE courses.course_id = $1")
+	query := CourseListQueryHeader + " WHERE courses.course_id = $1 " + CourseListQueryFooter
 	if err := db.Raw(query, courseID).Scan(&rawResult).Error; err != nil {
 		return nil, err
 	}
-	if rawResult.Data == nil || len(rawResult.Data) == 0 {
+	if len(rawResult.Data) == 0 {
 		return nil, gorm.ErrRecordNotFound
 	}
 

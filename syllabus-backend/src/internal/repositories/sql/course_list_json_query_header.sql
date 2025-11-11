@@ -90,14 +90,3 @@ FROM
   LEFT JOIN day_periods on schedules.day_period_id = day_periods.day_period_id
   LEFT JOIN course_keyword_relations on course_keyword_relations.course_id = courses.course_id
   LEFT JOIN keywords on keywords.keyword_id = course_keyword_relations.keyword_id
-%s
-GROUP BY
-  courses.course_id,
-  class_formats.class_format,
-  lecture_forms.lecture_form,
-  target_students.target_students,
-  lecture_room_infos.lecture_room_info,
-  faculties.faculty,
-  departments.department_name
-ORDER BY
-  courses.course_id;

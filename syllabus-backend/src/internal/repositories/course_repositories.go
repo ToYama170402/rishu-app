@@ -280,7 +280,7 @@ func convertSchemaCourseToModelCourse(
 		Department: schemaDepartment.DepartmentName,
 	}
 
-	newCourse, err := model.NewCourse(
+	newCourse := model.NewCourse(
 		schemaCourse.CourseID,
 		schemaCourse.Year,
 		schemaCourse.Title,
@@ -305,9 +305,6 @@ func convertSchemaCourseToModelCourse(
 		modelFaculty,
 		modelKeywords,
 	)
-	if err != nil {
-		return nil, err
-	}
 	return newCourse, nil
 }
 

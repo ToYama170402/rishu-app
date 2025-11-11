@@ -50,7 +50,7 @@ func NewCourse(
 	LectureRoomInfo string,
 	Faculty Faculty,
 	Keywords []string,
-) (*Course, error) {
+) *Course {
 	return &Course{
 		CourseID:             CourseID,
 		Year:                 Year,
@@ -75,5 +75,5 @@ func NewCourse(
 		LectureRoomInfo:      LectureRoomInfo,
 		Faculty:              Faculty,
 		Keywords:             Keywords,
-	}, nil
+	}
 }

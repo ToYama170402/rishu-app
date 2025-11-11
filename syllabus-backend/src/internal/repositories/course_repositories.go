@@ -221,26 +221,93 @@ func createCourse(db *gorm.DB, course *model.Course) (*model.Course, error) {
 		}
 	}
 
-	return convertSchemaCourseToModelCourse(&savedCourse)
+	return convertSchemaCourseToModelCourse(
+		&savedCourse,
+		&semesters,
+		&instructors,
+		&dayPeriods,
+		&keywords,
+		&classFormat,
+		&lectureForm,
+		&targetStudents,
+		&lectureRoomInfo,
+		&department,
+		&faculty,
+	)
 }
 
-func convertSchemaCourseToModelCourse(schemaCourse *schema.Course) (*model.Course, error) {
-	return &model.Course{
-		CourseID:             schemaCourse.CourseID,
-		Year:                 schemaCourse.Year,
-		Title:                schemaCourse.Title,
-		Numbering:            schemaCourse.Numbering,
-		CourseNumber:         schemaCourse.CourseNumber,
-		NumberOfProper:       schemaCourse.NumberOfProper,
-		NumberOfCredits:      schemaCourse.NumberOfCredits,
-		Note:                 schemaCourse.Note,
-		EnglishURL:           schemaCourse.EnglishURL,
-		JapaneseURL:          schemaCourse.JapaneseURL,
-		OpenAccount:          schemaCourse.OpenAccount,
-		Max60CreditsFlag:     schemaCourse.Max60CreditsFlag,
-		SubjectDistinguished: schemaCourse.SubjectDistinguished,
-		CourseDescription:    schemaCourse.CourseDescription,
-	}, nil
+func convertSchemaCourseToModelCourse(
+	schemaCourse *schema.Course,
+	schemaSemester *[]schema.Semester,
+	schemaInstructor *[]schema.Instructor,
+	schemaDayPeriod *[]schema.DayPeriod,
+	schemaKeywords *[]schema.Keyword,
+	schemaClassFormat *schema.ClassFormat,
+	schemaLectureForm *schema.LectureForm,
+	schemaTargetStudents *schema.TargetStudents,
+	schemaLectureRoomInfo *schema.LectureRoomInfo,
+	schemaDepartment *schema.Department,
+	schemaFaculty *schema.Faculty,
+) (*model.Course, error) {
+	var modelSemesters []int
+	for _, semester := range *schemaSemester {
+		modelSemesters = append(modelSemesters, semester.Semester)
+	}
+
+	var modelInstructors []model.Instructor
+	for _, instructor := range *schemaInstructor {
+		modelInstructors = append(modelInstructors, model.Instructor{
+			Name: instructor.Name,
+		})
+	}
+
+	var modelSchedules []model.Schedule
+	for _, dayPeriod := range *schemaDayPeriod {
+		modelSchedules = append(modelSchedules, model.Schedule{
+			Day:    dayPeriod.Day,
+			Period: dayPeriod.Period,
+		})
+	}
+
+	var modelKeywords []string
+	for _, keyword := range *schemaKeywords {
+		modelKeywords = append(modelKeywords, keyword.Keyword)
+	}
+
+	modelFaculty := model.Faculty{
+		Faculty:    schemaFaculty.Faculty,
+		Department: schemaDepartment.DepartmentName,
+	}
+
+	newCourse, err := model.NewCourse(
+		schemaCourse.CourseID,
+		schemaCourse.Year,
+		schemaCourse.Title,
+		schemaCourse.Numbering,
+		schemaCourse.CourseNumber,
+		schemaCourse.NumberOfProper,
+		modelSemesters,
+		schemaCourse.NumberOfCredits,
+		schemaCourse.Note,
+		schemaCourse.JapaneseURL,
+		schemaCourse.EnglishURL,
+		schemaCourse.OpenAccount,
+		schemaCourse.Max60CreditsFlag,
+		schemaCourse.SubjectDistinguished,
+		schemaCourse.CourseDescription,
+		modelInstructors,
+		modelSchedules,
+		schemaClassFormat.ClassFormat,
+		schemaLectureForm.LectureForm,
+		schemaTargetStudents.TargetStudents,
+		schemaLectureRoomInfo.LectureRoomInfo,
+		modelFaculty,
+		modelKeywords,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return newCourse, nil
 }
 
 func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*model.Course, error) {
@@ -272,7 +339,19 @@ func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*
 	if err != nil {
 		return nil, err
 	}
-	return convertSchemaCourseToModelCourse(&existingCourse)
+	return convertSchemaCourseToModelCourse(
+		&existingCourse,
+		&[]schema.Semester{},
+		&[]schema.Instructor{},
+		&[]schema.DayPeriod{},
+		&[]schema.Keyword{},
+		&schema.ClassFormat{},
+		&schema.LectureForm{},
+		&schema.TargetStudents{},
+		&schema.LectureRoomInfo{},
+		&schema.Department{},
+		&schema.Faculty{},
+	)
 }
 
 func DeleteCourseByID(db *gorm.DB, courseID int) error {

@@ -17,7 +17,7 @@ func GetCourses(c *gin.Context) {
 	db := config.GetDB()
 	courses, err := repositories.GetCourses(db)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	c.JSON(200, courses)
@@ -37,7 +37,7 @@ func GetCourseByID(c *gin.Context) {
 		return
 	}
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	c.JSON(200, course)
@@ -51,7 +51,7 @@ func CreateCourses(c *gin.Context) {
 		return
 	}
 	if course, err := repositories.CreateCourses(db, &course); err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	} else {
 		c.JSON(200, gin.H{"status": "success", "course": course})
@@ -77,7 +77,7 @@ func UpdateCourseByID(c *gin.Context) {
 		return
 	}
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	c.JSON(200, gin.H{"status": "success", "course": course})
@@ -98,7 +98,7 @@ func DeleteCourseByID(c *gin.Context) {
 		return
 	}
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}
 	c.JSON(200, gin.H{"status": "success"})

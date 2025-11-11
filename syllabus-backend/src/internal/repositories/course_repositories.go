@@ -311,6 +311,47 @@ func convertSchemaCourseToModelCourse(
 	return newCourse, nil
 }
 
+// replaceManyToManyRelation はCourseと多対多の関係にあるテーブルとその中間テーブルを更新する関数です。
+// T: 更新する内容が含まれるデータの型
+// U: Courseと多対多の関係にある更新先のテーブルの型
+// V: 中間テーブルの型
+// tx: トランザクション用のgorm.DBインスタンス
+// courseID: 更新対象のCourseのID
+// updatedData: 更新後のデータ
+// model: 更新先テーブルのモデル
+// relationModel: 中間テーブルのモデル
+// createModel: updateDataから更新先テーブルもモデルを生成する関数
+// createRelation: CourseIDと更新先テーブルのモデルから中間テーブルモデルを生成する関数
+func replaceManyToManyRelation[T any, U any, V any](
+	tx *gorm.DB,
+	courseID int,
+	updatedData []T,
+	model U,
+	relationModel V,
+	createModel func(model T) U,
+	createRelation func(courseID int, model U) V,
+) ([]U, error) {
+	if err := tx.Model(&relationModel).
+		Where("course_id = ?", courseID).
+		Delete(&relationModel).Error; err != nil {
+		return nil, fmt.Errorf("failed to delete relationModel: %w", err)
+	}
+	var updatedModel []U
+	for i := range updatedData {
+		data := updatedData[i]
+		a := createModel(data)
+		if err := tx.Model(&model).FirstOrCreate(&a, &a).Error; err != nil {
+			return nil, fmt.Errorf("failed to get first model or create it: %w", err)
+		}
+		updatedModel = append(updatedModel, a)
+		relation := createRelation(courseID, a)
+		if err := tx.Model(&relationModel).Create(&relation).Error; err != nil {
+			return nil, fmt.Errorf("failed to create relationModel: %w", err)
+		}
+	}
+	return updatedModel, nil
+}
+
 func UpdateCourseByID(
 	db *gorm.DB,
 	courseID int,
@@ -338,92 +379,92 @@ func UpdateCourseByID(
 			return fmt.Errorf("failed to fetch existing course: %w", err)
 		}
 
+		var err error
+
 		// Update semesters
-		if err := tx.Model(&schema.CourseSemesterRelation{}).
-			Where("course_id = ?", courseID).
-			Delete(&schema.CourseSemesterRelation{}).Error; err != nil {
-			return fmt.Errorf("failed to delete CourseSemesterRelation: %w", err)
-		}
-		for i := range updatedCourse.Semester {
-			semester := updatedCourse.Semester[i]
-			a := schema.Semester{Semester: semester}
-			if err := tx.Model(&schema.Semester{}).FirstOrCreate(&a, &a).Error; err != nil {
-				return fmt.Errorf("failed to get first semester or create it: %w", err)
-			}
-			updatedSchemaSemester = append(updatedSchemaSemester, a)
-			courseSemesterRelation := schema.CourseSemesterRelation{
-				CourseID:   existingCourse.CourseID,
-				SemesterID: a.SemesterID,
-			}
-			if err := tx.Model(&schema.CourseSemesterRelation{}).Create(&courseSemesterRelation).Error; err != nil {
-				return fmt.Errorf("failed to create CourseSemesterRelation: %w", err)
-			}
+		updatedSchemaSemester, err = replaceManyToManyRelation(
+			tx,
+			courseID,
+			updatedCourse.Semester,
+			schema.Semester{},
+			schema.CourseSemesterRelation{},
+			func(semester int) schema.Semester { return schema.Semester{Semester: semester} },
+			func(courseID int, semester schema.Semester) schema.CourseSemesterRelation {
+				return schema.CourseSemesterRelation{
+					CourseID:   courseID,
+					SemesterID: semester.SemesterID,
+				}
+			},
+		)
+		if err != nil {
+			return fmt.Errorf("faled to update semester: %w", err)
 		}
 
 		// Update instructors
-		if err := tx.Model(&schema.Responsible{}).
-			Where("course_id = ?", courseID).
-			Delete(&schema.Responsible{}).Error; err != nil {
-			return fmt.Errorf("failed to delete existing Responsible: %w", err)
-		}
-		for i := range updatedCourse.Instructors {
-			instructor := updatedCourse.Instructors[i]
-			a := schema.Instructor{Name: instructor.Name}
-			if err := tx.Model(&schema.Instructor{}).FirstOrCreate(&a, &a).Error; err != nil {
-				return fmt.Errorf("failed to get first instructor or create it: %w", err)
-			}
-			updatedSchemaInstructors = append(updatedSchemaInstructors, a)
-			responsible := schema.Responsible{
-				CourseID:     existingCourse.CourseID,
-				InstructorID: a.InstructorID,
-			}
-			if err := tx.Model(&schema.Responsible{}).Create(&responsible).Error; err != nil {
-				return fmt.Errorf("failed to create Responsible: %w", err)
-			}
+		updatedSchemaInstructors, err = replaceManyToManyRelation(
+			tx,
+			courseID,
+			updatedCourse.Instructors,
+			schema.Instructor{},
+			schema.Responsible{},
+			func(instructor model.Instructor) schema.Instructor {
+				return schema.Instructor{Name: instructor.Name}
+			},
+			func(courseID int, instructor schema.Instructor) schema.Responsible {
+				return schema.Responsible{
+					CourseID:     courseID,
+					InstructorID: instructor.InstructorID,
+				}
+			},
+		)
+		if err != nil {
+			return fmt.Errorf("faled to update instructors: %w", err)
 		}
 
 		// update schedules
-		if err := tx.Model(&schema.Schedule{}).
-			Where("course_id = ?", courseID).
-			Delete(&schema.Schedule{}).Error; err != nil {
-			return fmt.Errorf("failed to delete existing Schedule: %w", err)
-		}
-		for i := range updatedCourse.Schedules {
-			schedule := updatedCourse.Schedules[i]
-			dayPeriod := schema.DayPeriod{Day: schedule.Day, Period: schedule.Period}
-			if err := tx.Model(&schema.DayPeriod{}).FirstOrCreate(&dayPeriod, &dayPeriod).Error; err != nil {
-				return fmt.Errorf("failed to get first day period or create it: %w", err)
-			}
-			updatedSchemaDayPeriods = append(updatedSchemaDayPeriods, dayPeriod)
-			scheduleRelation := schema.Schedule{
-				CourseID:    existingCourse.CourseID,
-				DayPeriodID: dayPeriod.DayPeriodID,
-			}
-			if err := tx.Model(&schema.Schedule{}).Create(&scheduleRelation).Error; err != nil {
-				return fmt.Errorf("failed to create Schedule: %w", err)
-			}
+
+		updatedSchemaDayPeriods, err = replaceManyToManyRelation(
+			tx,
+			courseID,
+			updatedCourse.Schedules,
+			schema.DayPeriod{},
+			schema.Schedule{},
+			func(schedule model.Schedule) schema.DayPeriod {
+				return schema.DayPeriod{
+					Day:    schedule.Day,
+					Period: schedule.Period,
+				}
+			},
+			func(courseID int, dayPeriod schema.DayPeriod) schema.Schedule {
+				return schema.Schedule{
+					CourseID:    courseID,
+					DayPeriodID: dayPeriod.DayPeriodID,
+				}
+			},
+		)
+		if err != nil {
+			return fmt.Errorf("faled to update schedules: %w", err)
 		}
 
 		// update keywords
-		if err := tx.Model(&schema.CourseKeywordRelation{}).
-			Where("course_id = ?", courseID).
-			Delete(&schema.CourseKeywordRelation{}).Error; err != nil {
-			return fmt.Errorf("failed to delete existing CourseKeywordRelation: %w", err)
-		}
-		for i := range updatedCourse.Keywords {
-			keyword := updatedCourse.Keywords[i]
-			a := schema.Keyword{Keyword: keyword}
-			if err := tx.Model(&schema.Keyword{}).FirstOrCreate(&a, &a).Error; err != nil {
-				return fmt.Errorf("failed to get first keyword or create it: %w", err)
-			}
-			updatedSchemaKeywords = append(updatedSchemaKeywords, a)
-			courseKeywordRelation := schema.CourseKeywordRelation{
-				CourseID:  existingCourse.CourseID,
-				KeywordID: a.KeywordID,
-			}
-			if err := tx.Model(&schema.CourseKeywordRelation{}).Create(&courseKeywordRelation).Error; err != nil {
-				return fmt.Errorf("failed to create CourseKeywordRelation: %w", err)
-			}
+		updatedSchemaKeywords, err = replaceManyToManyRelation(
+			tx,
+			courseID,
+			updatedCourse.Keywords,
+			schema.Keyword{},
+			schema.CourseKeywordRelation{},
+			func(keyword string) schema.Keyword {
+				return schema.Keyword{Keyword: keyword}
+			},
+			func(courseID int, keyword schema.Keyword) schema.CourseKeywordRelation {
+				return schema.CourseKeywordRelation{
+					CourseID:  courseID,
+					KeywordID: keyword.KeywordID,
+				}
+			},
+		)
+		if err != nil {
+			return fmt.Errorf("faled to update keywords: %w", err)
 		}
 
 		// update class format if needed
@@ -489,7 +530,9 @@ func UpdateCourseByID(
 		existingCourse.SubjectDistinguished = updatedCourse.SubjectDistinguished
 		existingCourse.CourseDescription = updatedCourse.CourseDescription
 
-		if err := tx.Model(&schema.Course{}).Save(&existingCourse).Error; err != nil {
+		if err := tx.Model(&schema.Course{}).
+			Where(&existingCourse).
+			Save(&existingCourse).Error; err != nil {
 			return fmt.Errorf("failed to update existing course: %w", err)
 		}
 

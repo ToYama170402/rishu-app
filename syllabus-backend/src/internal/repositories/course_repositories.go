@@ -3,6 +3,7 @@ package repositories
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	_ "embed"
 
@@ -310,8 +311,23 @@ func convertSchemaCourseToModelCourse(
 	return newCourse, nil
 }
 
-func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*model.Course, error) {
+func UpdateCourseByID(
+	db *gorm.DB,
+	courseID int,
+	updatedCourse *model.Course,
+) (*model.Course, error) {
 	var existingCourse schema.Course
+	var updatedSchemaSemester []schema.Semester
+	var updatedSchemaInstructors []schema.Instructor
+	var updatedSchemaDayPeriods []schema.DayPeriod
+	var updatedSchemaKeywords []schema.Keyword
+	var updatedSchemaClassFormat schema.ClassFormat
+	var updatedSchemaLectureForm schema.LectureForm
+	var updatedSchemaTargetStudents schema.TargetStudents
+	var updatedSchemaLectureRoomInfo schema.LectureRoomInfo
+	var updatedSchemaFaculty schema.Faculty
+	var updatedSchemaDepartment schema.Department
+
 	err := db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&schema.Course{}).
 			Where("course_id = ?", courseID).
@@ -319,9 +335,147 @@ func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*
 			Error; errors.Is(err, gorm.ErrRecordNotFound) {
 			return ErrCourseNotFound
 		} else if err != nil {
-			return err
+			return fmt.Errorf("failed to fetch existing course: %w", err)
 		}
 
+		// Update semesters
+		if err := tx.Model(&schema.CourseSemesterRelation{}).
+			Where("course_id = ?", courseID).
+			Delete(&schema.CourseSemesterRelation{}).Error; err != nil {
+			return fmt.Errorf("failed to delete CourseSemesterRelation: %w", err)
+		}
+		for i := range updatedCourse.Semester {
+			semester := updatedCourse.Semester[i]
+			a := schema.Semester{Semester: semester}
+			if err := tx.Model(&schema.Semester{}).FirstOrCreate(&a, &a).Error; err != nil {
+				return fmt.Errorf("failed to get first semester or create it: %w", err)
+			}
+			updatedSchemaSemester = append(updatedSchemaSemester, a)
+			courseSemesterRelation := schema.CourseSemesterRelation{
+				CourseID:   existingCourse.CourseID,
+				SemesterID: a.SemesterID,
+			}
+			if err := tx.Model(&schema.CourseSemesterRelation{}).Create(&courseSemesterRelation).Error; err != nil {
+				return fmt.Errorf("failed to create CourseSemesterRelation: %w", err)
+			}
+		}
+
+		// Update instructors
+		if err := tx.Model(&schema.Responsible{}).
+			Where("course_id = ?", courseID).
+			Delete(&schema.Responsible{}).Error; err != nil {
+			return fmt.Errorf("failed to delete existing Responsible: %w", err)
+		}
+		for i := range updatedCourse.Instructors {
+			instructor := updatedCourse.Instructors[i]
+			a := schema.Instructor{Name: instructor.Name}
+			if err := tx.Model(&schema.Instructor{}).FirstOrCreate(&a, &a).Error; err != nil {
+				return fmt.Errorf("failed to get first instructor or create it: %w", err)
+			}
+			updatedSchemaInstructors = append(updatedSchemaInstructors, a)
+			responsible := schema.Responsible{
+				CourseID:     existingCourse.CourseID,
+				InstructorID: a.InstructorID,
+			}
+			if err := tx.Model(&schema.Responsible{}).Create(&responsible).Error; err != nil {
+				return fmt.Errorf("failed to create Responsible: %w", err)
+			}
+		}
+
+		// update schedules
+		if err := tx.Model(&schema.Schedule{}).
+			Where("course_id = ?", courseID).
+			Delete(&schema.Schedule{}).Error; err != nil {
+			return fmt.Errorf("failed to delete existing Schedule: %w", err)
+		}
+		for i := range updatedCourse.Schedules {
+			schedule := updatedCourse.Schedules[i]
+			dayPeriod := schema.DayPeriod{Day: schedule.Day, Period: schedule.Period}
+			if err := tx.Model(&schema.DayPeriod{}).FirstOrCreate(&dayPeriod, &dayPeriod).Error; err != nil {
+				return fmt.Errorf("failed to get first day period or create it: %w", err)
+			}
+			updatedSchemaDayPeriods = append(updatedSchemaDayPeriods, dayPeriod)
+			scheduleRelation := schema.Schedule{
+				CourseID:    existingCourse.CourseID,
+				DayPeriodID: dayPeriod.DayPeriodID,
+			}
+			if err := tx.Model(&schema.Schedule{}).Create(&scheduleRelation).Error; err != nil {
+				return fmt.Errorf("failed to create Schedule: %w", err)
+			}
+		}
+
+		// update keywords
+		if err := tx.Model(&schema.CourseKeywordRelation{}).
+			Where("course_id = ?", courseID).
+			Delete(&schema.CourseKeywordRelation{}).Error; err != nil {
+			return fmt.Errorf("failed to delete existing CourseKeywordRelation: %w", err)
+		}
+		for i := range updatedCourse.Keywords {
+			keyword := updatedCourse.Keywords[i]
+			a := schema.Keyword{Keyword: keyword}
+			if err := tx.Model(&schema.Keyword{}).FirstOrCreate(&a, &a).Error; err != nil {
+				return fmt.Errorf("failed to get first keyword or create it: %w", err)
+			}
+			updatedSchemaKeywords = append(updatedSchemaKeywords, a)
+			courseKeywordRelation := schema.CourseKeywordRelation{
+				CourseID:  existingCourse.CourseID,
+				KeywordID: a.KeywordID,
+			}
+			if err := tx.Model(&schema.CourseKeywordRelation{}).Create(&courseKeywordRelation).Error; err != nil {
+				return fmt.Errorf("failed to create CourseKeywordRelation: %w", err)
+			}
+		}
+
+		// update class format if needed
+		classFormat := schema.ClassFormat{ClassFormat: updatedCourse.ClassFormat}
+		if err := tx.Model(&schema.ClassFormat{}).FirstOrCreate(&classFormat, &classFormat).Error; err != nil {
+			return fmt.Errorf("failed to get first classFormat or create it: %w", err)
+		}
+		updatedSchemaClassFormat = classFormat
+		existingCourse.ClassFormatID = classFormat.ClassFormatID
+
+		// update lecture form if needed
+		lectureForm := schema.LectureForm{LectureForm: updatedCourse.LectureForm}
+		if err := tx.Model(&schema.LectureForm{}).FirstOrCreate(&lectureForm, &lectureForm).Error; err != nil {
+			return fmt.Errorf("failed to get first lectureForm or create it: %w", err)
+		}
+		updatedSchemaLectureForm = lectureForm
+		existingCourse.LectureFormID = lectureForm.LectureFormID
+
+		// update target students if needed
+		targetStudents := schema.TargetStudents{TargetStudents: updatedCourse.TargetStudents}
+		if err := tx.Model(&schema.TargetStudents{}).FirstOrCreate(&targetStudents, &targetStudents).Error; err != nil {
+			return fmt.Errorf("failed to get first targetStudents or create it: %w", err)
+		}
+		updatedSchemaTargetStudents = targetStudents
+		existingCourse.TargetStudentsID = targetStudents.TargetStudentsID
+
+		// update lecture room info if needed
+		lectureRoomInfo := schema.LectureRoomInfo{LectureRoomInfo: updatedCourse.LectureRoomInfo}
+		if err := tx.Model(&schema.LectureRoomInfo{}).FirstOrCreate(&lectureRoomInfo, &lectureRoomInfo).Error; err != nil {
+			return fmt.Errorf("failed to get first lectureRoomInfo or create it: %w", err)
+		}
+		updatedSchemaLectureRoomInfo = lectureRoomInfo
+		existingCourse.LectureRoomInfoID = lectureRoomInfo.LectureRoomInfoID
+
+		// update faculty and department if needed
+		faculty := schema.Faculty{Faculty: updatedCourse.Faculty.Faculty}
+		if err := tx.Model(&schema.Faculty{}).FirstOrCreate(&faculty, &faculty).Error; err != nil {
+			return fmt.Errorf("failed to get first Faculty or create it: %w", err)
+		}
+		updatedSchemaFaculty = faculty
+
+		department := schema.Department{
+			DepartmentName: updatedCourse.Faculty.Department,
+			FacultyID:      faculty.FacultyID,
+		}
+		if err := tx.Model(&schema.Department{}).FirstOrCreate(&department, &department).Error; err != nil {
+			return fmt.Errorf("failed to get first Department or create it: %w", err)
+		}
+		updatedSchemaDepartment = department
+		existingCourse.DepartmentID = department.DepartmentID
+
+		existingCourse.Year = updatedCourse.Year
 		existingCourse.Title = updatedCourse.Title
 		existingCourse.Numbering = updatedCourse.Numbering
 		existingCourse.CourseNumber = updatedCourse.CourseNumber
@@ -336,7 +490,7 @@ func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*
 		existingCourse.CourseDescription = updatedCourse.CourseDescription
 
 		if err := tx.Model(&schema.Course{}).Save(&existingCourse).Error; err != nil {
-			return err
+			return fmt.Errorf("failed to update existing course: %w", err)
 		}
 
 		return nil
@@ -346,16 +500,16 @@ func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*
 	}
 	return convertSchemaCourseToModelCourse(
 		&existingCourse,
-		&[]schema.Semester{},
-		&[]schema.Instructor{},
-		&[]schema.DayPeriod{},
-		&[]schema.Keyword{},
-		&schema.ClassFormat{},
-		&schema.LectureForm{},
-		&schema.TargetStudents{},
-		&schema.LectureRoomInfo{},
-		&schema.Department{},
-		&schema.Faculty{},
+		&updatedSchemaSemester,
+		&updatedSchemaInstructors,
+		&updatedSchemaDayPeriods,
+		&updatedSchemaKeywords,
+		&updatedSchemaClassFormat,
+		&updatedSchemaLectureForm,
+		&updatedSchemaTargetStudents,
+		&updatedSchemaLectureRoomInfo,
+		&updatedSchemaDepartment,
+		&updatedSchemaFaculty,
 	)
 }
 

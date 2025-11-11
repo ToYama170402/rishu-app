@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"errors"
+
 	"github.com/ToYama170402/rishu-app/syllabus/src/internal/config"
 	"github.com/ToYama170402/rishu-app/syllabus/src/internal/model"
 	"github.com/ToYama170402/rishu-app/syllabus/src/internal/repositories"
@@ -30,6 +32,10 @@ func GetCourseByID(c *gin.Context) {
 		return
 	}
 	course, err := repositories.GetCourseByID(db, courseID.Id)
+	if errors.Is(err, repositories.ErrCourseNotFound) {
+		c.JSON(404, gin.H{"error": "Course not found"})
+		return
+	}
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

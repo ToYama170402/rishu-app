@@ -9,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type courseId struct {
-	Id int `uri:"courseID" binding:"required"`
+type courseIDPathParam struct {
+	ID int `uri:"courseID" binding:"required"`
 }
 
 func GetCourses(c *gin.Context) {
@@ -25,13 +25,13 @@ func GetCourses(c *gin.Context) {
 
 func GetCourseByID(c *gin.Context) {
 	db := config.GetDB()
-	var courseID courseId
+	var courseID courseIDPathParam
 
 	if err := c.ShouldBindUri(&courseID); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid course ID"})
 		return
 	}
-	course, err := repositories.GetCourseByID(db, courseID.Id)
+	course, err := repositories.GetCourseByID(db, courseID.ID)
 	if errors.Is(err, repositories.ErrCourseNotFound) {
 		c.JSON(404, gin.H{"error": "Course not found"})
 		return
@@ -60,7 +60,7 @@ func CreateCourses(c *gin.Context) {
 
 func UpdateCourseByID(c *gin.Context) {
 	db := config.GetDB()
-	var courseID courseId
+	var courseID courseIDPathParam
 	var courseData model.Course
 
 	if err := c.ShouldBindUri(&courseID); err != nil {
@@ -71,7 +71,7 @@ func UpdateCourseByID(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request body"})
 		return
 	}
-	course, err := repositories.UpdateCourseByID(db, courseID.Id, &courseData)
+	course, err := repositories.UpdateCourseByID(db, courseID.ID, &courseData)
 	if errors.Is(err, repositories.ErrCourseNotFound) {
 		c.JSON(404, gin.H{"error": "Course not found"})
 		return
@@ -85,14 +85,14 @@ func UpdateCourseByID(c *gin.Context) {
 
 func DeleteCourseByID(c *gin.Context) {
 	db := config.GetDB()
-	var courseID courseId
+	var courseID courseIDPathParam
 
 	if err := c.ShouldBindUri(&courseID); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid course ID"})
 		return
 	}
 	if err := repositories.
-		DeleteCourseByID(db, courseID.Id); errors.Is(err, repositories.ErrCourseNotFound) {
+		DeleteCourseByID(db, courseID.ID); errors.Is(err, repositories.ErrCourseNotFound) {
 		c.JSON(404, gin.H{"error": "Course not found"})
 		return
 	} else if err != nil {

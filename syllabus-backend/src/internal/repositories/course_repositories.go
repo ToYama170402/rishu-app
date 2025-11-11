@@ -361,8 +361,13 @@ func UpdateCourseByID(db *gorm.DB, courseID int, updatedCourse *model.Course) (*
 
 func DeleteCourseByID(db *gorm.DB, courseID int) error {
 	return db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Model(&schema.Course{}).Where("course_id = ?", courseID).Delete(&schema.Course{}).Error; err != nil {
-			return err
+		if result := tx.Model(&schema.Course{}).
+			Where("course_id = ?", courseID).
+			Delete(&schema.Course{}); errors.Is(result.Error, gorm.ErrRecordNotFound) ||
+			result.RowsAffected == 0 {
+			return ErrCourseNotFound
+		} else if result.Error != nil {
+			return result.Error
 		}
 		return nil
 	})

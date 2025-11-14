@@ -159,14 +159,20 @@ git rebase upstream/main
 
 ### 全体的なコーディング規約
 
-このプロジェクトは複数のサービス（frontend、syllabus-frontend、syllabus-backend、syllabus-scrapeなど）から構成されています。それぞれのサービスで共通して守るべき規約：
+このプロジェクトは複数のサービスから構成されています：
+- **frontend、syllabus-frontend、syllabus-scrape**: TypeScript
+- **syllabus-backend**: Go
 
-- **型安全性**: TypeScriptの型システムを最大限活用し、`any`の使用は最小限に
+それぞれのサービスで共通して守るべき規約：
+
+- **型安全性**: 型システムを最大限活用（TypeScriptの場合は`any`の使用を最小限に）
 - **エラーハンドリング**: 適切なエラーハンドリングを実装
 - **コードの可読性**: 意図が明確になるような命名と構造を心がける
 - **再利用性**: 共通のロジックは適切に抽出して再利用
 
 ### フロントエンド（React/Next.js）
+
+<!-- TODO: 将来的にfrontendの機能はsyllabus-frontendに統合予定。その際にReact/Next.jsは使用しなくなる可能性があります -->
 
 - 関数コンポーネントを使用
 - Hooksを適切に使用（`useState`, `useEffect`など）
@@ -174,6 +180,8 @@ git rebase upstream/main
 - PropTypesの代わりにTypeScriptの型を使用
 
 ### スタイリング
+
+<!-- TODO: 上記のフロントエンド統合に伴い、MUIも使用しなくなる可能性があります -->
 
 - MUIコンポーネントを優先的に使用
 - カスタムスタイルが必要な場合は、MUIのスタイリングシステム（`sx` prop、`styled`）を使用

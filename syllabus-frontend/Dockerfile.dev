@@ -1,0 +1,20 @@
+FROM node:22-bullseye-slim
+
+WORKDIR /workspace/syllabus-frontend
+
+# 依存関係をインストール
+COPY --chown=node:node package.json pnpm-lock.yaml ./
+
+RUN mkdir -p /workspace/syllabus-frontend/node_modules && \
+  chown -R node:node /workspace && \
+  mkdir -p /workspace/syllabus-frontend/.pnpm-store && \
+  chown -R node:node /workspace/syllabus-frontend/.pnpm-store
+RUN npm install -g pnpm
+
+USER node
+
+RUN pnpm config set store-dir /workspace/syllabus-frontend/.pnpm-store
+
+RUN pnpm install
+
+CMD [ "sleep", "infinity" ]

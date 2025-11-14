@@ -1,24 +1,25 @@
-server {
-  listen 80;
-  server_name ~api\.(.+)$;
-  
-  location / {
-    proxy_pass http://backend:8000;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-  }
-  location /admin {
-    deny all;
-    return 403;
-  }
+map $host $backend_upstream {
+  ~^${SERVER_NAME}$               frontend:3000;
+  ~^builder\.${SERVER_NAME}$      syllabus-frontend:4000;
+  ~^api\.${SERVER_NAME}$          syllabus-backend:8080;
+  default                        "";
 }
+
 server {
   listen 80;
-  server_name ~^(.+)$;
-  
+  server_name ~^(api\.|builder\.|)${SERVER_NAME}$;
+  resolver 127.0.0.11 valid=30s;
+
   location / {
-    proxy_pass http://frontend:3000;
-    proxy_set_header host $host;
-    proxy_set_header x-real-ip $remote_addr;
+    if ($backend_upstream = "") {
+      return 404;
+    }
+    proxy_pass http://$backend_upstream$request_uri;
+    proxy_set_header Host $host;
+    proxy_set_header X-real-IP $remote_addr;
+  }
+  location ~ /\. {
+    deny all;
+    return 404;
   }
 }

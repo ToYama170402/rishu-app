@@ -1,6 +1,6 @@
 services:
   frontend:
-    user: node
+    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
@@ -13,34 +13,19 @@ services:
         target: /workspace
 
       - type: volume
-        source: node-modules
+        source: frontend-node-modules
         target: /workspace/frontend/node_modules
       - type: volume
         source: pnpm-store
-        target: /workspace/.pnpm-store
+        target: /workspace/frontend/.pnpm-store
     ports:
       - 3000:3000
-    command: sleep infinity
+    command: pnpm run dev
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
+  web:
     restart: no
     environment:
-      - ENV=development
-    volumes:
-      - type: bind
-        source: .
-        target: /workspace
-    ports:
-      - 8000:8000
-    command: sleep infinity
-
-  selenium:
-    ports:
-      - 4444:4444
-      - 7900:7900
+      - SERVER_NAME=localhost
 
   mock-page:
     build:
@@ -51,19 +36,80 @@ services:
     networks:
       - rishu-app_network
 
-  syllabus:
+  syllabus-backend:
+    user: "${UID:-1000}:${GID:-1000}"
     build:
-      context: ./syllabus
+      context: ./syllabus-backend
       dockerfile: Dockerfile.dev
     restart: no
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=syllabus
     volumes:
       - type: bind
         source: .
         target: /workspace
     ports:
       - 8080:8080
+    command: go run src/cmd/api/main.go
+
+  syllabus-db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=syllabus
+
+  syllabus-frontend:
+    user: "${UID:-1000}:${GID:-1000}"
+    build:
+      context: ./syllabus-frontend
+      dockerfile: Dockerfile.dev
+    restart: no
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+      - type: volume
+        source: syllabus-frontend-node-modules
+        target: /workspace/syllabus-frontend/node_modules
+      - type: volume
+        source: pnpm-store
+        target: /workspace/syllabus-frontend/.pnpm-store
+    ports:
+      - 4000:4000
+    command: pnpm run dev
+    depends_on:
+      - syllabus-backend
+    networks:
+      - rishu-app_network
+
+  syllabus-scrape:
+    user: "${UID:-1000}:${GID:-1000}"
+    build:
+      context: ./syllabus-scrape
+      dockerfile: Dockerfile.dev
+    restart: no
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+      - type: volume
+        source: syllabus-scrape-node-modules
+        target: /workspace/syllabus-scrape/node_modules
+      - type: volume
+        source: pnpm-store
+        target: /workspace/syllabus-scrape/.pnpm-store
     command: sleep infinity
+    environment:
+      - NODE_ENV=development
+    networks:
+      - rishu-app_network
 
 volumes:
-  node-modules:
   pnpm-store:
+  frontend-node-modules:
+  syllabus-scrape-node-modules:
+  syllabus-frontend-node-modules:

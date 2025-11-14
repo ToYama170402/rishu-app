@@ -47,7 +47,7 @@ body:
       placeholder: |
         - OS: [例: Windows 11, macOS 14.0, Ubuntu 22.04]
         - ブラウザ: [例: Chrome 120, Firefox 121, Safari 17]
-        - バージョン: [例: v1.0.0]
+        - 発生日時: [例: 2024-01-15 14:30]
     validations:
       required: false
 

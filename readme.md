@@ -55,6 +55,11 @@ Dev Containerを使用して開発環境を構築します。
 
 Pull Request、Issue、質問、提案など、どんな形でも歓迎します。
 
+### 貢献の始め方
+
+- 🌱 **初めての方**: [初心者向け貢献ガイド](./CONTRIBUTING_BEGINNERS.md) - GitHubの使い方から丁寧に解説
+- 📖 **経験者の方**: [貢献ガイドライン](./CONTRIBUTING.md) - 開発ワークフローやコーディング規約
+
 開発に参加したい方は、Twitterの[@ToYamaSoujin](https://x.com/ToYamaSoujin)または、[toyamasoujinn@gmail.com](toyamasoujinn@gmail.com)までお気軽にご連絡ください。
 
 ## Special Thanks

@@ -419,7 +419,6 @@ func UpdateCourseByID(
 		}
 
 		// update schedules
-
 		updatedSchemaDayPeriods, err = replaceManyToManyRelation(
 			tx,
 			courseID,

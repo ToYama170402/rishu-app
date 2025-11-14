@@ -1,0 +1,70 @@
+name: バグレポート
+description: バグや問題を報告してください
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグレポートを提出していただきありがとうございます。以下のフォームに記入してください。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 何が起きましたか？
+      description: バグの内容を詳しく説明してください。
+      placeholder: バグの説明を記入してください...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 期待される動作
+      description: 本来どのような動作を期待していましたか？
+      placeholder: 期待される動作を記入してください...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: 再現手順
+      description: バグを再現するための手順を教えてください。
+      placeholder: |
+        1. '...'に移動
+        2. '...'をクリック
+        3. '...'までスクロール
+        4. エラーが表示される
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 環境
+      description: バグが発生した環境を教えてください。
+      placeholder: |
+        - OS: [例: Windows 11, macOS 14.0, Ubuntu 22.04]
+        - ブラウザ: [例: Chrome 120, Firefox 121, Safari 17]
+        - バージョン: [例: v1.0.0]
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: スクリーンショット
+      description: 可能であれば、スクリーンショットを添付してください。
+      placeholder: スクリーンショットをここにドラッグ＆ドロップしてください...
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 追加情報
+      description: その他、参考になる情報があれば記入してください。
+      placeholder: 追加情報を記入してください...
+    validations:
+      required: false

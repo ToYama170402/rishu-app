@@ -1,32 +1,146 @@
-# SolidStart
+# syllabus-frontend
 
-Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
+金沢大学のシラバス情報を表示するフロントエンドアプリケーションです。
 
-## Creating a project
+## 概要
+
+このサービスは、シラバスバックエンドAPIから取得した情報を表示するWebアプリケーションです。SolidJSとSolidStartを使用して構築されており、高速で効率的なユーザーインターフェースを提供します。
+
+## 利用技術
+
+- **SolidJS** 1.9+ - 高性能なリアクティブUIライブラリ
+- **SolidStart** 1.1+ - SolidJSのメタフレームワーク
+- **TypeScript** - 型安全な開発
+- **Tailwind CSS** 4.0+ - ユーティリティファーストCSSフレームワーク
+- **Vinxi** - ビルドツール
+- **pnpm** - パッケージマネージャー
+- **Docker** - コンテナ化
+
+## ディレクトリ構造
+
+```
+syllabus-frontend/
+├── src/
+│   ├── routes/        # ページルーティング
+│   ├── components/    # UIコンポーネント
+│   └── app.tsx        # アプリケーションエントリーポイント
+├── public/            # 静的ファイル
+├── Dockerfile         # 本番環境用Dockerfile
+├── Dockerfile.dev     # 開発環境用Dockerfile
+├── app.config.ts      # SolidStart設定
+├── package.json       # npm依存関係
+└── tsconfig.json      # TypeScript設定
+```
+
+## 開発環境のセットアップ
+
+### 事前準備
+
+- Docker
+- Docker Compose
+- Node.js 22以上（ローカル実行の場合）
+- VS Code（推奨）
+  - Dev Container拡張機能
+
+### 起動方法
+
+#### Dev Containerを使用する場合
+
+1. VS Codeでプロジェクトルートを開く
+2. コマンドパレット（`Ctrl+Shift+P`）から`Dev Containers: Reopen in Container`を選択
+3. `syllabus-frontend`を選択
+
+#### Docker Composeを使用する場合
 
 ```bash
-# create a new project in the current directory
+# プロジェクトルートで実行
+docker-compose -f docker-compose.dev.yml up syllabus-frontend syllabus-backend
+```
+
+サービスは`http://localhost:4000`で起動します。
+
+### ローカルでの実行
+
+```bash
+# 依存関係のインストール
+pnpm install
+
+# 開発サーバーの起動（ポート4000）
+pnpm dev
+
+# 本番ビルド
+pnpm build
+
+# 本番サーバーの起動
+pnpm start
+```
+
+## 動作確認方法
+
+1. ブラウザで`http://localhost:4000`にアクセス
+2. シラバス情報が表示されることを確認
+3. 検索機能やフィルタリング機能が動作することを確認
+
+## 主な機能
+
+- **シラバス検索**: キーワードでシラバスを検索
+- **科目詳細表示**: 各科目の詳細情報を表示
+- **フィルタリング**: 学部・学科・開講時期などでフィルタリング
+- **レスポンシブデザイン**: モバイルデバイスにも対応
+
+## 環境変数
+
+- `NODE_ENV` - 実行環境（development/production）
+
+## バックエンドAPI連携
+
+このフロントエンドは`syllabus-backend`サービスと連携して動作します。開発時は以下を確認してください：
+
+- `syllabus-backend`が起動していること
+- APIエンドポイントが正しく設定されていること
+
+## SolidJSについて
+
+SolidJSは、Reactに似た構文を持ちながら、仮想DOMを使用せずに高いパフォーマンスを実現するフレームワークです。
+
+### プロジェクトの作成
+
+```bash
+# 新しいプロジェクトを作成（参考）
 npm init solid@latest
-
-# create a new project in my-app
-npm init solid@latest my-app
 ```
 
-## Developing
+## トラブルシューティング
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### ポートが既に使用されている
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# ポート4000を使用しているプロセスを確認
+lsof -i :4000
 ```
 
-## Building
+### ビルドエラー
 
-Solid apps are built with _presets_, which optimise your project for deployment to different environments.
+```bash
+# node_modulesとキャッシュをクリア
+rm -rf node_modules .vinxi
+pnpm install
+```
 
-By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different preset, add it to the `devDependencies` in `package.json` and specify in your `app.config.js`.
+### API接続エラー
 
-## This project was created with the [Solid CLI](https://github.com/solidjs-community/solid-cli)
+- `syllabus-backend`サービスが起動していることを確認
+- ネットワーク設定を確認（Docker Composeの場合）
+- ブラウザの開発者ツールでネットワークエラーを確認
+
+## デプロイ
+
+SolidStartアプリは様々な環境にデプロイできます。デフォルトでは、Nodeアプリとしてビルドされます。
+
+異なるプリセットを使用する場合は、`app.config.ts`で設定を変更してください。
+
+## 参考リソース
+
+- [SolidJS Documentation](https://www.solidjs.com/)
+- [SolidStart Documentation](https://start.solidjs.com/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/)

@@ -1,7 +1,8 @@
-name: 質問
-description: プロジェクトに関する質問をしてください
+name: "質問"
+description: "プロジェクトに関する質問をしてください"
 title: "[Question]: "
-labels: ["question"]
+labels:
+  - "question"
 body:
   - type: markdown
     attributes:
@@ -11,17 +12,17 @@ body:
   - type: textarea
     id: question
     attributes:
-      label: 質問内容
-      description: 質問を詳しく記入してください。
-      placeholder: 質問を記入してください...
+      label: "質問内容"
+      description: "質問を詳しく記入してください。"
+      placeholder: "質問を記入してください..."
     validations:
       required: true
 
   - type: textarea
     id: context
     attributes:
-      label: 背景・状況
-      description: 質問の背景や状況を説明してください。
+      label: "背景・状況"
+      description: "質問の背景や状況を説明してください。"
       placeholder: |
         - 何をしようとしていますか？
         - どこで詰まっていますか？
@@ -32,8 +33,8 @@ body:
   - type: textarea
     id: additional-context
     attributes:
-      label: 追加情報
-      description: その他、参考になる情報があれば記入してください。
-      placeholder: 追加情報を記入してください...
+      label: "追加情報"
+      description: "その他、参考になる情報があれば記入してください。"
+      placeholder: "追加情報を記入してください..."
     validations:
       required: false

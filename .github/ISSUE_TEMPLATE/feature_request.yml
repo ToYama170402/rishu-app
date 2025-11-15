@@ -1,7 +1,8 @@
-name: 機能要望
-description: 新しい機能やアイデアを提案してください
+name: "機能要望"
+description: "新しい機能やアイデアを提案してください"
 title: "[Feature]: "
-labels: ["enhancement"]
+labels:
+  - "enhancement"
 body:
   - type: markdown
     attributes:

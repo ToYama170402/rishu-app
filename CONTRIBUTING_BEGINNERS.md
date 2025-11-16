@@ -450,21 +450,34 @@ Dev Containersは、Dockerを使って開発環境を自動的に構築する機
 
 #### VS Codeで追加する方法（推奨）
 
-1. **VS Codeのターミナルを開く**
-   - メニューから「ターミナル」→「新しいターミナル」
+VS Codeのコマンドパレットを使ってリモートリポジトリを追加できます。
 
-2. **upstreamを追加**
-   ```bash
-   git remote add upstream https://github.com/ToYama170402/rishu-app.git
-   ```
+1. **コマンドパレットを開く**
+   - `Ctrl+Shift+P`（Mac: `Cmd+Shift+P`）を押す
+   - または、メニューから「表示」→「コマンドパレット」
+
+2. **リモートを追加**
+   - 「Git: Add Remote」と入力して選択
+   - リモート名に `upstream` と入力
+   - URLに `https://github.com/ToYama170402/rishu-app.git` と入力
 
 3. **確認**
-   ```bash
-   git remote -v
-   ```
-   - `origin`（あなたのフォーク）と`upstream`（元のリポジトリ）が表示されればOK
+   - コマンドパレットで「Git: Show Git Output」を選択すると、リモートの設定が確認できます
 
-> **Note**: この操作は、VS Codeの拡張機能「Git Graph」などを使うと、より視覚的に管理できます。ただし、最初はターミナルで実行する方法を覚えておくと便利です。
+#### コマンドラインで追加する方法（参考）
+
+```bash
+# VS Codeのターミナルを開く（メニューから「ターミナル」→「新しいターミナル」）
+
+# upstreamを追加
+git remote add upstream https://github.com/ToYama170402/rishu-app.git
+
+# 確認
+git remote -v
+# origin（あなたのフォーク）と upstream（元のリポジトリ）が表示されればOK
+```
+
+> **Note**: この操作は、VS Codeの拡張機能「Git Graph」などを使うと、より視覚的に管理できます。ただし、最初は基本的な方法を覚えておくと便利です。
 
 ---
 

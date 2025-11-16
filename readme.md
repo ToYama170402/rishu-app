@@ -138,6 +138,37 @@ rishu-appは、金沢大学の学生が履修登録をより効率的に行え�
 
 このプロジェクトは複数のサービスで構成されており、各サービスがDockerコンテナとして動作し、Docker Composeで統合管理されています。
 
+```mermaid
+architecture-beta
+    group api(cloud)[API]
+    group frontend(cloud)[Frontend]
+
+    service db(database)[Database] in api
+    service backend(server)[Backend] in api
+    service scraper(server)[Scraper] in api
+
+    db:L -- R:backend
+    backend:B -- T:scraper
+
+    service rishuapp(server)[rishu app] in frontend
+    service rishu(server)[rishu builder viewer] in frontend
+
+    junction frontendjunction
+    frontendjunction:T -- B:rishuapp
+    frontendjunction:B -- T:rishu
+
+    service endpoint(server)[EndPoint]
+    service gateway(internet)[Gateway]
+
+    gateway:B -- T:endpoint
+    endpoint:B -- T:backend
+    endpoint:L -- R:frontendjunction
+
+    service syllabus(server)[Syllabus]
+
+    scraper:L -- R:syllabus
+```
+
 - **フロントエンド層**: `frontend`と`syllabus-frontend`が異なる用途で独立して動作
 - **バックエンド層**: `syllabus-backend`がRESTful APIを提供
 - **データ層**: `syllabus-db`（PostgreSQL）がデータを永続化

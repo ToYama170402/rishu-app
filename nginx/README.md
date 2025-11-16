@@ -29,9 +29,9 @@ nginx/
 
 - **ポート80でリクエストを受信**
 - **各サービスへのプロキシ設定（サブドメインベース）**:
-  - `example.com` → frontend（メインアプリケーション）
-  - `builder.example.com` → syllabus-frontend（シラバスフロントエンド）
-  - `api.example.com` → syllabus-backend（シラバスAPI）
+  - `example.com` → frontend
+  - `builder.example.com` → syllabus-frontend
+  - `api.example.com` → syllabus-backend
 
 #### ルーティング例
 
@@ -67,10 +67,10 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 # ホストマシンで実行: メインページへのアクセス
 curl http://localhost/
 
-# ホストマシンで実行: シラバスフロントエンドへのアクセス（builder.localhostサブドメイン）
+# ホストマシンで実行: syllabus-frontendへのアクセス（builder.localhostサブドメイン）
 curl -H "Host: builder.localhost" http://localhost/
 
-# ホストマシンで実行: シラバスAPIへのアクセス（api.localhostサブドメイン）
+# ホストマシンで実行: syllabus-backendへのアクセス（api.localhostサブドメイン）
 curl -H "Host: api.localhost" http://localhost/courses
 ```
 
@@ -78,9 +78,9 @@ curl -H "Host: api.localhost" http://localhost/courses
 
 ブラウザで以下のURLにアクセスして、各サービスが正常に動作していることを確認：
 
-- `http://localhost/` - メインアプリケーション
-- `http://builder.localhost/` - シラバスフロントエンド
-- `http://api.localhost/courses` - シラバスAPI
+- `http://localhost/` - frontend
+- `http://builder.localhost/` - syllabus-frontend
+- `http://api.localhost/courses` - syllabus-backend
 
 ## 本番環境
 

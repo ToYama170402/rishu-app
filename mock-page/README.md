@@ -29,7 +29,7 @@ mock-page/
 
 ```bash
 # プロジェクトルートで実行
-docker-compose -f docker-compose.dev.yml up mock-page
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up mock-page
 ```
 
 サービスは`http://localhost:1313`で起動します。
@@ -39,7 +39,7 @@ docker-compose -f docker-compose.dev.yml up mock-page
 ### アクセス確認
 
 ```bash
-# モックページが表示されることを確認
+# ホストマシンで実行: モックページが表示されることを確認
 curl http://localhost:1313
 ```
 
@@ -47,7 +47,6 @@ curl http://localhost:1313
 
 ## 使用用途
 
-- **スクレイピングテスト**: `syllabus-scrape`サービスのテスト時に使用
 - **フロントエンド開発**: 本番環境にアクセスせずに開発・テストを実行
 - **デモンストレーション**: プロジェクトのデモやプレゼンテーション用
 
@@ -65,7 +64,7 @@ echo '<html><body>Test Page</body></html>' > pages/test.html
 ### ポートが既に使用されている
 
 ```bash
-# ポート1313を使用しているプロセスを確認
+# ホストマシンで実行: ポート1313を使用しているプロセスを確認
 lsof -i :1313
 
 # または別のポートを使用

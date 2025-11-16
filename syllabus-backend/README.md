@@ -50,7 +50,7 @@ syllabus-backend/
 
 ```bash
 # プロジェクトルートで実行
-docker-compose -f docker-compose.dev.yml up syllabus-backend syllabus-db
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up syllabus-backend syllabus-db
 ```
 
 サービスは`http://localhost:8080`で起動します。
@@ -67,16 +67,16 @@ go run src/cmd/api/main.go
 
 ## 動作確認方法
 
-### ヘルスチェック
-
-```bash
-# APIサーバーが起動していることを確認
-curl http://localhost:8080/health
-```
-
 ### APIエンドポイント
 
-詳細なAPIエンドポイントは、サービス起動後に確認できます。
+```bash
+# ホストマシンで実行: コース一覧を取得
+curl http://localhost:8080/courses
+```
+
+利用可能なAPIエンドポイント:
+- `GET /courses` - コース一覧の取得
+- `POST /courses` - コースの作成
 
 ## 環境変数
 
@@ -97,7 +97,7 @@ PostgreSQL 17.4を使用しています。データベースは`syllabus-db`サ�
 ### ポートが既に使用されている
 
 ```bash
-# ポート8080を使用しているプロセスを確認
+# ホストマシンで実行: ポート8080を使用しているプロセスを確認
 lsof -i :8080
 
 # または別のポートを使用

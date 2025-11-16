@@ -27,7 +27,7 @@ syllabus-scrape/
 │   ├── scheduler/        # スケジュール管理
 │   ├── scraping/         # スクレイピング処理
 │   ├── services/         # 各種サービス
-│   ├── storage/          # データベース操作
+│   ├── storage/          # データの永続化を抽象化
 │   ├── utils/            # ユーティリティ関数
 │   └── main.ts           # エントリーポイント
 ├── Dockerfile            # 本番環境用Dockerfile
@@ -59,7 +59,9 @@ syllabus-scrape/
 
 ```bash
 # プロジェクトルートで実行
-docker-compose -f docker-compose.dev.yml up syllabus-scrape syllabus-db
+# 注意: このサービスは通常の開発環境では自動起動しません
+# スクレイピング対象サーバーに負荷をかけないようにするためです
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up syllabus-scrape syllabus-db
 ```
 
 ### ローカルでの実行
@@ -95,14 +97,9 @@ pnpm check
 
 ## 動作確認方法
 
-1. サービスを起動します
-2. ログを確認してスクレイピング処理が実行されていることを確認
-3. PostgreSQLデータベースにデータが保存されていることを確認
+<!-- TODO: ログの仕様が確定したら追記 -->
 
-```bash
-# コンテナのログを確認
-docker logs -f syllabus-scrape
-```
+サービスを起動し、スクレイピング処理が実行されていることを確認します。
 
 ## 環境変数
 
@@ -117,7 +114,7 @@ docker logs -f syllabus-scrape
 
 ## スクレイピング対象
 
-金沢大学の公式シラバスサイトから以下の情報を取得します：
+金沢大学の公式シラバスサイトから以下の情報を取得し、syllabus-backend経由でデータベースに保存します：
 
 - コース名
 - 担当教員

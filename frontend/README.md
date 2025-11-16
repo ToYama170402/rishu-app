@@ -12,7 +12,6 @@
 - **React** 19.0 - UIライブラリ
 - **TypeScript** - 型安全な開発
 - **Material-UI (MUI)** - UIコンポーネントライブラリ
-- **Emotion** - CSS-in-JS
 - **pnpm** - パッケージマネージャー
 - **Docker** - コンテナ化
 
@@ -57,7 +56,7 @@ frontend/
 
 ```bash
 # プロジェクトルートで実行
-docker-compose -f docker-compose.dev.yml up frontend
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up frontend
 ```
 
 サービスは`http://localhost:3000`で起動します。
@@ -90,7 +89,6 @@ pnpm lint
 ## 主な機能
 
 - **登録状況のグラフ表示**: 抽選科目の登録状況をビジュアル化
-- **科目検索**: 履修したい科目を検索
 - **レスポンシブデザイン**: スマートフォンやタブレットにも対応
 
 ## 環境変数
@@ -122,7 +120,7 @@ pnpm analyze
 ### ポートが既に使用されている
 
 ```bash
-# ポート3000を使用しているプロセスを確認
+# ホストマシンで実行: ポート3000を使用しているプロセスを確認
 lsof -i :3000
 ```
 

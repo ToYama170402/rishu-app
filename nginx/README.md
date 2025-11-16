@@ -28,17 +28,17 @@ nginx/
 #### 主な設定内容
 
 - **ポート80でリクエストを受信**
-- **各サービスへのプロキシ設定**:
-  - `/` → frontend（メインアプリケーション）
-  - `/syllabus` → syllabus-frontend（シラバスフロントエンド）
-  - `/api/syllabus` → syllabus-backend（シラバスAPI）
+- **各サービスへのプロキシ設定（サブドメインベース）**:
+  - `example.com` → frontend（メインアプリケーション）
+  - `builder.example.com` → syllabus-frontend（シラバスフロントエンド）
+  - `api.example.com` → syllabus-backend（シラバスAPI）
 
 #### ルーティング例
 
 ```
 http://example.com/              → frontendサービス
-http://example.com/syllabus/     → syllabus-frontendサービス
-http://example.com/api/syllabus/ → syllabus-backendサービス
+http://builder.example.com/      → syllabus-frontendサービス
+http://api.example.com/          → syllabus-backendサービス
 ```
 
 ## 環境変数
@@ -54,7 +54,7 @@ http://example.com/api/syllabus/ → syllabus-backendサービス
 ```bash
 # プロジェクトルートで実行
 # すべてのサービスを起動（Nginxはポート80で待機）
-docker-compose -f docker-compose.dev.yml up
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
 サービスは`http://localhost`で起動します。
@@ -64,14 +64,14 @@ docker-compose -f docker-compose.dev.yml up
 ### アクセス確認
 
 ```bash
-# メインページへのアクセス
+# ホストマシンで実行: メインページへのアクセス
 curl http://localhost/
 
-# シラバスフロントエンドへのアクセス
-curl http://localhost/syllabus/
+# ホストマシンで実行: シラバスフロントエンドへのアクセス（builder.localhostサブドメイン）
+curl -H "Host: builder.localhost" http://localhost/
 
-# シラバスAPIへのアクセス
-curl http://localhost/api/syllabus/health
+# ホストマシンで実行: シラバスAPIへのアクセス（api.localhostサブドメイン）
+curl -H "Host: api.localhost" http://localhost/courses
 ```
 
 ### 接続テスト
@@ -79,7 +79,8 @@ curl http://localhost/api/syllabus/health
 ブラウザで以下のURLにアクセスして、各サービスが正常に動作していることを確認：
 
 - `http://localhost/` - メインアプリケーション
-- `http://localhost/syllabus/` - シラバスフロントエンド
+- `http://builder.localhost/` - シラバスフロントエンド
+- `http://api.localhost/courses` - シラバスAPI
 
 ## 本番環境
 
@@ -95,7 +96,7 @@ curl http://localhost/api/syllabus/health
 ### ポート80が既に使用されている
 
 ```bash
-# ポート80を使用しているプロセスを確認
+# ホストマシンで実行: ポート80を使用しているプロセスを確認
 sudo lsof -i :80
 
 # または別のポートを使用
@@ -105,14 +106,14 @@ sudo lsof -i :80
 ### 502 Bad Gateway エラー
 
 - バックエンドサービスが起動していることを確認
-- `docker-compose logs <service-name>`でバックエンドのログを確認
+- `docker compose logs <service-name>`でバックエンドのログを確認
 - ネットワーク設定を確認（すべてのサービスが同じDockerネットワークに接続されているか）
 
 ### 設定の再読み込み
 
 ```bash
 # Nginxの設定を再読み込み
-docker-compose restart web
+docker compose restart web
 ```
 
 ## カスタマイズ

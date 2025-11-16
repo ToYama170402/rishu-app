@@ -4,7 +4,7 @@
 
 ## 概要
 
-このサービスは、シラバスバックエンドAPIから取得した情報を表示するWebアプリケーションです。SolidJSとSolidStartを使用して構築されており、高速で効率的なユーザーインターフェースを提供します。
+このサービスは、syllabus-backendから取得した情報を表示するWebアプリケーションです。SolidJSとSolidStartを使用して構築されており、高速で効率的なユーザーインターフェースを提供します。
 
 ## 利用技術
 
@@ -12,7 +12,6 @@
 - **SolidStart** 1.1+ - SolidJSのメタフレームワーク
 - **TypeScript** - 型安全な開発
 - **Tailwind CSS** 4.0+ - ユーティリティファーストCSSフレームワーク
-- **Vinxi** - ビルドツール
 - **pnpm** - パッケージマネージャー
 - **Docker** - コンテナ化
 
@@ -54,7 +53,7 @@ syllabus-frontend/
 
 ```bash
 # プロジェクトルートで実行
-docker-compose -f docker-compose.dev.yml up syllabus-frontend syllabus-backend
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up syllabus-frontend syllabus-backend
 ```
 
 サービスは`http://localhost:4000`で起動します。
@@ -79,14 +78,6 @@ pnpm start
 
 1. ブラウザで`http://localhost:4000`にアクセス
 2. シラバス情報が表示されることを確認
-3. 検索機能やフィルタリング機能が動作することを確認
-
-## 主な機能
-
-- **シラバス検索**: キーワードでシラバスを検索
-- **科目詳細表示**: 各科目の詳細情報を表示
-- **フィルタリング**: 学部・学科・開講時期などでフィルタリング
-- **レスポンシブデザイン**: モバイルデバイスにも対応
 
 ## 環境変数
 
@@ -99,23 +90,12 @@ pnpm start
 - `syllabus-backend`が起動していること
 - APIエンドポイントが正しく設定されていること
 
-## SolidJSについて
-
-SolidJSは、Reactに似た構文を持ちながら、仮想DOMを使用せずに高いパフォーマンスを実現するフレームワークです。
-
-### プロジェクトの作成
-
-```bash
-# 新しいプロジェクトを作成（参考）
-npm init solid@latest
-```
-
 ## トラブルシューティング
 
 ### ポートが既に使用されている
 
 ```bash
-# ポート4000を使用しているプロセスを確認
+# ホストマシンで実行: ポート4000を使用しているプロセスを確認
 lsof -i :4000
 ```
 
@@ -132,12 +112,6 @@ pnpm install
 - `syllabus-backend`サービスが起動していることを確認
 - ネットワーク設定を確認（Docker Composeの場合）
 - ブラウザの開発者ツールでネットワークエラーを確認
-
-## デプロイ
-
-SolidStartアプリは様々な環境にデプロイできます。デフォルトでは、Nodeアプリとしてビルドされます。
-
-異なるプリセットを使用する場合は、`app.config.ts`で設定を変更してください。
 
 ## 参考リソース
 

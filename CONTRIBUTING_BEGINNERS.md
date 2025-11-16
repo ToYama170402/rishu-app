@@ -27,6 +27,13 @@ GitHubは、プログラムのソースコードをインターネット上で�
 
 詳しくは[GitHub公式ドキュメント（日本語）](https://docs.github.com/ja)をご覧ください。
 
+### GitとGitHubの違い
+
+- **Git（ギット）**: バージョン管理システム。自分のパソコン上でコードの変更履歴を記録・管理するツールです。
+- **GitHub（ギットハブ）**: Gitを使ったプロジェクトをインターネット上で共有・管理できるサービス（Webサイト）です。
+
+簡単に言うと、**Gitは道具、GitHubはその道具を使うための場所**というイメージです。Gitで管理しているコードをGitHubにアップロードすることで、他の人と共同開発ができるようになります。
+
 ### GitHubでできること
 
 - **コードの共有**: 自分が書いたコードを公開できる
@@ -121,17 +128,19 @@ GitHubには独特の用語がたくさんあります。ここでは、貢献�
 
 リポジトリのページには以下のようなタブがあります：
 
-- **Code（コード）**: ソースコードとファイルが見られます
-- **Issues（課題）**: バグ報告や改善提案を議論する場所
-- **Pull requests**: コードの変更提案を確認・議論する場所
-- **Actions**: 自動テストなどが実行される場所
-- **Projects**: プロジェクトの進捗管理
-- **Wiki**: ドキュメント
+- **Code（コード）**: ソースコードとファイルが見られます（[詳細](https://docs.github.com/ja/repositories)）
+- **Issues（課題）**: バグ報告や改善提案を議論する場所（[詳細](https://docs.github.com/ja/issues)）
+- **Pull requests**: コードの変更提案を確認・議論する場所（[詳細](https://docs.github.com/ja/pull-requests)）
+- **Actions**: 自動テストなどが実行される場所（[詳細](https://docs.github.com/ja/actions)）
+- **Projects**: プロジェクトの進捗管理（[詳細](https://docs.github.com/ja/issues/planning-and-tracking-with-projects)）
+- **Wiki**: ドキュメント（[詳細](https://docs.github.com/ja/communities/documenting-your-project-with-wikis)）
 - **Settings**: 設定（権限がないと見られません）
 
 ### Issue（イシュー）
 
 バグ報告や機能の提案、質問などを投稿する場所です。GitHubでの「掲示板」のようなものだと考えてください。
+
+詳しくは[Issue公式ドキュメント（日本語）](https://docs.github.com/ja/issues)をご覧ください。
 
 #### Issueでできること
 
@@ -155,6 +164,8 @@ GitHubには独特の用語がたくさんあります。ここでは、貢献�
 
 他の人のリポジトリを自分のGitHubアカウントにコピーすることです。フォークすることで、元のリポジトリに影響を与えずに自由に変更を試せます。
 
+詳しくは[Fork公式ドキュメント（日本語）](https://docs.github.com/ja/get-started/quickstart/fork-a-repo)をご覧ください。
+
 - 元のリポジトリ: `ToYama170402/rishu-app`
 - フォーク後: `あなたのユーザー名/rishu-app`
 
@@ -162,9 +173,13 @@ GitHubには独特の用語がたくさんあります。ここでは、貢献�
 
 GitHubにあるリポジトリを自分のパソコンにダウンロードすることです。
 
+詳しくは[Clone公式ドキュメント（日本語）](https://docs.github.com/ja/repositories/creating-and-managing-repositories/cloning-a-repository)をご覧ください。
+
 ### Branch（ブランチ）
 
 コードの「枝分かれ」のことです。新しい機能を追加するときなど、メインのコードから分岐して作業することで、他の作業に影響を与えずに開発できます。
+
+詳しくは[Branch公式ドキュメント（日本語）](https://docs.github.com/ja/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches)をご覧ください。
 
 - **main（メイン）**: 本番のコード（幹）
 - **feature/○○**: 新機能を開発するブランチ（枝）
@@ -174,6 +189,8 @@ GitHubにあるリポジトリを自分のパソコンにダウンロードす�
 
 コードの変更を記録することです。「セーブ」のようなイメージですが、変更の履歴が全て残ります。
 
+詳しくは[Commit公式ドキュメント（日本語）](https://docs.github.com/ja/pull-requests/committing-changes-to-your-project)をご覧ください。
+
 ### Push（プッシュ）
 
 自分のパソコンで行った変更（コミット）を、GitHubのリポジトリにアップロードすることです。
@@ -181,6 +198,8 @@ GitHubにあるリポジトリを自分のパソコンにダウンロードす�
 ### Pull Request（プルリクエスト、略称: PR）
 
 自分が行った変更を、元のリポジトリに取り込んでもらうためのお願い（リクエスト）です。
+
+詳しくは[Pull Request公式ドキュメント（日本語）](https://docs.github.com/ja/pull-requests)をご覧ください。
 
 #### Pull Requestの流れ
 
@@ -253,9 +272,17 @@ Pull Requestで提案された変更を、元のリポジトリに統合（取�
    - **機能要望**: 新機能を提案する場合
    - **質問/疑問**: 質問がある場合
 
-3. **内容を記入**
-   - タイトル: わかりやすい見出しを付ける
-   - 本文: テンプレートに従って詳しく記入する
+3. **テンプレートに従って記入**
+   - **タイトル**: わかりやすい見出しを付ける
+   - **本文**: テンプレートに用意されている項目をすべて埋める
+     - テンプレートは、必要な情報を漏れなく伝えるために用意されています
+     - 各項目を丁寧に記入することで、問題の解決や機能の実装がスムーズになります
+   
+   **Issueを書くときのポイント:**
+   - できるだけ具体的に書く（「動かない」よりも「ログインボタンを押すとエラーが出る」）
+   - 再現手順を書く（どうすればその問題が起きるか）
+   - スクリーンショットがあれば添付する
+   - 環境情報を書く（OS、ブラウザなど）
 
 4. **Submit new issue をクリック**
    - これでIssueが作成されます
@@ -421,6 +448,8 @@ Dev Containersは、Dockerを使って開発環境を自動的に構築する機
 
 後で最新の変更を取り込めるように、元のリポジトリを登録します。
 
+#### VS Codeで追加する方法（推奨）
+
 1. **VS Codeのターミナルを開く**
    - メニューから「ターミナル」→「新しいターミナル」
 
@@ -434,6 +463,8 @@ Dev Containersは、Dockerを使って開発環境を自動的に構築する機
    git remote -v
    ```
    - `origin`（あなたのフォーク）と`upstream`（元のリポジトリ）が表示されればOK
+
+> **Note**: この操作は、VS Codeの拡張機能「Git Graph」などを使うと、より視覚的に管理できます。ただし、最初はターミナルで実行する方法を覚えておくと便利です。
 
 ---
 
@@ -594,10 +625,13 @@ git push origin feature/あなたの機能名
 4. **タイトルと説明を記入**
    - **タイトル**: 何を変更したか、簡潔に書く
      - 例: 「グラフ表示機能を追加」
-   - **説明**: 詳しい内容を書く
+   - **説明**: Pull Requestテンプレートに従って記入する
+     - このリポジトリにはPull Requestテンプレートが用意されています
+     - テンプレートの各項目を埋めることで、レビュワーが変更内容を理解しやすくなります
      - 何をしたか
      - なぜその変更が必要か
      - 関連するIssue（あれば）: `#123` のように書く
+     - テストした内容
 
 5. **Create pull requestをクリック**
    - これでPull Requestが作成されます

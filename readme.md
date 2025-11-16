@@ -18,12 +18,66 @@ Inspired by [kurisyushien.org](https://kurisyushien.org)
 
 ## 概要
 
-rishu-appは、金沢大学の学生が履修登録をより効率的に行えるよう支援するWebアプリケーションです。マイクロサービスアーキテクチャを採用し、複数のサービスが連携して動作します。
+rishu-appは、金沢大学の学生が履修登録をより効率的に行えるよう支援するWebアプリケーションです。
 
 ### 主な機能
 
 - **抽選科目の登録状況可視化**: 履修登録期間中の抽選科目の申込状況をグラフで表示
 - **シラバス情報の提供**: 金沢大学のシラバスデータを検索・閲覧可能な形で提供
+
+## rishu-appに関わる人を募集中
+
+このプロジェクトへの参加を歓迎します！
+
+### 参加方法
+
+- **不具合報告**: [Issues](https://github.com/ToYama170402/rishu-app/issues)で不具合を報告
+- **機能提案**: 新機能のアイデアをIssuesで提案
+- **改善提案**: コードの改善や新機能の追加
+- **文書改善**: READMEやドキュメントの改善
+
+詳しい参加ガイドラインは[CONTRIBUTING.md](CONTRIBUTING.md)をご覧ください。
+
+### 連絡先
+
+質問や相談は以下の方法でお気軽にどうぞ：
+- **GitHub Issues**: 技術的な質問や不具合報告
+- **X (Twitter)**: [@ToYamaSoujin](https://x.com/ToYamaSoujin)
+- **Email**: [toyamasoujinn@gmail.com](mailto:toyamasoujinn@gmail.com)
+
+## 開発環境のセットアップ
+
+このプロジェクトでは、Dev Containerを使用して一貫した開発環境を提供しています。各サービスごとに独立したDev Container環境が用意されています。
+
+### 必要な環境
+
+- [Git](https://git-scm.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Docker](https://www.docker.com/)
+- [Dev Containers拡張機能](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+### セットアップ手順
+
+1. **リポジトリのクローン**
+   ```bash
+   git clone https://github.com/ToYama170402/rishu-app.git
+   cd rishu-app
+   ```
+
+2. **環境変数の設定**
+   
+   `sample.env`を参考に`.env`ファイルを作成し、必要な環境変数を設定してください。
+
+3. **Dev Containerで開く**
+   
+   - VS Codeでクローンしたディレクトリを開く
+   - コマンドパレット（`Ctrl+Shift+P` / `Cmd+Shift+P`）を開く
+   - `Dev Containers: Reopen in Container`を選択
+   - 開発したいサービスを選択（frontend、syllabus-frontend、syllabus-backend、syllabus-scrapeなど）
+
+開発環境では`docker-compose.yml`を`docker-compose.dev.yml`で上書きして使用します。各サービスのDev Containerで開発サーバーを起動して開発を進めてください。
+
+詳細な開発ガイドラインについては、[CONTRIBUTING.md](CONTRIBUTING.md)を参照してください。
 
 ## プロジェクト構成
 
@@ -80,77 +134,15 @@ rishu-appは、金沢大学の学生が履修登録をより効率的に行え�
 ### 外部API
 - [risyu API](https://github.com/ogawa3427/risyu_son?tab=readme-ov-file) - 抽選科目の登録状況データ取得
 
-## 開発環境のセットアップ
-
-このプロジェクトでは、Dev Containerを使用して一貫した開発環境を提供しています。各サービスごとに独立したDev Container環境が用意されています。
-
-### 必要な環境
-
-- [Git](https://git-scm.com/)
-- [Visual Studio Code](https://code.visualstudio.com/)
-- [Docker](https://www.docker.com/)
-- [Dev Containers拡張機能](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-
-### セットアップ手順
-
-1. **リポジトリのクローン**
-   ```bash
-   git clone https://github.com/ToYama170402/rishu-app.git
-   cd rishu-app
-   ```
-
-2. **環境変数の設定**
-   
-   `sample.env`を参考に`.env`ファイルを作成し、必要な環境変数を設定してください。
-
-3. **Dev Containerで開く**
-   
-   - VS Codeでクローンしたディレクトリを開く
-   - コマンドパレット（`Ctrl+Shift+P` / `Cmd+Shift+P`）を開く
-   - `Dev Containers: Reopen in Container`を選択
-   - 開発したいサービスを選択（frontend、syllabus-frontend、syllabus-backend、syllabus-scrapeなど）
-
-4. **依存関係のインストール**
-   
-   各サービスのDev Container内で、パッケージマネージャーを使用して依存関係をインストールします：
-   - TypeScriptプロジェクト: `pnpm install`
-   - Goプロジェクト: `go mod download`
-
-### 各サービスの開発
-
-開発環境では`docker-compose.dev.yml`が使用され、各サービスを個別に開発できます。各サービスのDev Containerで開発サーバーを起動して開発を進めてください。
-
-詳細な開発ガイドラインについては、[CONTRIBUTING.md](CONTRIBUTING.md)を参照してください。
-
 ## アーキテクチャ
 
-このプロジェクトはマイクロサービスアーキテクチャを採用しており、各サービスがDockerコンテナとして動作し、Docker Composeで統合管理されています。
+このプロジェクトは複数のサービスで構成されており、各サービスがDockerコンテナとして動作し、Docker Composeで統合管理されています。
 
 - **フロントエンド層**: `frontend`と`syllabus-frontend`が異なる用途で独立して動作
 - **バックエンド層**: `syllabus-backend`がRESTful APIを提供
 - **データ層**: `syllabus-db`（PostgreSQL）がデータを永続化
 - **データ収集層**: `syllabus-scrape`が定期的にシラバス情報を更新
 - **リバースプロキシ**: `nginx`が各サービスへのルーティングを管理
-
-## コントリビュート
-
-このプロジェクトへの貢献を歓迎します！
-
-### 貢献方法
-
-- **バグ報告**: [Issues](https://github.com/ToYama170402/rishu-app/issues)でバグを報告
-- **機能提案**: 新機能のアイデアをIssuesで提案
-- **プルリクエスト**: コードの改善や新機能の追加
-- **ドキュメント改善**: READMEやドキュメントの改善
-
-詳しい貢献ガイドラインは[CONTRIBUTING.md](CONTRIBUTING.md)をご覧ください。
-
-### コミュニケーション
-
-質問や相談は以下の方法でお気軽にどうぞ：
-- **GitHub Issues**: 技術的な質問やバグ報告
-- **X (Twitter)**: [@ToYamaSoujin](https://x.com/ToYamaSoujin)
-- **Email**: [toyamasoujinn@gmail.com](mailto:toyamasoujinn@gmail.com)
 
 ## Special Thanks
 

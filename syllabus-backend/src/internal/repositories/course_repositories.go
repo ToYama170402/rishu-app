@@ -527,7 +527,7 @@ func UpdateCourseByID(
 		existingCourse.CourseDescription = updatedCourse.CourseDescription
 
 		if err := tx.Model(&schema.Course{}).
-			Where(&existingCourse).
+			Where("course_id = ?", existingCourse.CourseID).
 			Save(&existingCourse).Error; err != nil {
 			return fmt.Errorf("failed to update existing course: %w", err)
 		}

@@ -418,7 +418,7 @@ func UpdateCourseByID(
 			return fmt.Errorf("failed to update instructors: %w", err)
 		}
 
-		// update schedules
+		// Update schedules
 		updatedSchemaDayPeriods, err = replaceManyToManyRelation(
 			tx,
 			courseID,
@@ -442,7 +442,7 @@ func UpdateCourseByID(
 			return fmt.Errorf("failed to update schedules: %w", err)
 		}
 
-		// update keywords
+		// Update keywords
 		updatedSchemaKeywords, err = replaceManyToManyRelation(
 			tx,
 			courseID,
@@ -463,7 +463,7 @@ func UpdateCourseByID(
 			return fmt.Errorf("failed to update keywords: %w", err)
 		}
 
-		// update class format if needed
+		// Update class format if needed
 		classFormat := &schema.ClassFormat{ClassFormat: updatedCourse.ClassFormat}
 		if err := tx.Model(&schema.ClassFormat{}).FirstOrCreate(&classFormat, &classFormat).Error; err != nil {
 			return fmt.Errorf("failed to get first classFormat or create it: %w", err)
@@ -471,7 +471,7 @@ func UpdateCourseByID(
 		updatedSchemaClassFormat = classFormat
 		existingCourse.ClassFormatID = classFormat.ClassFormatID
 
-		// update lecture form if needed
+		// Update lecture form if needed
 		lectureForm := &schema.LectureForm{LectureForm: updatedCourse.LectureForm}
 		if err := tx.Model(&schema.LectureForm{}).FirstOrCreate(&lectureForm, &lectureForm).Error; err != nil {
 			return fmt.Errorf("failed to get first lectureForm or create it: %w", err)
@@ -479,7 +479,7 @@ func UpdateCourseByID(
 		updatedSchemaLectureForm = lectureForm
 		existingCourse.LectureFormID = lectureForm.LectureFormID
 
-		// update target students if needed
+		// Update target students if needed
 		targetStudents := &schema.TargetStudents{TargetStudents: updatedCourse.TargetStudents}
 		if err := tx.Model(&schema.TargetStudents{}).FirstOrCreate(&targetStudents, &targetStudents).Error; err != nil {
 			return fmt.Errorf("failed to get first targetStudents or create it: %w", err)
@@ -487,7 +487,7 @@ func UpdateCourseByID(
 		updatedSchemaTargetStudents = targetStudents
 		existingCourse.TargetStudentsID = targetStudents.TargetStudentsID
 
-		// update lecture room info if needed
+		// Update lecture room info if needed
 		lectureRoomInfo := &schema.LectureRoomInfo{LectureRoomInfo: updatedCourse.LectureRoomInfo}
 		if err := tx.Model(&schema.LectureRoomInfo{}).FirstOrCreate(&lectureRoomInfo, &lectureRoomInfo).Error; err != nil {
 			return fmt.Errorf("failed to get first lectureRoomInfo or create it: %w", err)
@@ -495,7 +495,7 @@ func UpdateCourseByID(
 		updatedSchemaLectureRoomInfo = lectureRoomInfo
 		existingCourse.LectureRoomInfoID = lectureRoomInfo.LectureRoomInfoID
 
-		// update faculty and department if needed
+		// Update faculty and department if needed
 		faculty := &schema.Faculty{Faculty: updatedCourse.Faculty.Faculty}
 		if err := tx.Model(&schema.Faculty{}).FirstOrCreate(&faculty, &faculty).Error; err != nil {
 			return fmt.Errorf("failed to get first Faculty or create it: %w", err)

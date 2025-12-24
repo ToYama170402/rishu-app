@@ -2,8 +2,7 @@
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { ReactNode, useState, type JSX } from "react";
-import PcAppBar from "@/features/AppBar/PcAppBar";
-import MobileAppBar from "@/features/AppBar/MobileAppBar";
+import AppBar from "@/features/AppBar/AppBar";
 import appBarContext from "@/features/AppBar/appBarContext";
 
 export default function Layout({
@@ -13,15 +12,10 @@ export default function Layout({
 }): JSX.Element {
   const [appBarContents, setAppBarContents] = useState<ReactNode>(null);
   return (
-    <Stack
-      direction={{ sm: "row", xs: "column" }}
-      sx={{ height: "100%", width: "100%" }}
-    >
-      <PcAppBar>{appBarContents}</PcAppBar>
+    <Stack direction={{ xs: "column" }} sx={{ height: "100%", width: "100%" }}>
       <Box
         sx={{
           height: {
-            sm: `100%`,
             xs: `calc(100% - 64px)`,
           },
           flex: 1,
@@ -32,7 +26,7 @@ export default function Layout({
           {children}
         </appBarContext.Provider>
       </Box>
-      <MobileAppBar>{appBarContents}</MobileAppBar>
+      <AppBar>{appBarContents}</AppBar>
     </Stack>
   );
 }

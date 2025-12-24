@@ -1,16 +1,16 @@
-import { ExpandMore, GitHub, Settings } from "@mui/icons-material";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import GitHub from "@mui/icons-material/GitHub";
+import Settings from "@mui/icons-material/Settings";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";

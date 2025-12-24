@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "analyze": "ANALYZE=true NODE_ENV=production next build",
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
@@ -17,11 +18,12 @@
     "@mui/material": "^6.0.2",
     "@mui/system": "^6.4.3",
     "@next/third-parties": "15.1.7",
-    "next": "15.2.4",
+    "next": "15.4.9",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.3.1",
     "@types/node": "^20",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",

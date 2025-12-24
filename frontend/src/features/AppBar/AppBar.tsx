@@ -1,5 +1,5 @@
 import {
-  AppBar as AooBarLiteral,
+  AppBar as AppBarLiteral,
   Box,
   IconButton,
   Stack,
@@ -10,7 +10,7 @@ import {
 import HelpIcon from "@mui/icons-material/Help";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuOpen from "@mui/icons-material/MenuOpen";
-import { useTheme } from "@mui/material";
+import useTheme from "@mui/material/styles/useTheme";
 import React, { useState, ReactNode } from "react";
 import HelpDialog from "@/components/HelpDialog";
 
@@ -27,7 +27,7 @@ const AppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
 
   return (
     <>
-      <AooBarLiteral
+      <AppBarLiteral
         sx={{
           position: "static",
           color: theme.palette.primary.contrastText,
@@ -64,7 +64,7 @@ const AppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
             </Stack>
           </Stack>
         </Toolbar>
-      </AooBarLiteral>
+      </AppBarLiteral>
       <SwipeableDrawer
         onClose={handleDrawerOpen}
         onOpen={handleDrawerOpen}

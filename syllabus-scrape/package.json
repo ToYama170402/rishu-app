@@ -1,0 +1,25 @@
+{
+  "name": "syllabus-scrape",
+  "type": "module",
+  "scripts": {
+    "start": "tsx ./src/main.ts",
+    "build": "tsc && tsc-alias -f",
+    "clean": "rm -rf ./dist",
+    "typecheck": "tsc --noEmit",
+    "format": "biome format --write",
+    "lint": "biome lint .",
+    "check": "biome check --write ."
+  },
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@types/node": "^24.2.1",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "puppeteer": "^24.16.2"
+  }
+}

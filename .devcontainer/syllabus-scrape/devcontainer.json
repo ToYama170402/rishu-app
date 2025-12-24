@@ -1,0 +1,49 @@
+{
+  "name": "syllabus-scrape",
+  "dockerComposeFile": [
+    "../../docker-compose.yml",
+    "../../docker-compose.dev.yml"
+  ],
+  "service": "syllabus-scrape",
+  "overrideCommand": true,
+  "workspaceFolder": "/workspace/syllabus-scrape",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "postAttachCommand": "git config --global --add safe.directory /workspace",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // ファイル保存時にフォーマット処理を実行
+        "editor.formatOnSave": true,
+        // 各ファイルのデフォルトのフォーマッターを指定
+        "[javascript]": {
+          "editor.defaultFormatter": "biomejs.biome"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "biomejs.biome"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "biomejs.biome"
+        },
+        // VSCodeのデフォルトのフォーマッターを無効に
+        "javascript.format.enable": false,
+        "typescript.format.enable": false,
+        "git.openRepositoryInParentFolders": "always"
+      },
+      // 拡張機能を追加
+      "extensions": [
+        "biomejs.biome", // Biome
+        "streetsidesoftware.code-spell-checker", // Code Spell Checker
+        "yzhang.dictionary-completion", // Dictionary Completion
+        "mhutchie.git-graph", // Git Graph
+        "mosapride.zenkaku", // zenkaku
+        "shardulm94.trailing-spaces", // Trailing Spaces
+        "christian-kohler.path-intellisense", // Path Intellisense
+        "christian-kohler.npm-intellisense", // NPM Intellisense
+        "YoavBls.pretty-ts-errors", // Pretty TS Errors
+        "xabikos.JavaScriptSnippets" // JavaScript (ES6) code snippets
+      ]
+    }
+  }
+}

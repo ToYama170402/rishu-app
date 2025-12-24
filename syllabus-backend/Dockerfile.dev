@@ -1,0 +1,34 @@
+# ベースイメージ
+FROM golang:1.24.0-bookworm
+
+
+RUN apt-get update && \
+  apt-get install -y postgresql-client && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
+
+ARG USERNAME=devuser
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+RUN groupadd --gid $USER_GID $USERNAME \
+  && useradd --uid $USER_UID --gid $USER_GID -m -s /bin/bash $USERNAME
+
+USER $USERNAME
+
+# 作業ディレクトリを作成
+WORKDIR /workspace/syllabus-backend
+
+# Goのモジュールキャッシュを永続化するためのボリュームを設定
+VOLUME /go/pkg/mod
+
+# プロキシを無効化
+RUN go env -w GOPROXY=direct
+
+# 必要なファイルをコピー
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
+CMD [ "sleep", "infinity" ]

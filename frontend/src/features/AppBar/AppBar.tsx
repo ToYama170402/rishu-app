@@ -1,10 +1,12 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Stack from "@mui/material/Stack";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Typography from "@mui/material/Typography";
-import Toolbar from "@mui/material/Toolbar";
+import {
+  AppBar as AppBarLiteral,
+  Box,
+  IconButton,
+  Stack,
+  SwipeableDrawer,
+  Typography,
+  Toolbar,
+} from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuOpen from "@mui/icons-material/MenuOpen";
@@ -12,11 +14,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import React, { useState, ReactNode } from "react";
 import HelpDialog from "@/components/HelpDialog";
 
-const MobileAppBar = ({
-  children,
-}: {
-  children?: ReactNode;
-}): React.ReactNode => {
+const AppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
@@ -29,12 +27,11 @@ const MobileAppBar = ({
 
   return (
     <>
-      <AppBar
+      <AppBarLiteral
         sx={{
           position: "static",
           color: theme.palette.primary.contrastText,
           borderRadius: "4px 4px 0px 0px",
-          display: { xs: "block", sm: "none" },
         }}
       >
         <Toolbar>
@@ -58,13 +55,16 @@ const MobileAppBar = ({
                   sx={{ color: theme.palette.primary.contrastText }}
                 />
               </IconButton>
-              <IconButton onClick={handleDrawerOpen}>
+              <IconButton
+                onClick={handleDrawerOpen}
+                sx={{ display: { xs: "block", sm: "none" } }}
+              >
                 <MenuOpen sx={{ color: theme.palette.primary.contrastText }} />
               </IconButton>
             </Stack>
           </Stack>
         </Toolbar>
-      </AppBar>
+      </AppBarLiteral>
       <SwipeableDrawer
         onClose={handleDrawerOpen}
         onOpen={handleDrawerOpen}
@@ -79,4 +79,4 @@ const MobileAppBar = ({
     </>
   );
 };
-export default MobileAppBar;
+export default AppBar;

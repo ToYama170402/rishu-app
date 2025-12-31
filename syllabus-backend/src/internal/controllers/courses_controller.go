@@ -48,12 +48,12 @@ func GetCourseByID(c *gin.Context) {
 
 func CreateCourses(c *gin.Context) {
 	db := config.GetDB()
-	var course []model.Course
-	if err := c.BindJSON(&course); err != nil {
+	var courses []model.Course
+	if err := c.BindJSON(&courses); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid request body"})
 		return
 	}
-	if savedCourses, err := repositories.CreateCourses(db, &course); err != nil {
+	if savedCourses, err := repositories.CreateCourses(db, &courses); err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return

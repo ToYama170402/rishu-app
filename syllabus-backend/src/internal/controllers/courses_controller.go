@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	"log"
 
 	"github.com/ToYama170402/rishu-app/syllabus/src/internal/config"
 	"github.com/ToYama170402/rishu-app/syllabus/src/internal/model"
@@ -17,6 +18,7 @@ func GetCourses(c *gin.Context) {
 	db := config.GetDB()
 	courses, err := repositories.GetCourses(db)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}
@@ -37,6 +39,7 @@ func GetCourseByID(c *gin.Context) {
 		return
 	}
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}
@@ -51,6 +54,7 @@ func CreateCourses(c *gin.Context) {
 		return
 	}
 	if course, err := repositories.CreateCourses(db, &course); err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	} else {
@@ -77,6 +81,7 @@ func UpdateCourseByID(c *gin.Context) {
 		return
 	}
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}
@@ -98,6 +103,7 @@ func DeleteCourseByID(c *gin.Context) {
 		return
 	}
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}

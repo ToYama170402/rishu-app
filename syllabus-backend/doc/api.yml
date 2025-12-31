@@ -6,7 +6,7 @@ info:
   description: "API specification for syllabus-backend (subset: /courses)"
 
 servers:
-  - url: http://api.*:8080
+  - url: http://{apiHost}:8080
     description: API for rishu-app
 
 paths:

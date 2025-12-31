@@ -96,8 +96,7 @@ func DeleteCourseByID(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid course ID"})
 		return
 	}
-	err := repositories.
-		DeleteCourseByID(db, courseID.ID)
+	err := repositories.DeleteCourseByID(db, courseID.ID)
 	if errors.Is(err, repositories.ErrCourseNotFound) {
 		c.JSON(404, gin.H{"error": "Course not found"})
 		return

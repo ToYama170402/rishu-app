@@ -321,7 +321,7 @@ func convertSchemaCourseToModelCourse(
 // updatedData: 更新後のデータ
 // model: 更新先テーブルのモデル
 // relationModel: 中間テーブルのモデル
-// createModel: updateDataから更新先テーブルのモデルを生成する関数
+// createModel: updatedDataから更新先テーブルのモデルを生成する関数
 // createRelation: CourseIDと更新先テーブルのモデルから中間テーブルモデルを生成する関数
 func replaceManyToManyRelation[T any, U any, V any](
 	tx *gorm.DB,

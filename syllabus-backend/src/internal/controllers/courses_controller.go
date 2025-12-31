@@ -58,7 +58,7 @@ func CreateCourses(c *gin.Context) {
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	} else {
-		c.JSON(200, gin.H{"status": "success", "courses": savedCourses})
+		c.JSON(200, gin.H{"courses": savedCourses})
 	}
 }
 
@@ -85,7 +85,7 @@ func UpdateCourseByID(c *gin.Context) {
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	}
-	c.JSON(200, gin.H{"status": "success", "course": course})
+	c.JSON(200, gin.H{"course": course})
 }
 
 func DeleteCourseByID(c *gin.Context) {

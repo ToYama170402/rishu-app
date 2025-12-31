@@ -329,7 +329,7 @@ func replaceManyToManyRelation[T any, U any, V any](
 	updatedData []T,
 	model *U,
 	relationModel *V,
-	createModel func(model T) U,
+	createModel func(data T) U,
 	createRelation func(courseID int, model U) V,
 ) (*[]U, error) {
 	if err := tx.Model(&relationModel).

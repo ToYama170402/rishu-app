@@ -53,12 +53,12 @@ func CreateCourses(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request body"})
 		return
 	}
-	if course, err := repositories.CreateCourses(db, &course); err != nil {
+	if savedCourses, err := repositories.CreateCourses(db, &course); err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{"error": "Internal Server Error"})
 		return
 	} else {
-		c.JSON(200, gin.H{"status": "success", "course": course})
+		c.JSON(200, gin.H{"status": "success", "courses": savedCourses})
 	}
 }
 

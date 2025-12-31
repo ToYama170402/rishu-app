@@ -102,9 +102,6 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: string
-                    example: success
                   courses:
                     type: array
                     items:

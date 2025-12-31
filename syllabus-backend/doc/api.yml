@@ -77,6 +77,7 @@ paths:
           schema:
             type: integer
             default: 100
+            maximum: 1000
         - name: offset
           in: query
           description: Number of courses to skip before starting to collect the result set
@@ -84,6 +85,7 @@ paths:
           schema:
             type: integer
             default: 0
+            minimum: 0
       responses:
         '200':
           description: A list of courses

@@ -140,11 +140,11 @@ func createCourse(db *gorm.DB, course *model.Course) (*model.Course, error) {
 
 	semesters := []schema.Semester{}
 	for _, semester := range course.Semester {
-		a := schema.Semester{Semester: semester}
-		if err := db.Model(&schema.Semester{}).FirstOrCreate(&a, &a).Error; err != nil {
+		semesterInstance := schema.Semester{Semester: semester}
+		if err := db.Model(&schema.Semester{}).FirstOrCreate(&semesterInstance, &semesterInstance).Error; err != nil {
 			return nil, err
 		}
-		semesters = append(semesters, a)
+		semesters = append(semesters, semesterInstance)
 	}
 
 	var courseSemesterRelation []schema.CourseSemesterRelation
@@ -162,11 +162,11 @@ func createCourse(db *gorm.DB, course *model.Course) (*model.Course, error) {
 
 	keywords := []schema.Keyword{}
 	for _, keyword := range course.Keywords {
-		a := schema.Keyword{Keyword: keyword}
-		if err := db.Model(&schema.Keyword{}).FirstOrCreate(&a, &a).Error; err != nil {
+		keywordInstance := schema.Keyword{Keyword: keyword}
+		if err := db.Model(&schema.Keyword{}).FirstOrCreate(&keywordInstance, &keywordInstance).Error; err != nil {
 			return nil, err
 		}
-		keywords = append(keywords, a)
+		keywords = append(keywords, keywordInstance)
 	}
 
 	var courseKeywordRelation []schema.CourseKeywordRelation
@@ -184,11 +184,11 @@ func createCourse(db *gorm.DB, course *model.Course) (*model.Course, error) {
 
 	instructors := []schema.Instructor{}
 	for _, instructor := range course.Instructors {
-		a := schema.Instructor{Name: instructor.Name}
-		if err := db.Model(&schema.Instructor{}).FirstOrCreate(&a, &a).Error; err != nil {
+		instructorInstance := schema.Instructor{Name: instructor.Name}
+		if err := db.Model(&schema.Instructor{}).FirstOrCreate(&instructorInstance, &instructorInstance).Error; err != nil {
 			return nil, err
 		}
-		instructors = append(instructors, a)
+		instructors = append(instructors, instructorInstance)
 	}
 
 	var responsible []schema.Responsible
@@ -340,12 +340,12 @@ func replaceManyToManyRelation[T any, U any, V any](
 	var updatedModel []U
 	for i := range updatedData {
 		data := updatedData[i]
-		a := createModel(data)
-		if err := tx.Model(&model).FirstOrCreate(&a, &a).Error; err != nil {
+		modelInstance := createModel(data)
+		if err := tx.Model(&model).FirstOrCreate(&modelInstance, &modelInstance).Error; err != nil {
 			return nil, fmt.Errorf("failed to get first model or create it: %w", err)
 		}
-		updatedModel = append(updatedModel, a)
-		relation := createRelation(courseID, a)
+		updatedModel = append(updatedModel, modelInstance)
+		relation := createRelation(courseID, modelInstance)
 		if err := tx.Model(&relationModel).Create(&relation).Error; err != nil {
 			return nil, fmt.Errorf("failed to create relationModel: %w", err)
 		}

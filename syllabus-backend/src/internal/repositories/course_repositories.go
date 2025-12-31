@@ -45,8 +45,12 @@ func GetCourseByID(db *gorm.DB, courseID int) (*model.Course, error) {
 		Data json.RawMessage `gorm:"column:jsonb_build_object"`
 	}
 	query := CourseListQueryHeader + " WHERE courses.course_id = $1 " + CourseListQueryFooter
-	if err := db.Raw(query, courseID).Scan(&rawResult).Error; err != nil {
+	result := db.Raw(query, courseID).Scan(&rawResult)
+	if err := result.Error; err != nil {
 		return nil, err
+	}
+	if result.RowsAffected == 0 {
+		return nil, ErrCourseNotFound
 	}
 	if len(rawResult.Data) == 0 {
 		return nil, ErrCourseNotFound

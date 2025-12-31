@@ -27,18 +27,49 @@ paths:
           required: false
           schema:
             type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
         - name: department
           in: query
           description: Department name (e.g., "融合学域")
           required: false
           schema:
             type: string
+            enum:
+              - 融合学域
+              - 理工学域
+              - 人間社会学域
+              - 医薬保健学域
         - name: faculty
           in: query
           description: Faculty name (e.g., "スマート創成科学類")
           required: false
           schema:
             type: string
+            enum:
+              - 先導学類
+              - 観光デザイン学類
+              - スマート創成科学類
+              - 数物科学類
+              - 物質科学類
+              - 機械工学類
+              - フロンティア工学類
+              - 電子情報通信学類
+              - 地球社会基盤学類
+              - 生命理工学類
+              - 人文学類
+              - 法学類
+              - 経済学類
+              - 学校教育学類
+              - 地域創造学類
+              - 国際学類
+              - 医学類
+              - 薬学類
+              - 医薬化学類
+              - 保健学類
         - name: limit
           in: query
           description: Maximum number of courses to return
@@ -267,6 +298,11 @@ components:
           type: array
           items:
             type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
         numberOfCredits:
           type: integer
         note:
@@ -352,6 +388,11 @@ components:
           type: array
           items:
             type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
         numberOfCredits:
           type: integer
         note:

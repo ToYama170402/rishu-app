@@ -35,26 +35,28 @@ export class JsonFileCourseRepositoryAdapter
 
   async findCourseById(id: string): Promise<Course | null> {
     const courses = (await readJsonFile<Course[]>(this.filePath)) ?? [];
-    return courses.find((c) => c.id === id) || null;
+    return courses.find((c) => c.courseId === id) || null;
   }
 
   async saveCourse(course: Course): Promise<void> {
     if (!course) {
       throw new Error("Course object is required.");
     }
-    if (!course.id) {
+    if (!course.courseId) {
       throw new Error("Course must have a valid ID.");
     }
     const existingCourses = (await readJsonFile<Course[]>(this.filePath)) ?? [];
     // 既存コース一覧から同じIDのものを除外
-    const updatedCourses = existingCourses.filter((c) => c.id !== course.id);
+    const updatedCourses = existingCourses.filter(
+      (c) => c.courseId !== course.courseId
+    );
     // 新しいコースを追加して保存
     return writeJsonFile<Course[]>(this.filePath, [...updatedCourses, course]);
   }
 
   async deleteCourse(id: string): Promise<void> {
     const courses = (await readJsonFile<Course[]>(this.filePath)) ?? [];
-    const updatedCourses = courses.filter((c) => c.id !== id);
+    const updatedCourses = courses.filter((c) => c.courseId !== id);
     return writeJsonFile<Course[]>(this.filePath, updatedCourses);
   }
 }

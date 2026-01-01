@@ -162,7 +162,7 @@ const timeRangeScheduler = new TimeRangeScheduler(
 
 const courseService = new CourseService();
 const courseRepositoryAdapter = new RestApiCourseRepositoryAdapter(
-  "http://syllabus-backend:8080"
+  process.env.SYLLABUS_BACKEND_URL || "http://syllabus-backend:8080"
 );
 const courseRepository = new CourseRepository(courseRepositoryAdapter);
 

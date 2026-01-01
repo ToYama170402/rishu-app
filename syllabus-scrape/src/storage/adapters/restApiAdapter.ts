@@ -19,6 +19,9 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
   }
 
   async saveCourse(course: Course): Promise<void> {
+    if (!course) {
+      throw new Error("Course object is required.");
+    }
     const response = await fetch(`${this.apiBaseUrl}/courses`, {
       method: "POST",
       headers: {

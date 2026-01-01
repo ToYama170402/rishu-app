@@ -20,7 +20,7 @@ import { SyllabusSearchResultExtractor } from "./scraping/syllabusSearchEngineRe
 import { SyllabusSearchResultParser } from "./scraping/syllabusSearchEngineResult/parser";
 import { SyllabusSearchResultScraper } from "./scraping/syllabusSearchEngineResult/scraper";
 import { CourseService } from "./services/courseService";
-import { JsonFileCourseRepositoryAdapter } from "./storage/adapters";
+import { RestApiCourseRepositoryAdapter } from "./storage/adapters";
 import { CourseRepository } from "./storage/repositories";
 
 const logger = Logger.getInstance();
@@ -161,10 +161,10 @@ const timeRangeScheduler = new TimeRangeScheduler(
 );
 
 const courseService = new CourseService();
-const jsonFileCourseRepositoryAdapter = new JsonFileCourseRepositoryAdapter(
-  "./data/courses.json"
+const courseRepositoryAdapter = new RestApiCourseRepositoryAdapter(
+  "http://syllabus-backend:8080"
 );
-const courseRepository = new CourseRepository(jsonFileCourseRepositoryAdapter);
+const courseRepository = new CourseRepository(courseRepositoryAdapter);
 
 Object.keys(facultyMap).forEach((key) => {
   timeRangeScheduler.addTask(async () => {

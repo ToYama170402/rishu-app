@@ -5,7 +5,8 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
   constructor(private apiBaseUrl: string) {}
 
   async findCourseById(id: string): Promise<Course | null> {
-    const response = await fetch(`${this.apiBaseUrl}/courses/${id}`);
+    const intId = Number.parseInt(id, 10);
+    const response = await fetch(`${this.apiBaseUrl}/courses/${intId}`);
     if (response.ok) {
       return (await response.json()) as Course;
     } else if (response.status === 404) {
@@ -35,7 +36,8 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
   }
 
   async deleteCourse(id: string): Promise<void> {
-    const response = await fetch(`${this.apiBaseUrl}/courses/${id}`, {
+    const intId = Number.parseInt(id, 10);
+    const response = await fetch(`${this.apiBaseUrl}/courses/${intId}`, {
       method: "DELETE",
     });
     if (!response.ok) {

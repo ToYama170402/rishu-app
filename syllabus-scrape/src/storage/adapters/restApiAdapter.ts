@@ -7,13 +7,16 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
   async findCourseById(id: string): Promise<Course | null> {
     const intId = Number.parseInt(id, 10);
     const response = await fetch(`${this.apiBaseUrl}/courses/${intId}`);
+    const body = await response.text();
     if (response.ok) {
-      return (await response.json()) as Course;
+      return JSON.parse(body) as Course;
     } else if (response.status === 404) {
       return null;
     } else {
       throw new Error(
-        `Error fetching course: ${response.status} ${response.statusText} ${await response.text()}`
+        `Error fetching course: ${response.status} ${
+          response.statusText
+        } ${body}`
       );
     }
   }
@@ -31,9 +34,10 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
         courses: [course],
       }),
     });
+    const body = await response.text();
     if (!response.ok) {
       throw new Error(
-        `Error saving course: ${response.status} ${response.statusText} ${await response.text()}`
+        `Error saving course: ${response.status} ${response.statusText} ${body}`
       );
     }
   }
@@ -43,9 +47,12 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
     const response = await fetch(`${this.apiBaseUrl}/courses/${intId}`, {
       method: "DELETE",
     });
+    const body = await response.text();
     if (!response.ok) {
       throw new Error(
-        `Error deleting course: ${response.status} ${response.statusText} ${await response.text()}`
+        `Error deleting course: ${response.status} ${
+          response.statusText
+        } ${body}`
       );
     }
   }

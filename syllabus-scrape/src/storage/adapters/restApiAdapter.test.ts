@@ -151,6 +151,41 @@ describe("RestApiCourseRepositoryAdapter", () => {
     );
   });
 
+  test("saveCourse creates new course when existing courses returns null", async () => {
+    const newCourse = course;
+    (global.fetch as jest.Mock)
+      // First call returns { courses: null }
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ courses: null }),
+      })
+      // Second call to create the new course
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 201,
+        text: async () => JSON.stringify(course),
+      });
+    const { courseId, ...newCourseWithoutId } = newCourse;
+
+    await adapter.saveCourse(newCourse);
+
+    expect(global.fetch).toHaveBeenNthCalledWith(1, `${apiBaseUrl}/courses`);
+    expect(global.fetch).toHaveBeenNthCalledWith(
+      2,
+      `${apiBaseUrl}/courses`,
+      expect.objectContaining({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          courses: [newCourseWithoutId],
+        }),
+      })
+    );
+  });
+
   test("saveCourse throws error when course is null", async () => {
     await expect(adapter.saveCourse(null as unknown as Course)).rejects.toThrow(
       "Course object is required."

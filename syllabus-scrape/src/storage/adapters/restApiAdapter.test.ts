@@ -55,20 +55,15 @@ describe("RestApiCourseRepositoryAdapter", () => {
   });
 
   test("findCourseById returns course when found", async () => {
-    const mockCourse = {
-      courseId: 1,
-      courseNumber: "CS101",
-      faculty: "Engineering",
-      title: "Introduction to Computer Science",
-    };
+    const mockCourse = course;
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       status: 200,
       text: async () => JSON.stringify(mockCourse),
     });
 
-    const course = await adapter.findCourseById("1");
-    expect(course).toEqual(mockCourse);
+    const foundCourse = await adapter.findCourseById("1");
+    expect(foundCourse).toEqual(mockCourse);
     expect(global.fetch).toHaveBeenCalledWith(`${apiBaseUrl}/courses/1`);
   });
 

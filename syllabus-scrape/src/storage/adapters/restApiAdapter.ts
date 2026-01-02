@@ -31,12 +31,14 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
         `Error fetching existing courses: ${existingCoursesResponse.status} ${existingCoursesResponse.statusText} ${existingCoursesBody}`
       );
     }
-    const existingCourses: Course[] =
-      (
-        JSON.parse(existingCoursesBody) as {
-          courses: Course[] | null;
-        }
-      ).courses || [];
+    let parsedData: { courses: Course[] | null };
+    try {
+      parsedData = existingCoursesBody ? JSON.parse(existingCoursesBody) : { courses: null };
+    } catch (error) {
+      throw new Error(`Failed to parse existing courses JSON. Error: ${error instanceof Error ? error.message : String(error)}`);
+    }
+    const existingCourses: Course[] = parsedData.courses || [];
+
     const duplicate = existingCourses.find(
       (c) =>
         c.year === course.year &&

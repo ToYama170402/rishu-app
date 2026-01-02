@@ -25,13 +25,14 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
     if (!course) {
       throw new Error("Course object is required.");
     }
+    const { courseId, ...courseData } = course;
     const response = await fetch(`${this.apiBaseUrl}/courses`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        courses: [course],
+        courses: [courseData],
       }),
     });
     const body = await response.text();

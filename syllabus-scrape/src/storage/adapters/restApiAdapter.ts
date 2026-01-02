@@ -33,9 +33,13 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
     }
     let parsedData: { courses: Course[] | null };
     try {
-      parsedData = existingCoursesBody ? JSON.parse(existingCoursesBody) : { courses: null };
+      parsedData = existingCoursesBody
+        ? JSON.parse(existingCoursesBody)
+        : { courses: null };
     } catch (error) {
-      throw new Error(`Failed to parse existing courses JSON. Error: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Failed to parse existing courses JSON. Error: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
     const existingCourses: Course[] = parsedData.courses || [];
 
@@ -80,8 +84,9 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
     });
     const body = await response.text();
     if (!response.ok) {
+      const { courseDescription, ...courseForErrorMessage } = course;
       throw new Error(
-        `Error saving course: ${JSON.stringify(course, null, 2)} ${
+        `Error saving course: ${JSON.stringify(courseForErrorMessage, null, 2)} ${
           response.status
         } ${response.statusText} ${body}`
       );

@@ -6,7 +6,7 @@ info:
   description: "API specification for syllabus-backend (subset: /courses)"
 
 servers:
-  - url: http://api.*:8080
+  - url: http://{apiHost}:8080
     description: API for rishu-app
 
 paths:
@@ -26,19 +26,19 @@ paths:
           description: "quarter (Q1~Q4), e.g., 1 for Q1"
           required: false
           schema:
-            type: integer
+            $ref: '#/components/schemas/Quarter'
         - name: department
           in: query
           description: Department name (e.g., "融合学域")
           required: false
           schema:
-            type: string
+            $ref: '#/components/schemas/DepartmentName'
         - name: faculty
           in: query
           description: Faculty name (e.g., "スマート創成科学類")
           required: false
           schema:
-            type: string
+            $ref: '#/components/schemas/FacultyName'
         - name: limit
           in: query
           description: Maximum number of courses to return
@@ -46,6 +46,7 @@ paths:
           schema:
             type: integer
             default: 100
+            maximum: 1000
         - name: offset
           in: query
           description: Number of courses to skip before starting to collect the result set
@@ -53,6 +54,7 @@ paths:
           schema:
             type: integer
             default: 0
+            minimum: 0
       responses:
         '200':
           description: A list of courses
@@ -266,7 +268,7 @@ components:
         semester:
           type: array
           items:
-            type: integer
+            $ref: '#/components/schemas/Quarter'
         numberOfCredits:
           type: integer
         note:
@@ -329,75 +331,16 @@ components:
         - faculty
 
     CourseResponse:
-      type: object
-      properties:
-        courseId:
-          description: Unique identifier for the course (独自ID)
-          type: integer
-          readOnly: true
-        year:
-          type: integer
-        title:
-          type: string
-        numbering:
-          description: 科目ナンバリング
-          type: string
-        courseNumber:
-          description: 講義番号
-          type: string
-        numberOfProper:
-          description: 適正人数
-          type: integer
-        semester:
-          type: array
-          items:
-            type: integer
-        numberOfCredits:
-          type: integer
-        note:
-          type: string
-        japaneseUrl:
-          type: string
-          format: uri
-        englishUrl:
-          type: string
-          format: uri
-        openAccount:
-          description: 開放科目
-          type: string
-        max60CreditsFlag:
-          description: 60単位上限
-          type: string
-        subjectDistinguished:
-          description: 科目区分
-          type: string
-        courseDescription:
-          type: string
-        instructors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Instructor'
-        schedules:
-          type: array
-          items:
-            $ref: '#/components/schemas/Schedule'
-        classFormat:
-          description: 授業形態
-          type: string
-        lectureForm:
-          description: 講義形態
-          type: string
-        targetStudents:
-          type: string
-        lectureRoomInfo:
-          description: 講義室情報
-          type: string
-        faculty:
-          $ref: '#/components/schemas/Faculty'
-        keywords:
-          type: array
-          items:
-            type: string
+      allOf:
+        - $ref: '#/components/schemas/Course'
+        - type: object
+          properties:
+            courseId:
+              type: integer
+              readOnly: true
+              description: 独自ID
+      required:
+        - courseId
 
     Instructor:
       type: object
@@ -439,36 +382,48 @@ components:
       type: object
       properties:
         faculty:
-          type: string
-          enum:
-            - 先導学類
-            - 観光デザイン学類
-            - スマート創成科学類
-            - 数物科学類
-            - 物質科学類
-            - 機械工学類
-            - フロンティア工学類
-            - 電子情報通信学類
-            - 地球社会基盤学類
-            - 生命理工学類
-            - 人文学類
-            - 法学類
-            - 経済学類
-            - 学校教育学類
-            - 地域創造学類
-            - 国際学類
-            - 医学類
-            - 薬学類
-            - 医薬化学類
-            - 保健学類
+            $ref: '#/components/schemas/FacultyName'
         department:
-          type: string
-          enum:
-            - 融合学域
-            - 理工学域
-            - 人間社会学域
-            - 医薬保健学域
+            $ref: '#/components/schemas/DepartmentName'
       required:
         - faculty
 
+    FacultyName:
+      type: string
+      enum:
+        - 先導学類
+        - 観光デザイン学類
+        - スマート創成科学類
+        - 数物科学類
+        - 物質科学類
+        - 機械工学類
+        - フロンティア工学類
+        - 電子情報通信学類
+        - 地球社会基盤学類
+        - 生命理工学類
+        - 人文学類
+        - 法学類
+        - 経済学類
+        - 学校教育学類
+        - 地域創造学類
+        - 国際学類
+        - 医学類
+        - 薬学類
+        - 医薬化学類
+        - 保健学類
 
+    DepartmentName:
+      type: string
+      enum:
+        - 融合学域
+        - 理工学域
+        - 人間社会学域
+        - 医薬保健学域
+
+    Quarter:
+      type: integer
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4

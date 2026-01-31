@@ -264,9 +264,10 @@ describe("RestApiCourseRepositoryAdapter", () => {
         text: async () => "Invalid data",
       });
 
+    const { courseDescription, ...newCourseWithoutDescription } = newCourse;
     await expect(adapter.saveCourse(newCourse)).rejects.toThrow(
       `Error saving course: ${JSON.stringify(
-        newCourse,
+        newCourseWithoutDescription,
         null,
         2
       )} 400 Bad Request Invalid data`

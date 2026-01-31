@@ -102,6 +102,7 @@ describe("RestApiCourseRepositoryAdapter", () => {
 
     await adapter.saveCourse(updatedCourse);
 
+    const { courseId, ...updatedCourseWithoutId } = updatedCourse;
     expect(global.fetch).toHaveBeenNthCalledWith(1, `${apiBaseUrl}/courses`);
     expect(global.fetch).toHaveBeenNthCalledWith(
       2,
@@ -111,7 +112,7 @@ describe("RestApiCourseRepositoryAdapter", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedCourse),
+        body: JSON.stringify(updatedCourseWithoutId),
       })
     );
   });

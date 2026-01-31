@@ -52,15 +52,20 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
     );
     // 重複があれば更新、なければ新規保存
     if (duplicate) {
+      const id = Number.parseInt(String(duplicate.courseId), 10);
+      if (Number.isNaN(id)) {
+        throw new Error(`Invalid duplicate.courseId: ${duplicate.courseId}`);
+      }
+      const { courseId, ...courseWithoutId } = course;
       const updateCourseResponse = await fetch(
-        `${this.apiBaseUrl}/courses/${duplicate.courseId}`,
+        `${this.apiBaseUrl}/courses/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(course),
-        }
+          body: JSON.stringify(courseWithoutId),
+        },
       );
       const body = await updateCourseResponse.text();
       if (!updateCourseResponse.ok) {

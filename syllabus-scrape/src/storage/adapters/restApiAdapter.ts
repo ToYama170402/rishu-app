@@ -52,7 +52,7 @@ export class RestApiCourseRepositoryAdapter implements CourseRepositoryAdapter {
     );
     // 重複があれば更新、なければ新規保存
     if (duplicate) {
-      const id = Number.parseInt(String(duplicate.courseId), 10);
+      const id = Number.parseInt(duplicate.courseId, 10);
       if (Number.isNaN(id)) {
         throw new Error(`Invalid duplicate.courseId: ${duplicate.courseId}`);
       }

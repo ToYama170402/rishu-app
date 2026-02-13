@@ -62,8 +62,8 @@
         "christian-kohler.path-intellisense", // Path Intellisense
         "christian-kohler.npm-intellisense", // NPM Intellisense
         "YoavBls.pretty-ts-errors", // Pretty TS Errors
-        "dsznajder.es7-react-js-snippets", // ES7 React/Redux/GraphQL/React-Native snippets
-        "xabikos.JavaScriptSnippets" // JavaScript (ES6) code snippets
+        "xabikos.JavaScriptSnippets", // JavaScript (ES6) code snippets
+        "bradlc.vscode-tailwindcss" // Tailwind css
       ]
     }
   }

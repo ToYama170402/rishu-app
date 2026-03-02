@@ -1,12 +1,12 @@
 {
-  "name": "frontend",
+  "name": "legacy-frontend",
   "dockerComposeFile": [
     "../../docker-compose.yml",
     "../../docker-compose.dev.yml"
   ],
-  "service": "frontend",
+  "service": "legacy-frontend",
   "overrideCommand": true,
-  "workspaceFolder": "/workspace/frontend",
+  "workspaceFolder": "/workspace/legacy-frontend",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },

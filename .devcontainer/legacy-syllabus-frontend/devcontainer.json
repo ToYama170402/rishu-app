@@ -1,12 +1,12 @@
 {
-  "name": "syllabus-frontend",
+  "name": "legacy-syllabus-frontend",
   "dockerComposeFile": [
     "../../docker-compose.yml",
     "../../docker-compose.dev.yml"
   ],
-  "service": "syllabus-frontend",
+  "service": "legacy-syllabus-frontend",
   "overrideCommand": true,
-  "workspaceFolder": "/workspace/syllabus-frontend",
+  "workspaceFolder": "/workspace/legacy-syllabus-frontend",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },

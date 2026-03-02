@@ -1,22 +1,26 @@
-FROM node:20-bullseye-slim AS base
+# syntax=docker/dockerfile:1
+FROM node:22-bullseye-slim AS base
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 FROM base AS builder
 
 WORKDIR /workspace
 
 COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 COPY src ./src
 COPY public ./public
-COPY tsconfig.json *.mjs ./
+COPY tsconfig.json next.config.ts components.json postcss.config.mjs pnpm-workspace.yaml ./
 
 # Next.jsによってテレメトリデータを収集するのを無効にする
 ARG NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_TELEMETRY_DISABLED=$NEXT_TELEMETRY_DISABLED
 
-RUN  pnpm build
+RUN pnpm build
 
 FROM base AS runner
 
@@ -32,7 +36,7 @@ COPY --from=builder --chown=node:node /workspace/.next/standalone ./
 COPY --from=builder --chown=node:node /workspace/.next/static ./.next/static
 
 # Next.jsによってテレメトリデータを収集するのを無効にする
-ENV NEXT_TELEMETRY_DISABLED=$NEXT_TELEMETRY_DISABLED
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # 注意: ポートのマッピングはdocker-composeで行うため、設定しない
 

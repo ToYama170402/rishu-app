@@ -7,8 +7,6 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      - GTM=${GTM}
-      - GOOGLE_SITE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
       - NODE_ENV=production
     networks:
       - rishu-app_network
@@ -27,7 +25,6 @@ services:
     depends_on:
       - frontend
       - syllabus-backend
-      - syllabus-frontend
 
   syllabus-backend:
     build:
@@ -51,19 +48,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - syllabus-db:/var/lib/postgresql/data
-    networks:
-      - rishu-app_network
-
-  syllabus-frontend:
-    user: node
-    build:
-      context: ./syllabus-frontend
-      dockerfile: Dockerfile
-    restart: always
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - syllabus-backend
     networks:
       - rishu-app_network
 

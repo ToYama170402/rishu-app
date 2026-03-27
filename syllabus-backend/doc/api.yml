@@ -1,0 +1,474 @@
+
+openapi: "3.0.3"
+info:
+  title: Rishu Syllabus API
+  version: "1.0.0"
+  description: "API specification for syllabus-backend (subset: /courses)"
+
+servers:
+  - url: http://api.*:8080
+    description: API for rishu-app
+
+paths:
+  /courses:
+    get:
+      summary: List courses
+      operationId: GetCourses
+      parameters:
+        - name: year
+          in: query
+          description: Academic year (e.g., 2023)
+          required: false
+          schema:
+            type: integer
+        - name: quarter
+          in: query
+          description: "quarter (Q1~Q4), e.g., 1 for Q1"
+          required: false
+          schema:
+            type: integer
+        - name: department
+          in: query
+          description: Department name (e.g., "融合学域")
+          required: false
+          schema:
+            type: string
+        - name: faculty
+          in: query
+          description: Faculty name (e.g., "スマート創成科学類")
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of courses to return
+          required: false
+          schema:
+            type: integer
+            default: 100
+        - name: offset
+          in: query
+          description: Number of courses to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: A list of courses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+                  courses:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    post:
+      summary: Create courses (bulk)
+      operationId: CreateCourses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                courses:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Course'
+      responses:
+        '201':
+          description: Creation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  courses:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseResponse'
+        '400':
+          description: Bad request (invalid JSON)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        index:
+                          type: integer
+                        field:
+                          type: string
+                        message:
+                          type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /courses/{courseId}:
+    get:
+      summary: Get course by ID
+      operationId: GetCourseById
+      parameters:
+        - name: courseId
+          in: path
+          description: Unique identifier for the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Course details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseResponse'
+        '404':
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    put:
+      summary: Update course by ID
+      operationId: UpdateCourseById
+      parameters:
+        - name: courseId
+          in: path
+          description: Unique identifier for the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: Course updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseResponse'
+        '404':
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    delete:
+      summary: Delete course by ID
+      operationId: DeleteCourseById
+      parameters:
+        - name: courseId
+          in: path
+          description: Unique identifier for the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Course deleted successfully
+        '404':
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+components:
+  schemas:
+    Course:
+      type: object
+      properties:
+        year:
+          type: integer
+        title:
+          type: string
+        numbering:
+          description: 科目ナンバリング
+          type: string
+        courseNumber:
+          description: 講義番号
+          type: string
+        numberOfProper:
+          description: 適正人数
+          type: integer
+        semester:
+          type: array
+          items:
+            type: integer
+        numberOfCredits:
+          type: integer
+        note:
+          type: string
+        japaneseUrl:
+          type: string
+          format: uri
+        englishUrl:
+          type: string
+          format: uri
+        openAccount:
+          description: 開放科目
+          type: string
+        max60CreditsFlag:
+          description: 60単位上限
+          type: string
+        subjectDistinguished:
+          description: 科目区分
+          type: string
+        courseDescription:
+          type: string
+        instructors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Instructor'
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+        classFormat:
+          description: 授業形態
+          type: string
+        lectureForm:
+          description: 講義形態
+          type: string
+        targetStudents:
+          type: string
+        lectureRoomInfo:
+          description: 講義室情報
+          type: string
+        faculty:
+          $ref: '#/components/schemas/Faculty'
+        keywords:
+          type: array
+          items:
+            type: string
+      required:
+        - year
+        - title
+        - numbering
+        - courseNumber
+        - semester
+        - numberOfCredits
+        - japaneseUrl
+        - englishUrl
+        - courseDescription
+        - instructors
+        - schedules
+        - lectureRoomInfo
+        - faculty
+
+    CourseResponse:
+      type: object
+      properties:
+        courseId:
+          description: Unique identifier for the course (独自ID)
+          type: integer
+          readOnly: true
+        year:
+          type: integer
+        title:
+          type: string
+        numbering:
+          description: 科目ナンバリング
+          type: string
+        courseNumber:
+          description: 講義番号
+          type: string
+        numberOfProper:
+          description: 適正人数
+          type: integer
+        semester:
+          type: array
+          items:
+            type: integer
+        numberOfCredits:
+          type: integer
+        note:
+          type: string
+        japaneseUrl:
+          type: string
+          format: uri
+        englishUrl:
+          type: string
+          format: uri
+        openAccount:
+          description: 開放科目
+          type: string
+        max60CreditsFlag:
+          description: 60単位上限
+          type: string
+        subjectDistinguished:
+          description: 科目区分
+          type: string
+        courseDescription:
+          type: string
+        instructors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Instructor'
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+        classFormat:
+          description: 授業形態
+          type: string
+        lectureForm:
+          description: 講義形態
+          type: string
+        targetStudents:
+          type: string
+        lectureRoomInfo:
+          description: 講義室情報
+          type: string
+        faculty:
+          $ref: '#/components/schemas/Faculty'
+        keywords:
+          type: array
+          items:
+            type: string
+
+    Instructor:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    Schedule:
+      type: object
+      properties:
+        day:
+          type: string
+          enum:
+            - 月
+            - 火
+            - 水
+            - 木
+            - 金
+            - 土
+            - 日
+        period:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+      required:
+        - day
+        - period
+
+    Faculty:
+      type: object
+      properties:
+        faculty:
+          type: string
+          enum:
+            - 先導学類
+            - 観光デザイン学類
+            - スマート創成科学類
+            - 数物科学類
+            - 物質科学類
+            - 機械工学類
+            - フロンティア工学類
+            - 電子情報通信学類
+            - 地球社会基盤学類
+            - 生命理工学類
+            - 人文学類
+            - 法学類
+            - 経済学類
+            - 学校教育学類
+            - 地域創造学類
+            - 国際学類
+            - 医学類
+            - 薬学類
+            - 医薬化学類
+            - 保健学類
+        department:
+          type: string
+          enum:
+            - 融合学域
+            - 理工学域
+            - 人間社会学域
+            - 医薬保健学域
+      required:
+        - faculty
+
+

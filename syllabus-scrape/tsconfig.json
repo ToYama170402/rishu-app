@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": false,
     "lib": ["ES2020", "DOM"],
-    "types": ["node"],
+    "types": ["node", "jest"],
 
     // Other Outputs
     "sourceMap": true,

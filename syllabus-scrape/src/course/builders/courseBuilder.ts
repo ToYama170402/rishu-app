@@ -140,7 +140,9 @@ export class CourseBuilder {
   build(): Course {
     // Generate and assign id before validation
     this.validate();
-    this.course.id = this.generateId(this.course as Omit<Course, "id">);
+    this.course.courseId = this.generateId(
+      this.course as Omit<Course, "courseId">
+    );
     return this.course as Course;
   }
 
@@ -179,7 +181,7 @@ export class CourseBuilder {
     }
   }
 
-  generateId(course: Omit<Course, "id">): string {
+  generateId(course: Omit<Course, "courseId">): string {
     const key = `${course.year}-${course.title}-${course.faculty.faculty}`;
     return crypto.createHash("sha256").update(key).digest("hex");
   }

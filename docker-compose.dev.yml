@@ -1,12 +1,12 @@
 services:
   frontend:
-    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
     restart: no
-    environment:
-      - NODE_ENV=development
+    ports:
+      - 3000:3000
+      - 6006:6006
     volumes:
       - type: bind
         source: .
@@ -15,9 +15,10 @@ services:
       - type: volume
         source: frontend-node-modules
         target: /workspace/frontend/node_modules
-    ports:
-      - 3000:3000
+    environment:
+      - NODE_ENV=development
     command: pnpm run dev
+    user: "${UID:-1000}:${GID:-1000}"
 
   web:
     restart: no
@@ -34,13 +35,12 @@ services:
       - rishu-app_network
 
   legacy-frontend:
-    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./legacy-frontend
       dockerfile: Dockerfile.dev
     restart: no
-    environment:
-      - NODE_ENV=development
+    ports:
+      - 3001:3000
     volumes:
       - type: bind
         source: .
@@ -49,18 +49,20 @@ services:
       - type: volume
         source: legacy-frontend-node-modules
         target: /workspace/legacy-frontend/node_modules
-    ports:
-      - 3001:3000
+    environment:
+      - NODE_ENV=development
     command: pnpm run dev
+    user: "${UID:-1000}:${GID:-1000}"
 
   legacy-syllabus-frontend:
-    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./legacy-syllabus-frontend
       dockerfile: Dockerfile.dev
     restart: no
-    environment:
-      - NODE_ENV=development
+    depends_on:
+      - syllabus-backend
+    ports:
+      - 4000:4000
     volumes:
       - type: bind
         source: .
@@ -68,31 +70,30 @@ services:
       - type: volume
         source: legacy-syllabus-frontend-node-modules
         target: /workspace/legacy-syllabus-frontend/node_modules
-    ports:
-      - 4000:4000
-    command: pnpm run dev
-    depends_on:
-      - syllabus-backend
+    environment:
+      - NODE_ENV=development
     networks:
       - rishu-app_network
+    command: pnpm run dev
+    user: "${UID:-1000}:${GID:-1000}"
 
   syllabus-backend:
-    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./syllabus-backend
       dockerfile: Dockerfile.dev
     restart: no
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=syllabus
+    ports:
+      - 8080:8080
     volumes:
       - type: bind
         source: .
         target: /workspace
-    ports:
-      - 8080:8080
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=syllabus
     command: go run src/cmd/api/main.go
+    user: "${UID:-1000}:${GID:-1000}"
 
   syllabus-db:
     environment:
@@ -101,7 +102,6 @@ services:
       - POSTGRES_DB=syllabus
 
   syllabus-scrape:
-    user: "${UID:-1000}:${GID:-1000}"
     build:
       context: ./syllabus-scrape
       dockerfile: Dockerfile.dev
@@ -113,11 +113,12 @@ services:
       - type: volume
         source: syllabus-scrape-node-modules
         target: /workspace/syllabus-scrape/node_modules
-    command: sleep infinity
     environment:
       - NODE_ENV=development
     networks:
       - rishu-app_network
+    command: sleep infinity
+    user: "${UID:-1000}:${GID:-1000}"
 
 volumes:
   frontend-node-modules:

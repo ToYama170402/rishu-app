@@ -7,6 +7,6 @@ export type ApplicantsAmount = {
   first: number;
   second: number;
   third: number;
-  forth: number;
+  fourth: number;
   fifth: number;
 };

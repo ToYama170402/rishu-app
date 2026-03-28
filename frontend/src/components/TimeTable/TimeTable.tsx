@@ -80,17 +80,42 @@ const TimeTable = <T,>({
   RenderColumn,
   TimeTableContainer,
 }: TimeTableProps<T>) => {
+  // Pre-index data by xKey and yKey so each cell lookup is O(1).
+  const indexedData = React.useMemo(
+    () => {
+      const map = new Map<unknown, Map<unknown, T[]>>();
+
+      for (const item of data) {
+        const xValue = getNestedValue(item, xKey);
+        const yValue = getNestedValue(item, yKey);
+
+        let yMap = map.get(xValue);
+        if (!yMap) {
+          yMap = new Map<unknown, T[]>();
+          map.set(xValue, yMap);
+        }
+
+        const existing = yMap.get(yValue);
+        if (existing) {
+          existing.push(item);
+        } else {
+          yMap.set(yValue, [item]);
+        }
+      }
+
+      return map;
+    },
+    [data, xKey, yKey]
+  );
+
   return (
     <TimeTableContainer>
       <div className={cn("flex flex-row", className)}>
         {xArray.map((xFragment) => (
           <RenderColumn xFragment={xFragment} key={String(xFragment)}>
             {yArray.map((yFragment) => {
-              const dataFragment = data.filter((item) => {
-                const xValue = getNestedValue(item, xKey);
-                const yValue = getNestedValue(item, yKey);
-                return xValue === xFragment && yValue === yFragment;
-              });
+              const yMap = indexedData.get(xFragment);
+              const dataFragment = (yMap && yMap.get(yFragment)) ?? [];
               return (
                 <RenderCell
                   xFragment={xFragment}

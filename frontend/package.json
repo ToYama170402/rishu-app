@@ -9,7 +9,9 @@
     "lint": "eslint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:storybook": "vitest run --project storybook"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

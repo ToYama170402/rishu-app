@@ -13,7 +13,7 @@ export type Teacher = string;
 export type TargetStudent = string;
 
 /** 講義情報を保持する型 */
-export type Lecture = {
+export type LotteryCourseInfo = {
   number: string;
   category: Category;
   title: string;
@@ -23,6 +23,6 @@ export type Lecture = {
   capacity: number;
 };
 
-export type LectureWithApplicantsAmount = Lecture & {
+export type LotteryCourseStatus = LotteryCourseInfo & {
   applicants: ApplicantsAmount;
 };

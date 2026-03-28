@@ -14,6 +14,9 @@ const AllApplicantsBar = ({ lecture }: Omit<ApplicantsBarProps, "base">) => {
     : "0%";
 
   function w(count: number) {
+    if (totalBase === 0) {
+      return "0%";
+    }
     return (count / totalBase) * 100 + "%";
   }
 

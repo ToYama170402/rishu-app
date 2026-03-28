@@ -15,6 +15,9 @@ const CapacityApplicantsBar = ({
     setIsPopupOpen((prev) => !prev);
   }
 
+  const width = (applicantAmount: number, capacity: number) =>
+    capacity !== 0 ? (applicantAmount / capacity) * 100 + "%" : "0%";
+
   return (
     <>
       <div className="relative mt-[2px] flex items-center overflow-hidden text-ellipsis text-nowrap [scroll-snap-align:start]">
@@ -34,47 +37,45 @@ const CapacityApplicantsBar = ({
             <div
               className="shrink-0 bg-amber-100"
               style={{
-                width:
-                  (applicantsAmount.primary / lecture.capacity) * 100 + "%",
+                width: width(applicantsAmount.primary, lecture.capacity),
               }}
             />
             {/* first（primary 除く） */}
             <div
               className="shrink-0 bg-blue-100"
               style={{
-                width:
-                  ((applicantsAmount.first - applicantsAmount.primary) /
-                    lecture.capacity) *
-                    100 +
-                  "%",
+                width: width(
+                  applicantsAmount.first - applicantsAmount.primary,
+                  lecture.capacity,
+                ),
               }}
             />
             {/* second */}
             <div
               className="shrink-0 bg-orange-100"
               style={{
-                width: (applicantsAmount.second / lecture.capacity) * 100 + "%",
+                width: width(applicantsAmount.second, lecture.capacity),
               }}
             />
             {/* third */}
             <div
               className="shrink-0 bg-green-100"
               style={{
-                width: (applicantsAmount.third / lecture.capacity) * 100 + "%",
+                width: width(applicantsAmount.third, lecture.capacity),
               }}
             />
             {/* fourth */}
             <div
               className="shrink-0 bg-purple-100"
               style={{
-                width: (applicantsAmount.fourth / lecture.capacity) * 100 + "%",
+                width: width(applicantsAmount.fourth, lecture.capacity),
               }}
             />
             {/* fifth */}
             <div
               className="shrink-0 bg-gray-100"
               style={{
-                width: (applicantsAmount.fifth / lecture.capacity) * 100 + "%",
+                width: width(applicantsAmount.fifth, lecture.capacity),
               }}
             />
           </div>

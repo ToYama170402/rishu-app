@@ -12,7 +12,7 @@ const CapacityApplicantsBar = ({
   const applicantsAmount = lecture.applicants;
 
   function handleOpenPopup() {
-    setIsPopupOpen(!isPopupOpen);
+    setIsPopupOpen((prev) => !prev);
   }
 
   return (
@@ -53,32 +53,28 @@ const CapacityApplicantsBar = ({
             <div
               className="shrink-0 bg-orange-100"
               style={{
-                width:
-                  (applicantsAmount.second / lecture.capacity) * 100 + "%",
+                width: (applicantsAmount.second / lecture.capacity) * 100 + "%",
               }}
             />
             {/* third */}
             <div
               className="shrink-0 bg-green-100"
               style={{
-                width:
-                  (applicantsAmount.third / lecture.capacity) * 100 + "%",
+                width: (applicantsAmount.third / lecture.capacity) * 100 + "%",
               }}
             />
             {/* fourth */}
             <div
               className="shrink-0 bg-purple-100"
               style={{
-                width:
-                  (applicantsAmount.fourth / lecture.capacity) * 100 + "%",
+                width: (applicantsAmount.fourth / lecture.capacity) * 100 + "%",
               }}
             />
             {/* fifth */}
             <div
               className="shrink-0 bg-gray-100"
               style={{
-                width:
-                  (applicantsAmount.fifth / lecture.capacity) * 100 + "%",
+                width: (applicantsAmount.fifth / lecture.capacity) * 100 + "%",
               }}
             />
           </div>

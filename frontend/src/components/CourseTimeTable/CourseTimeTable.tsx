@@ -51,7 +51,7 @@ export default function CourseTimeTable({
 
   /** 選択中の学類セット（初期値: 全選択） */
   const [selectedFaculties, setSelectedFaculties] = useState<Set<FacultyName>>(
-    new Set(allFaculties)
+    new Set(allFaculties),
   );
 
   function toggleFaculty(faculty: FacultyName, checked: boolean) {
@@ -130,9 +130,7 @@ export default function CourseTimeTable({
         const filteredCourses = courses.filter(
           (course) =>
             course.semester.includes(quarter) &&
-            selectedFaculties.has(
-              (course.faculty as Faculty).faculty as FacultyName
-            )
+            selectedFaculties.has(course.faculty.faculty),
         );
 
         return (
@@ -155,8 +153,8 @@ export default function CourseTimeTable({
                     {PERIODS.map((period) => {
                       const cellCourses = filteredCourses.filter((course) =>
                         course.schedules.some(
-                          (s) => s.day === day && s.period === period
-                        )
+                          (s) => s.day === day && s.period === period,
+                        ),
                       );
                       const isLast = period === PERIODS[PERIODS.length - 1];
 
@@ -212,8 +210,7 @@ function CourseCell({ course }: CourseCellProps) {
                 <p className="text-sm">単位: {course.numberOfCredits} 単位</p>
                 <p className="text-sm">講義番号: {course.courseNumber}</p>
                 <p className="text-sm">
-                  開講学期:{" "}
-                  {course.semester.map((s) => `${s}Q`).join(", ")}
+                  開講学期: {course.semester.map((s) => `${s}Q`).join(", ")}
                 </p>
                 <p className="text-sm">講義室: {course.lectureRoomInfo}</p>
                 <Separator className="my-2" />

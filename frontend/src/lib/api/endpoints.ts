@@ -1,6 +1,6 @@
 /** 志望者数（抽選）API エンドポイント（本番） */
 export const LECTURES_API_URL =
-  process.env.LECTURES_API_URL ?? "https://kurisyushien.org/api";
+  process.env.NEXT_PUBLIC_LECTURES_API_URL ?? "https://kurisyushien.org/api";
 
 /** 志望者数デモデータ（ブラウザ側） */
 export const LECTURES_DEMO_URL_BROWSER =

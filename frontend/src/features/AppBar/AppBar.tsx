@@ -35,7 +35,7 @@ const AppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
           </nav>
           {/* Mobile menu button */}
           <button
-            onClick={() => setDrawerOpen(!isDrawerOpen)}
+            onClick={() => setDrawerOpen((open) => !open)}
             aria-label={isDrawerOpen ? "メニューを閉じる" : "メニューを開く"}
             className="sm:hidden p-1 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary-foreground rounded"
           >

@@ -17,7 +17,7 @@ export async function getCourses(): Promise<Course[]> {
       console.error(`getCourses: HTTP error ${res.status}`);
       return [];
     }
-    return (await res.json()) as Course[];
+    return (await res.json()).courses as Course[];
   } catch (err) {
     console.error("getCourses: fetch failed", err);
     return [];

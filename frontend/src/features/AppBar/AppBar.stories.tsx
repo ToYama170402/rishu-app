@@ -25,8 +25,19 @@ export const Mobile: Story = {
   },
 };
 
-/** AppBarのchildrenにカスタムコンテンツを渡した例（モバイルドロワー内に表示される） */
+/** AppBarのchildrenにカスタムコンテンツを渡した例（デスクトップではナビゲーション内に表示される） */
 export const WithChildren: Story = {
+  args: {
+    children: (
+      <div className="text-sm text-primary-foreground/80">
+        カスタムコンテンツ（フィルター等）
+      </div>
+    ),
+  },
+};
+
+/** モバイル幅でchildrenが渡された場合（ドロワー内に表示される） */
+export const WithChildrenMobile: Story = {
   args: {
     children: (
       <div className="text-sm text-primary-foreground/80">

@@ -24,6 +24,7 @@ const AppBar = ({ children }: { children?: ReactNode }): React.ReactNode => {
             <Link href="/builder" className="text-sm hover:opacity-80">
               builder
             </Link>
+            {children}
             <button
               onClick={() => setHelpOpen(true)}
               aria-label="ヘルプを開く"

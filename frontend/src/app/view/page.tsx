@@ -1,5 +1,5 @@
+import { fetchCourses } from "@/lib/api/courses";
 import CourseTimeTable from "@/components/CourseTimeTable/CourseTimeTable";
-import { getCourses } from "@/utils/getCourses";
 
 /**
  * `/view` ページ — 授業一覧時間割。
@@ -8,7 +8,7 @@ import { getCourses } from "@/utils/getCourses";
  * `CourseTimeTable` に渡して描画する。
  */
 export default async function ViewPage() {
-  const courses = await getCourses();
+  const courses = await fetchCourses();
   return (
     <main className="h-[calc(100vh-48px)]">
       <CourseTimeTable courses={courses} />

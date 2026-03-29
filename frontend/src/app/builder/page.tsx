@@ -1,4 +1,4 @@
-import { getCourses } from "@/utils/getCourses";
+import { fetchCourses } from "@/lib/api/courses";
 import BuilderClient from "./BuilderClient";
 
 /**
@@ -9,7 +9,7 @@ import BuilderClient from "./BuilderClient";
  * `BuilderClient` に委譲する。
  */
 export default async function BuilderPage() {
-  const courses = await getCourses();
+  const courses = await fetchCourses();
   return (
     <main className="h-[calc(100vh-48px)]">
       <BuilderClient courses={courses} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 /**
  * `localStorage` と同期する React カスタムフック。
@@ -13,7 +13,7 @@ import { useState } from "react";
 export function useLocalStorage<T>(
   key: string,
   initialValue: T,
-): [T, (value: T | ((val: T) => T)) => void] {
+): [T, (value: (val: T) => T) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") return initialValue;
     try {
@@ -24,18 +24,19 @@ export function useLocalStorage<T>(
     }
   });
 
-  const setValue = (value: T | ((val: T) => T)) => {
-    try {
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      if (typeof window !== "undefined") {
-        localStorage.setItem(key, JSON.stringify(valueToStore));
+  const setValue = useCallback(
+    (value: (val: T) => T) => {
+      try {
+        const valueToStore = setStoredValue(value);
+        if (typeof window !== "undefined") {
+          localStorage.setItem(key, JSON.stringify(valueToStore));
+        }
+      } catch (err) {
+        console.error("useLocalStorage: failed to write", err);
       }
-    } catch (err) {
-      console.error("useLocalStorage: failed to write", err);
-    }
-  };
+    },
+    [key],
+  );
 
   return [storedValue, setValue];
 }

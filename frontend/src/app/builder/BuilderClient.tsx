@@ -54,8 +54,8 @@ export default function BuilderClient({ courses, className }: BuilderClientProps
 
   // takenIds が変わるたびに localStorage を更新
   useEffect(() => {
-    setStoredIds(Array.from(takenIds));
-  }, [takenIds]); // eslint-disable-line react-hooks/exhaustive-deps
+    setStoredIds(() => Array.from(takenIds));
+  }, [takenIds, setStoredIds]);
 
   // 選択済みコースオブジェクト（時間割表示用）
   const takenCourses = useMemo(

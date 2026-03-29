@@ -59,7 +59,7 @@ export default function BuilderClient({ courses, className }: BuilderClientProps
 
   // 選択済みコースオブジェクト（時間割表示用）
   const takenCourses = useMemo(
-    () => courses.filter((c) => takenIds.has(c.id)),
+    () => courses.filter((c) => takenIds.has(c.courseId)),
     [courses, takenIds],
   );
 
@@ -123,13 +123,13 @@ export default function BuilderClient({ courses, className }: BuilderClientProps
   );
 
   function addCourse(course: Course) {
-    setTakenIds((prev) => new Set([...prev, course.id]));
+    setTakenIds((prev) => new Set([...prev, course.courseId]));
   }
 
   function removeCourse(course: Course) {
     setTakenIds((prev) => {
       const next = new Set(prev);
-      next.delete(course.id);
+      next.delete(course.courseId);
       return next;
     });
   }
@@ -200,10 +200,10 @@ export default function BuilderClient({ courses, className }: BuilderClientProps
         {/* コース一覧 */}
         <div className="overflow-y-auto flex flex-col gap-2 flex-1 mt-1">
           {filteredCourses.map((course) => {
-            const isTaken = takenIds.has(course.id);
+            const isTaken = takenIds.has(course.courseId);
             return (
               <Card
-                key={course.id}
+                key={course.courseId}
                 className="flex justify-between gap-1 py-3 px-3"
               >
                 <CardHeader className="w-4/5 p-0">

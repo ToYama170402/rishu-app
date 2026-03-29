@@ -7,7 +7,9 @@ export const LECTURES_DEMO_URL_BROWSER =
   "http://localhost:1313/dammy-data.tsv";
 
 /** 志望者数デモデータ（サーバー側 SSR） */
-export const LECTURES_DEMO_URL_SERVER = "http://mock-page:1313/dammy-data.tsv";
+export const LECTURES_DEMO_URL_SERVER =
+  process.env.LECTURES_DEMO_URL_SERVER ??
+  "http://mock-page:1313/dammy-data.tsv";
 
 /** シラバス API ベース URL（サーバー側 SSR） */
 export const SYLLABUS_API_URL =

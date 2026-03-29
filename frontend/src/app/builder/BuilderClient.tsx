@@ -43,9 +43,15 @@ type BuilderClientProps = {
  * - 学期・学類フィルタ
  * - 左側の時間割に選択済みコースを表示
  */
-export default function BuilderClient({ courses, className }: BuilderClientProps) {
+export default function BuilderClient({
+  courses,
+  className,
+}: BuilderClientProps) {
   // localStorage に保存する選択済みコースID一覧
-  const [storedIds, setStoredIds] = useLocalStorage<string[]>("takenCourseIds", []);
+  const [storedIds, setStoredIds] = useLocalStorage<string[]>(
+    "takenCourseIds",
+    [],
+  );
 
   // 選択済みコースID の Set（UI 操作に使う）
   const [takenIds, setTakenIds] = useState<Set<string>>(
@@ -67,8 +73,7 @@ export default function BuilderClient({ courses, className }: BuilderClientProps
 
   // 全コースから重複排除した学期一覧
   const allSemesters = useMemo<Semester[]>(
-    () =>
-      [...new Set(courses.flatMap((c) => c.semester))].sort() as Semester[],
+    () => [...new Set(courses.flatMap((c) => c.semester))].sort() as Semester[],
     [courses],
   );
 
@@ -100,7 +105,10 @@ export default function BuilderClient({ courses, className }: BuilderClientProps
     });
   }
 
-  function toggleFaculty(faculty: Course["faculty"]["faculty"], checked: boolean) {
+  function toggleFaculty(
+    faculty: Course["faculty"]["faculty"],
+    checked: boolean,
+  ) {
     setFacultyFilters((prev) => {
       const next = new Set(prev);
       if (checked) next.add(faculty);
@@ -212,7 +220,9 @@ export default function BuilderClient({ courses, className }: BuilderClientProps
                   </CardTitle>
                   <CardDescription className="flex justify-between text-xs">
                     <div className="flex gap-2">
-                      <span>{course.semester.map((s) => `${s}Q`).join(" ")}</span>
+                      <span>
+                        {course.semester.map((s) => `${s}Q`).join(" ")}
+                      </span>
                       <span>{course.courseNumber}</span>
                     </div>
                     <span>

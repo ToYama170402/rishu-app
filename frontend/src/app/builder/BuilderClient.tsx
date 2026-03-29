@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FilterIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";

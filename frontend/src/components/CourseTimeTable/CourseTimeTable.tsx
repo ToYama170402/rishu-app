@@ -164,7 +164,10 @@ export default function CourseTimeTable({
                             <div className="h-full overflow-y-auto snap-y scroll-smooth">
                               <ul className="space-y-0.5">
                                 {cellCourses.map((course) => (
-                                  <CourseCell key={course.id} course={course} />
+                                  <CourseCell
+                                    key={course.courseId}
+                                    course={course}
+                                  />
                                 ))}
                               </ul>
                             </div>

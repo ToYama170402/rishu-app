@@ -2,33 +2,35 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { fetchCourses } from "./courses";
 import type { Course } from "@/types/course";
 
-const COURSES_FIXTURE: Course[] = [
-  {
-    id: "course-1",
-    year: 2024,
-    title: "数学入門",
-    numbering: "GS001",
-    courseNumber: "001",
-    numberOfProper: 20,
-    semester: [1],
-    numberOfCredits: 2,
-    note: "",
-    englishUrl: "",
-    japaneseUrl: "",
-    keywords: ["数学"],
-    openAccount: "",
-    max60CreditsFlag: "",
-    subjectDistinguished: "",
-    courseDescription: "",
-    instructors: [],
-    schedules: [],
-    classFormat: "",
-    lectureForm: "",
-    targetStudents: "",
-    lectureRoomInfo: "",
-    faculty: { department: "理工学域", faculty: "数物科学類" },
-  },
-];
+const COURSES_FIXTURE: { courses: Course[] } = {
+  courses: [
+    {
+      id: "course-1",
+      year: 2024,
+      title: "数学入門",
+      numbering: "GS001",
+      courseNumber: "001",
+      numberOfProper: 20,
+      semester: [1],
+      numberOfCredits: 2,
+      note: "",
+      englishUrl: "",
+      japaneseUrl: "",
+      keywords: ["数学"],
+      openAccount: "",
+      max60CreditsFlag: "",
+      subjectDistinguished: "",
+      courseDescription: "",
+      instructors: [],
+      schedules: [],
+      classFormat: "",
+      lectureForm: "",
+      targetStudents: "",
+      lectureRoomInfo: "",
+      faculty: { department: "理工学域", faculty: "数物科学類" },
+    },
+  ],
+};
 
 beforeEach(() => {
   vi.stubGlobal("fetch", vi.fn());
@@ -48,7 +50,7 @@ describe("fetchCourses", () => {
 
     const result = await fetchCourses();
 
-    expect(result).toEqual(COURSES_FIXTURE);
+    expect(result).toEqual(COURSES_FIXTURE.courses);
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe("数学入門");
   });

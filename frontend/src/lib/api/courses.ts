@@ -18,10 +18,10 @@ export async function fetchCourses(): Promise<Course[]> {
     const response = await fetch(`${baseUrl}/courses`);
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch courses: ${response.status} ${response.statusText}`
+        `Failed to fetch courses: ${response.status} ${response.statusText}`,
       );
     }
-    return (await response.json()) as Course[];
+    return (await response.json()).courses as Course[];
   } catch (err) {
     console.error("Error fetching courses:", err);
     return [];

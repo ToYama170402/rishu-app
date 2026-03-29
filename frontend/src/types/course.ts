@@ -5,7 +5,7 @@ import type { Semester } from "./semester";
 
 /** シラバス上の講座情報を保持する型 */
 export type Course = {
-  id: string;
+  courseId: string;
   year: number;
   title: string;
   numbering: string;

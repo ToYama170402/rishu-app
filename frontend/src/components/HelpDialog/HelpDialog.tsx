@@ -118,7 +118,6 @@ export default function HelpDialog({
               <p className="mb-2">
                 ちょっともっさりとした動作をしますが、ご了承ください。
               </p>
-              <p>設定アイコンはまだ機能しません。</p>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="contribution">

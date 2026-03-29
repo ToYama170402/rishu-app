@@ -4,9 +4,13 @@
  * @param str パース対象の文字列
  * @param delimiter 区切り文字（デフォルト: ','）
  */
-function parseSV(str: string, delimiter: string = ","): string[][] {
+function parseSV(
+  str: string,
+  delimiter: string = ",",
+  lineDelimiter: string | RegExp = /\\r?\\n/,
+): string[][] {
   return str
-    .split(/\r?\n/)
+    .split(lineDelimiter)
     .filter((line) => line.length > 0)
     .map((line) => line.split(delimiter));
 }

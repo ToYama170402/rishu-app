@@ -30,7 +30,7 @@ export async function fetchLectures(): Promise<LotteryCourseStatus[]> {
   });
   if (!response.ok) {
     throw new Error(
-      `Failed to fetch lectures: ${response.status} ${response.statusText}`
+      `Failed to fetch lectures: ${response.status} ${response.statusText}`,
     );
   }
   const data: string = await response.text();
@@ -42,7 +42,7 @@ export async function fetchLectures(): Promise<LotteryCourseStatus[]> {
  * Next.js ISR（50 秒 revalidate）に対応。
  */
 export async function fetchLectureDetail(
-  lectureNumber: string
+  lectureNumber: string,
 ): Promise<unknown> {
   const endpoint = getLecturesEndpoint();
   const response = await fetch(
@@ -51,11 +51,11 @@ export async function fetchLectureDetail(
       mode: "cors",
       redirect: "follow",
       next: { revalidate: 50 },
-    }
+    },
   );
   if (!response.ok) {
     throw new Error(
-      `Failed to fetch lecture detail: ${response.status} ${response.statusText}`
+      `Failed to fetch lecture detail: ${response.status} ${response.statusText}`,
     );
   }
   return response.json();

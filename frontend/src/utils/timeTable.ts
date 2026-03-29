@@ -45,7 +45,11 @@ export function array2LectureArray(arr: string[][]): LotteryCourseStatus[] {
       };
       lectures.push(lec);
     } catch (e) {
-      console.error(`array2LectureArray: failed to parse line[${arr.indexOf(line)}]`, line, e);
+      console.error(
+        `array2LectureArray: failed to parse line[${arr.indexOf(line)}]`,
+        line,
+        e,
+      );
     }
   }
   return lectures;

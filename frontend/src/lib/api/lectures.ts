@@ -34,7 +34,7 @@ export async function fetchLectures(): Promise<LotteryCourseStatus[]> {
     );
   }
   const data: string = await response.text();
-  return array2LectureArray(parseSV(data, "\t"));
+  return array2LectureArray(parseSV(data, "\\t", "\\n"));
 }
 
 /**

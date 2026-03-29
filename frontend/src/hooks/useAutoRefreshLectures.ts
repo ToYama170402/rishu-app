@@ -20,21 +20,31 @@ export function useAutoRefreshLectures(
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
+    let isCancelled = false;
 
     const refresh = () => {
       fetchLectures()
-        .then((data) => setLectures(data))
+        .then((data) => {
+          if (!isCancelled) {
+            setLectures(data);
+          }
+        })
         .catch((err) =>
           console.error("useAutoRefreshLectures: fetch failed", err),
         )
         .finally(() => {
-          timeoutId = setTimeout(refresh, REFRESH_INTERVAL_MS);
+          if (!isCancelled) {
+            timeoutId = setTimeout(refresh, REFRESH_INTERVAL_MS);
+          }
         });
     };
 
     timeoutId = setTimeout(refresh, REFRESH_INTERVAL_MS);
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      isCancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return lectures;

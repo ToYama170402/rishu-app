@@ -84,7 +84,7 @@ function IntensiveLectureItem({ lecture }: { lecture: LotteryCourseStatus }) {
         onClick={() => setIsOpen(true)}
         aria-label={`${lecture.title} の詳細を開く`}
       >
-        <div className="text-xs font-medium truncate max-w-30">
+        <div className="text-xs font-medium truncate max-w-[120px]">
           {lecture.title}
         </div>
         <div className="text-[10px] text-muted-foreground">

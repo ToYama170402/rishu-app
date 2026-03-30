@@ -9,9 +9,9 @@ const CapacityApplicantsBar = ({
     capacity !== 0 ? (applicantAmount / capacity) * 100 + "%" : "0%";
 
   return (
-    <div className="relative flex items-center overflow-hidden text-ellipsis text-nowrap [scroll-snap-align:start]">
+    <div className="relative flex items-center overflow-hidden text-ellipsis text-nowrap snap-start">
       {/* 講義名（クリックでポップアップ） */}
-      <div className="relative z-10 m-[2px] inline-block cursor-pointer overflow-hidden text-ellipsis border-b border-dashed leading-[1.1]">
+      <div className="relative z-10 m-0.5 inline-block cursor-pointer overflow-hidden text-ellipsis border-b border-dashed leading-[1.1]">
         {lecture.title}
       </div>
 

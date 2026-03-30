@@ -20,7 +20,7 @@ const CapacityApplicantsBar = ({
 
   return (
     <>
-      <div className="relative mt-[2px] flex items-center overflow-hidden text-ellipsis text-nowrap [scroll-snap-align:start]">
+      <div className="relative flex items-center overflow-hidden text-ellipsis text-nowrap [scroll-snap-align:start]">
         {/* 講義名（クリックでポップアップ） */}
         <button
           type="button"

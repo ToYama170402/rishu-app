@@ -7,7 +7,7 @@ import React from "react";
  *  - R: 行要素の型
  *  - C: 列要素の型
  */
-export type CellGetter<T, R, C> = (datum: T, row: R, col: C) => T;
+export type CellGetter<T, R, C, U> = (datum: T, row: R, col: C) => U;
 
 /**
  * rowRendererProps: 各行を描画する際に渡されるプロパティ。
@@ -68,13 +68,13 @@ type ColumnLabel<C> = ({ col }: { col: C }) => React.ReactNode;
  *  - columnLabel: (省略可) 各列のラベル描画関数
  *  - className: オプションのルート要素クラス名
  */
-type TimeTableProps<T, R, C> = {
+type TimeTableProps<T, R, C, U> = {
   datum: T;
   rowElements: R[];
   columnElements: C[];
-  cellGetter: CellGetter<T, R, C>;
+  cellGetter: CellGetter<T, R, C, U>;
   rowRenderer: RowRenderer<R>;
-  cellRenderer: CellRenderer<T, C>;
+  cellRenderer: CellRenderer<U, C>;
   rowLabel?: RowLabel<R>;
   columnLabel?: ColumnLabel<C>;
   className?: string;
@@ -93,7 +93,9 @@ type TimeTableProps<T, R, C> = {
  *  - 必要に応じて `rowLabel` / `columnLabel` を先に描画する
  *  - React.Fragment を使い、map のキーは `String(row)` や `String(col)` を使用
  */
-export default function TimeTable<T, R, C>(props: TimeTableProps<T, R, C>) {
+export default function TimeTable<T, R, C, U>(
+  props: TimeTableProps<T, R, C, U>,
+) {
   return (
     <div className={props.className}>
       {props.rowElements.map((row) => (

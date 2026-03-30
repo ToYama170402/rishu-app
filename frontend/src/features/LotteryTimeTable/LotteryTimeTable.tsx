@@ -44,7 +44,7 @@ export default function LotteryTimeTable({
         <Filter lectures={lectures} applyFilter={setFilteredLectures} />
       </AppBar>
       <main className="flex-1 overflow-hidden">
-        <TimeTable<LotteryCourseStatus[], string, number>
+        <TimeTable<LotteryCourseStatus[], string, number, LotteryCourseStatus[]>
           datum={filteredLectures.filter((lec) => lec.dateTime.day !== "集中")}
           rowElements={[...DAYS]}
           columnElements={[...PERIODS]}

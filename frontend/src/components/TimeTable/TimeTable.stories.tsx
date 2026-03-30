@@ -53,7 +53,7 @@ function SampleColumn({ row, children }: RowRendererProps<number>) {
   );
 }
 
-const meta: Meta<typeof TimeTable<SampleItem, number, string>> = {
+const meta: Meta<typeof TimeTable<SampleItem, number, string, SampleItem[]>> = {
   title: "Components/TimeTable",
   component: TimeTable,
   tags: ["autodocs"],
@@ -63,7 +63,9 @@ const meta: Meta<typeof TimeTable<SampleItem, number, string>> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof TimeTable<SampleItem[], number, string>>;
+type Story = StoryObj<
+  typeof TimeTable<SampleItem[], number, string, SampleItem[]>
+>;
 
 export const Default: Story = {
   args: {

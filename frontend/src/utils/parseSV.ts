@@ -7,7 +7,7 @@
 function parseSV(
   str: string,
   delimiter: string = ",",
-  lineDelimiter: string | RegExp = /\\r?\\n/,
+  lineDelimiter: string | RegExp = /\r?\n/,
 ): string[][] {
   return str
     .split(lineDelimiter)

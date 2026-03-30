@@ -2,8 +2,8 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { fetchLectures, fetchLectureDetail } from "./lectures";
 
 const TSV_FIXTURE =
-  "00001\tＧＳ科目\t数学入門\t月1\t山田太郎\t1年\t20\t10\t5\t3\t2\t1\t0\t0\n" +
-  "00002\tＧＳ言語科目\t英語基礎\t火2\t鈴木花子\t1年\t25\t15\t8\t4\t2\t1\t0\t0\n";
+  "00001\\tＧＳ科目\\t数学入門\\t月1\\t山田太郎\\t1年\\t20\\t10\\t5\\t3\\t2\\t1\\t0\\t0\\n" +
+  "00002\\tＧＳ言語科目\\t英語基礎\\t火2\\t鈴木花子\\t1年\\t25\\t15\\t8\\t4\\t2\\t1\\t0\\t0\\n";
 
 beforeEach(() => {
   vi.stubGlobal("fetch", vi.fn());
@@ -40,7 +40,7 @@ describe("fetchLectures", () => {
     } as Response);
 
     await expect(fetchLectures()).rejects.toThrow(
-      "Failed to fetch lectures: 500 Internal Server Error"
+      "Failed to fetch lectures: 500 Internal Server Error",
     );
   });
 
@@ -74,7 +74,7 @@ describe("fetchLectureDetail", () => {
     } as Response);
 
     await expect(fetchLectureDetail("00001")).rejects.toThrow(
-      "Failed to fetch lecture detail: 404 Not Found"
+      "Failed to fetch lecture detail: 404 Not Found",
     );
   });
 

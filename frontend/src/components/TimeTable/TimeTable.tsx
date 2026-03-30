@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 /**
  * cellGetter: 与えられた全体データ `datum` から、指定した行 `row` と列 `col` に対応するセルの値を取得する関数の型。
@@ -104,6 +104,20 @@ export default function TimeTable<
   C extends string | number,
   U,
 >(props: TimeTableProps<T, R, C, U>) {
+  const { datum, rowElements, columnElements, cellGetter } = props;
+
+  type CellKey = `${R}|${C}`; // 行と列を組み合わせたキーの型
+  const cachedCellData: Map<CellKey, U> = useMemo(() => {
+    const returnValue = new Map<CellKey, U>();
+    rowElements.forEach((row) => {
+      columnElements.forEach((col) => {
+        const key: CellKey = `${row}|${col}`;
+        returnValue.set(key, cellGetter(datum, row, col));
+      });
+    });
+    return returnValue;
+  }, [datum, rowElements, columnElements, cellGetter]);
+
   return (
     <div className={props.className}>
       {props.rowElements.map((row) => (
@@ -120,7 +134,7 @@ export default function TimeTable<
                 {/* セル本体: datum と行/列情報から値を取得して描画 */}
                 {props.cellRenderer({
                   col,
-                  data: props.cellGetter(props.datum, row, col),
+                  data: cachedCellData.get(`${row}|${col}`)!, // キャッシュから値を取得
                 })}
               </React.Fragment>
             )),

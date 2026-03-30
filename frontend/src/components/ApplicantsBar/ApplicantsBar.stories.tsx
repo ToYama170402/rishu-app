@@ -39,6 +39,7 @@ const underCapacityLecture: LotteryCourseStatus = {
 const meta: Meta<typeof ApplicantsBar> = {
   component: ApplicantsBar,
   title: "Components/ApplicantsBar",
+  tags: ["autodocs"],
   parameters: {
     layout: "padded",
   },

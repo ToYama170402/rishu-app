@@ -6,7 +6,7 @@ import { type Course } from "@/types/course";
 /** ストーリー用のサンプル科目データ */
 const sampleCourses: Course[] = [
   {
-    id: "1",
+    courseId: "1",
     year: 2024,
     title: "微分積分学",
     numbering: "MA101",
@@ -31,7 +31,7 @@ const sampleCourses: Course[] = [
     faculty: { department: "理工学域", faculty: "数物科学類" },
   },
   {
-    id: "2",
+    courseId: "2",
     year: 2024,
     title: "英語コミュニケーション",
     numbering: "EN101",
@@ -56,7 +56,7 @@ const sampleCourses: Course[] = [
     faculty: { department: "人間社会学域", faculty: "国際学類" },
   },
   {
-    id: "3",
+    courseId: "3",
     year: 2024,
     title: "プログラミング基礎",
     numbering: "CS101",
@@ -84,7 +84,7 @@ const sampleCourses: Course[] = [
     faculty: { department: "理工学域", faculty: "電子情報通信学類" },
   },
   {
-    id: "4",
+    courseId: "4",
     year: 2024,
     title: "経済学入門",
     numbering: "EC101",
@@ -109,7 +109,7 @@ const sampleCourses: Course[] = [
     faculty: { department: "人間社会学域", faculty: "経済学類" },
   },
   {
-    id: "5",
+    courseId: "5",
     year: 2024,
     title: "医学概論",
     numbering: "MD101",

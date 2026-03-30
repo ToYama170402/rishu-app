@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type React from "react";
-import type { RenderCellProps } from "@/components/TimeTable/TimeTable";
+import type { cellRendererProps } from "@/components/TimeTable/TimeTable";
 import type { LotteryCourseStatus } from "@/types/lotteryCourse";
 import ApplicantsBar from "@/components/ApplicantsBar/ApplicantsBar";
 import DetailPopup from "@/features/DetailPopup/DetailPopup";
@@ -13,11 +13,12 @@ import DetailPopup from "@/features/DetailPopup/DetailPopup";
  * legacy の MUI Box + ApplicantsBar 相当。
  */
 export default function Period({
-  dataFragment,
-}: RenderCellProps<LotteryCourseStatus>): React.ReactNode {
+  data,
+  col,
+}: cellRendererProps<LotteryCourseStatus[], number>): React.ReactNode {
   return (
-    <div className="overflow-y-auto snap-y snap-proximity flex-1 px-1 py-0.5 min-h-[3rem]">
-      {dataFragment.map((lecture) => (
+    <div className="h-1/5 overflow-y-auto snap-y snap-proximity flex-1 py-1 min-h-[3rem]">
+      {data.map((lecture) => (
         <LecturePeriodItem key={lecture.number} lecture={lecture} />
       ))}
     </div>

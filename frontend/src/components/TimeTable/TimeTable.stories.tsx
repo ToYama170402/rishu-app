@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import TimeTable, {
-  type RenderCellProps,
-  type RenderColumnProps,
+  type rowRendererProps,
+  type cellRendererProps,
 } from "./TimeTable";
 
 /** ストーリー用のサンプルデータ型 */
@@ -24,16 +24,13 @@ const sampleData: SampleItem[] = [
 ];
 
 /** セルのレンダリングコンポーネント */
-function SampleCell({
-  yFragment,
-  dataFragment,
-}: RenderCellProps<SampleItem>) {
+function SampleCell({ data, col }: cellRendererProps<SampleItem[], string>) {
   return (
     <div className="h-12 border border-gray-200 px-1 py-0.5 text-xs">
-      <div className="text-gray-400 text-[10px]">{String(yFragment)}限</div>
-      {dataFragment.length > 0 ? (
+      <div className="text-gray-400 text-[10px]">{String(col)}限</div>
+      {data.length > 0 ? (
         <ul>
-          {dataFragment.map((item) => (
+          {data.map((item) => (
             <li key={item.title} className="truncate text-blue-700">
               {item.title}
             </li>
@@ -45,27 +42,18 @@ function SampleCell({
 }
 
 /** 列コンテナのレンダリングコンポーネント */
-function SampleColumn({ xFragment, children }: RenderColumnProps) {
+function SampleColumn({ row, children }: rowRendererProps<number>) {
   return (
     <div className="flex flex-col w-20 border border-gray-300 rounded">
       <div className="text-center font-bold bg-gray-100 py-0.5 text-sm">
-        {String(xFragment)}
+        {String(row)}
       </div>
       {children}
     </div>
   );
 }
 
-/** 全体コンテナのレンダリングコンポーネント */
-function SampleContainer({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="overflow-x-auto p-2 bg-white rounded shadow">
-      {children}
-    </div>
-  );
-}
-
-const meta: Meta<typeof TimeTable<SampleItem>> = {
+const meta: Meta<typeof TimeTable<SampleItem, number, string>> = {
   title: "Components/TimeTable",
   component: TimeTable,
   tags: ["autodocs"],
@@ -75,35 +63,32 @@ const meta: Meta<typeof TimeTable<SampleItem>> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof TimeTable<SampleItem>>;
+type Story = StoryObj<typeof TimeTable<SampleItem[], number, string>>;
 
 export const Default: Story = {
   args: {
-    data: sampleData,
-    xArray: ["月", "火", "水", "木", "金"],
-    yArray: [1, 2, 3, 4, 5],
-    xKey: "day",
-    yKey: "period",
-    RenderCell: SampleCell,
-    RenderColumn: SampleColumn,
-    TimeTableContainer: SampleContainer,
+    datum: sampleData,
+    rowElements: [1, 2, 3, 4, 5],
+    columnElements: ["月", "火", "水", "木", "金"],
+    cellGetter: (data, row, col) =>
+      data.filter((item) => item.period === row && item.day === col),
+    rowRenderer: SampleColumn,
+    cellRenderer: SampleCell,
+    className: "flex gap-2",
   },
 };
 
 export const Empty: Story = {
   args: {
     ...Default.args,
-    data: [],
+    datum: [],
   },
 };
 
 export const WithWeekend: Story = {
   args: {
     ...Default.args,
-    xArray: ["月", "火", "水", "木", "金", "土"],
-    data: [
-      ...sampleData,
-      { day: "土", period: 1, title: "特別講座" },
-    ],
+    columnElements: ["月", "火", "水", "木", "金", "土"],
+    datum: [...sampleData, { day: "土", period: 1, title: "特別講座" }],
   },
 };

@@ -1,135 +1,122 @@
 import React from "react";
 
-import { cn } from "@/lib/utils";
+/**
+ * cellGetter: 与えられた全体データ `datum` から、指定した行 `row` と列 `col` に対応するセルの値を取得する関数の型。
+ * 型パラメータ:
+ *  - T: 全体データの型
+ *  - R: 行要素の型
+ *  - C: 列要素の型
+ */
+export type cellGetter<T, R, C> = (datum: T, row: R, col: C) => T;
 
-/** セルのレンダリングに渡される props */
-export type RenderCellProps<T> = {
-  /** x 軸（列）の値（例: 曜日） */
-  xFragment: unknown;
-  /** y 軸（行）の値（例: 時限） */
-  yFragment: unknown;
-  /** このセルに対応するデータ配列（0件の場合もある） */
-  dataFragment: T[];
-};
-
-/** 列コンテナのレンダリングに渡される props */
-export type RenderColumnProps = {
-  /** この列の x 軸の値（例: 曜日） */
-  xFragment: unknown;
+/**
+ * rowRendererProps: 各行を描画する際に渡されるプロパティ。
+ *  - row: 現在の行要素
+ *  - children: その行に含まれる列セルを表す React ノード群
+ */
+export type rowRendererProps<R> = {
+  row: R;
   children: React.ReactNode;
 };
 
-type TimeTableProps<T> = {
-  /** 表示するデータ配列 */
-  data: T[];
-  /** x 軸（列方向）の値の配列（例: 曜日の配列） */
-  xArray: unknown[];
-  /** y 軸（行方向）の値の配列（例: 時限の配列） */
-  yArray: unknown[];
-  /**
-   * データアイテムの x 軸の値を取得するキー。
-   * ドット記法によるネストされたプロパティアクセスに対応（例: "dateTime.day"）
-   */
-  xKey: string;
-  /**
-   * データアイテムの y 軸の値を取得するキー。
-   * ドット記法によるネストされたプロパティアクセスに対応（例: "dateTime.period"）
-   */
-  yKey: string;
-  className?: string;
-  /** セルのレンダリングコンポーネント */
-  RenderCell: React.ComponentType<RenderCellProps<T>>;
-  /** 列コンテナのレンダリングコンポーネント */
-  RenderColumn: React.ComponentType<RenderColumnProps>;
-  /** 全体コンテナのレンダリングコンポーネント */
-  TimeTableContainer: React.ComponentType<{ children: React.ReactNode }>;
+/**
+ * rowRenderer: 行全体を描画する関数の型。
+ * row と children を受け取り、行を表す React ノードを返す。
+ */
+type rowRenderer<R> = ({
+  row,
+  children,
+}: rowRendererProps<R>) => React.ReactNode;
+
+/**
+ * cellRendererProps: 各セルを描画する際に渡されるプロパティ。
+ *  - data: セルに表示するデータ
+ *  - col: 当該セルの列要素
+ */
+export type cellRendererProps<T, C> = {
+  data: T;
+  col: C;
 };
 
 /**
- * ドット記法で指定されたキーを使ってオブジェクトからネストされた値を取得する。
- *
- * @example getNestedValue({ dateTime: { day: "月" } }, "dateTime.day") // => "月"
+ * cellRenderer: セルを描画する関数の型。
  */
-function getNestedValue(obj: unknown, key: string): unknown {
-  return key
-    .split(".")
-    .reduce(
-      (acc, k) =>
-        acc != null && typeof acc === "object"
-          ? (acc as Record<string, unknown>)[k]
-          : undefined,
-      obj
-    );
-}
-
-/**
- * 汎用時間割グリッドコンポーネント。
- *
- * x 軸（列）と y 軸（行）の値の配列を受け取り、各セルに対応するデータを
- * `xKey`/`yKey` で絞り込んでレンダリングする。
- * セル・列・コンテナのレンダリングは props でカスタマイズできる。
- */
-const TimeTable = <T,>({
+type cellRenderer<T, C> = ({
   data,
-  xArray,
-  yArray,
-  xKey,
-  yKey,
-  className,
-  RenderCell,
-  RenderColumn,
-  TimeTableContainer,
-}: TimeTableProps<T>) => {
-  // Pre-index data by xKey and yKey so each cell lookup is O(1).
-  const indexedData = React.useMemo(
-    () => {
-      const map = new Map<unknown, Map<unknown, T[]>>();
+  col,
+}: cellRendererProps<T, C>) => React.ReactNode;
 
-      for (const item of data) {
-        const xValue = getNestedValue(item, xKey);
-        const yValue = getNestedValue(item, yKey);
+/**
+ * rowLabel: 行ラベルを描画する関数の型。行要素を受け取りラベル用の React ノードを返す。
+ */
+type rowLabel<R> = ({ row }: { row: R }) => React.ReactNode;
 
-        let yMap = map.get(xValue);
-        if (!yMap) {
-          yMap = new Map<unknown, T[]>();
-          map.set(xValue, yMap);
-        }
+/**
+ * columnLabel: 列ラベルを描画する関数の型。列要素を受け取りラベル用の React ノードを返す。
+ */
+type columnLabel<C> = ({ col }: { col: C }) => React.ReactNode;
 
-        const existing = yMap.get(yValue);
-        if (existing) {
-          existing.push(item);
-        } else {
-          yMap.set(yValue, [item]);
-        }
-      }
-
-      return map;
-    },
-    [data, xKey, yKey]
-  );
-
-  return (
-    <TimeTableContainer>
-      <div className={cn("flex flex-row", className)}>
-        {xArray.map((xFragment) => (
-          <RenderColumn xFragment={xFragment} key={String(xFragment)}>
-            {yArray.map((yFragment) => {
-              const yMap = indexedData.get(xFragment);
-              const dataFragment = (yMap && yMap.get(yFragment)) ?? [];
-              return (
-                <RenderCell
-                  xFragment={xFragment}
-                  yFragment={yFragment}
-                  dataFragment={dataFragment}
-                  key={String(yFragment)}
-                />
-              );
-            })}
-          </RenderColumn>
-        ))}
-      </div>
-    </TimeTableContainer>
-  );
+/**
+ * TimeTableProps: TimeTable コンポーネントが受け取る props の型定義。
+ *  - datum: テーブル全体に関するデータ（セル取得で参照）
+ *  - rowElements: 行を表す要素配列
+ *  - columnElements: 列を表す要素配列
+ *  - cellGetter: セルデータを取得する関数
+ *  - rowRenderer: 行を描画する関数
+ *  - cellRenderer: セルを描画する関数
+ *  - rowLabel: (省略可) 各行のラベル描画関数
+ *  - columnLabel: (省略可) 各列のラベル描画関数
+ *  - className: オプションのルート要素クラス名
+ */
+type TimeTableProps<T, R, C> = {
+  datum: T;
+  rowElements: R[];
+  columnElements: C[];
+  cellGetter: cellGetter<T, R, C>;
+  rowRenderer: rowRenderer<R>;
+  cellRenderer: cellRenderer<T, C>;
+  rowLabel?: rowLabel<R>;
+  columnLabel?: columnLabel<C>;
+  className?: string;
 };
 
-export default TimeTable;
+/**
+ * TimeTable コンポーネント
+ *
+ * 汎用的な行×列テーブルレンダラ。行・列の配列と、
+ * セルごとのデータ取得関数および描画関数を受け取り、
+ * 指定のレンダラで行とセルを構築する。
+ *
+ * 実装詳細:
+ *  - 外側は `props.rowElements` をループして各行を生成
+ *  - 各行内で `props.columnElements` をループしてセルを生成
+ *  - 必要に応じて `rowLabel` / `columnLabel` を先に描画する
+ *  - React.Fragment を使い、map のキーは `String(row)` や `String(col)` を使用
+ */
+export default function TimeTable<T, R, C>(props: TimeTableProps<T, R, C>) {
+  return (
+    <div className={props.className}>
+      {props.rowElements.map((row) => (
+        <React.Fragment key={String(row)}>
+          {/* 行ラベル（あれば表示） */}
+          {props.rowLabel && props.rowLabel({ row })}
+          {/* 行本体: 子要素として列セル群を渡す */}
+          {props.rowRenderer({
+            row,
+            children: props.columnElements.map((col) => (
+              <React.Fragment key={String(col)}>
+                {/* 列ラベル（あれば表示） */}
+                {props.columnLabel && props.columnLabel({ col })}
+                {/* セル本体: datum と行/列情報から値を取得して描画 */}
+                {props.cellRenderer({
+                  col,
+                  data: props.cellGetter(props.datum, row, col),
+                })}
+              </React.Fragment>
+            )),
+          })}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}

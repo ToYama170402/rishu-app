@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import TimeTable, {
-  type rowRendererProps,
-  type cellRendererProps,
+  type RowRendererProps,
+  type CellRendererProps,
 } from "./TimeTable";
 
 /** ストーリー用のサンプルデータ型 */
@@ -24,7 +24,7 @@ const sampleData: SampleItem[] = [
 ];
 
 /** セルのレンダリングコンポーネント */
-function SampleCell({ data, col }: cellRendererProps<SampleItem[], string>) {
+function SampleCell({ data, col }: CellRendererProps<SampleItem[], string>) {
   return (
     <div className="h-12 border border-gray-200 px-1 py-0.5 text-xs">
       <div className="text-gray-400 text-[10px]">{String(col)}限</div>
@@ -42,7 +42,7 @@ function SampleCell({ data, col }: cellRendererProps<SampleItem[], string>) {
 }
 
 /** 列コンテナのレンダリングコンポーネント */
-function SampleColumn({ row, children }: rowRendererProps<number>) {
+function SampleColumn({ row, children }: RowRendererProps<number>) {
   return (
     <div className="flex flex-col w-20 border border-gray-300 rounded">
       <div className="text-center font-bold bg-gray-100 py-0.5 text-sm">

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type React from "react";
-import type { cellRendererProps } from "@/components/TimeTable/TimeTable";
+import type { CellRendererProps } from "@/components/TimeTable/TimeTable";
 import type { LotteryCourseStatus } from "@/types/lotteryCourse";
 import ApplicantsBar from "@/components/ApplicantsBar/ApplicantsBar";
 import DetailPopup from "@/features/DetailPopup/DetailPopup";
@@ -14,7 +14,7 @@ import DetailPopup from "@/features/DetailPopup/DetailPopup";
  */
 export default function Period({
   data,
-}: cellRendererProps<LotteryCourseStatus[], number>): React.ReactNode {
+}: CellRendererProps<LotteryCourseStatus[], number>): React.ReactNode {
   return (
     <div className="h-1/5 overflow-y-auto snap-y snap-proximity flex-1 py-1 min-h-12">
       {data.map((lecture) => (

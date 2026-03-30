@@ -7,14 +7,14 @@ import React from "react";
  *  - R: 行要素の型
  *  - C: 列要素の型
  */
-export type cellGetter<T, R, C> = (datum: T, row: R, col: C) => T;
+export type CellGetter<T, R, C> = (datum: T, row: R, col: C) => T;
 
 /**
  * rowRendererProps: 各行を描画する際に渡されるプロパティ。
  *  - row: 現在の行要素
  *  - children: その行に含まれる列セルを表す React ノード群
  */
-export type rowRendererProps<R> = {
+export type RowRendererProps<R> = {
   row: R;
   children: React.ReactNode;
 };
@@ -23,17 +23,17 @@ export type rowRendererProps<R> = {
  * rowRenderer: 行全体を描画する関数の型。
  * row と children を受け取り、行を表す React ノードを返す。
  */
-type rowRenderer<R> = ({
+type RowRenderer<R> = ({
   row,
   children,
-}: rowRendererProps<R>) => React.ReactNode;
+}: RowRendererProps<R>) => React.ReactNode;
 
 /**
  * cellRendererProps: 各セルを描画する際に渡されるプロパティ。
  *  - data: セルに表示するデータ
  *  - col: 当該セルの列要素
  */
-export type cellRendererProps<T, C> = {
+export type CellRendererProps<T, C> = {
   data: T;
   col: C;
 };
@@ -41,20 +41,20 @@ export type cellRendererProps<T, C> = {
 /**
  * cellRenderer: セルを描画する関数の型。
  */
-type cellRenderer<T, C> = ({
+type CellRenderer<T, C> = ({
   data,
   col,
-}: cellRendererProps<T, C>) => React.ReactNode;
+}: CellRendererProps<T, C>) => React.ReactNode;
 
 /**
  * rowLabel: 行ラベルを描画する関数の型。行要素を受け取りラベル用の React ノードを返す。
  */
-type rowLabel<R> = ({ row }: { row: R }) => React.ReactNode;
+type RowLabel<R> = ({ row }: { row: R }) => React.ReactNode;
 
 /**
  * columnLabel: 列ラベルを描画する関数の型。列要素を受け取りラベル用の React ノードを返す。
  */
-type columnLabel<C> = ({ col }: { col: C }) => React.ReactNode;
+type ColumnLabel<C> = ({ col }: { col: C }) => React.ReactNode;
 
 /**
  * TimeTableProps: TimeTable コンポーネントが受け取る props の型定義。
@@ -72,11 +72,11 @@ type TimeTableProps<T, R, C> = {
   datum: T;
   rowElements: R[];
   columnElements: C[];
-  cellGetter: cellGetter<T, R, C>;
-  rowRenderer: rowRenderer<R>;
-  cellRenderer: cellRenderer<T, C>;
-  rowLabel?: rowLabel<R>;
-  columnLabel?: columnLabel<C>;
+  cellGetter: CellGetter<T, R, C>;
+  rowRenderer: RowRenderer<R>;
+  cellRenderer: CellRenderer<T, C>;
+  rowLabel?: RowLabel<R>;
+  columnLabel?: ColumnLabel<C>;
   className?: string;
 };
 

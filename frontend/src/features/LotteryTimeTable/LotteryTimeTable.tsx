@@ -6,7 +6,6 @@ import AppBar from "@/features/AppBar/AppBar";
 import type { LotteryCourseStatus } from "@/types/lotteryCourse";
 import { useAutoRefreshLectures } from "@/hooks/useAutoRefreshLectures";
 import Period from "./components/Period";
-import TimeTableContainer from "./components/TimeTableContainer";
 import TimeTableDayItem from "./components/TimeTableDayItem";
 import Filter from "./components/Filter";
 import DetailPopup from "@/features/DetailPopup/DetailPopup";
@@ -15,7 +14,7 @@ import DetailPopup from "@/features/DetailPopup/DetailPopup";
 const DAYS = ["月", "火", "水", "木", "金", "土", "日"] as const;
 
 /** 表示する時限の配列 */
-const PERIODS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
+const PERIODS = [1, 2, 3, 4, 5] as const;
 
 type LotteryTimeTableProps = {
   /** Server Component で取得した初期抽選データ */
@@ -45,15 +44,18 @@ export default function LotteryTimeTable({
         <Filter lectures={lectures} applyFilter={setFilteredLectures} />
       </AppBar>
       <main className="flex-1 overflow-hidden">
-        <TimeTable
-          data={filteredLectures.filter((lec) => lec.dateTime.day !== "集中")}
-          xArray={[...DAYS]}
-          yArray={[...PERIODS]}
-          xKey="dateTime.day"
-          yKey="dateTime.period"
-          RenderCell={Period}
-          RenderColumn={TimeTableDayItem}
-          TimeTableContainer={TimeTableContainer}
+        <TimeTable<LotteryCourseStatus[], string, number, LotteryCourseStatus[]>
+          datum={filteredLectures.filter((lec) => lec.dateTime.day !== "集中")}
+          rowElements={[...DAYS]}
+          columnElements={[...PERIODS]}
+          cellGetter={(datum, row, col) =>
+            datum.filter(
+              (lec) => lec.dateTime.day === row && lec.dateTime.period === col,
+            )
+          }
+          cellRenderer={Period}
+          rowRenderer={TimeTableDayItem}
+          className="flex justify-around h-full w-full p-1 overflow-x-auto snap-x scroll-smooth"
         />
       </main>
       {filteredLectures.some((lec) => lec.dateTime.day === "集中") && (
@@ -85,7 +87,9 @@ function IntensiveLectureItem({ lecture }: { lecture: LotteryCourseStatus }) {
         <div className="text-xs font-medium truncate max-w-[120px]">
           {lecture.title}
         </div>
-        <div className="text-[10px] text-muted-foreground">{lecture.teacher}</div>
+        <div className="text-[10px] text-muted-foreground">
+          {lecture.teacher}
+        </div>
       </button>
       <DetailPopup
         lecture={lecture}

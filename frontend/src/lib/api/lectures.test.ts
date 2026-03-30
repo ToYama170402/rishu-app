@@ -2,6 +2,7 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { fetchLectures, fetchLectureDetail } from "./lectures";
 
 const TSV_FIXTURE =
+  "講義番号\\t科目区分\\t講義名\\t時限\\t担当教員\\t対象学年\\t定員\\t応募者数(合計)\\t第1希望\\t第2希望\\t第3希望\\t第4希望\\t第5希望\\t第6希望\\n" +
   "00001\\tＧＳ科目\\t数学入門\\t月1\\t山田太郎\\t1年\\t20\\t10\\t5\\t3\\t2\\t1\\t0\\t0\\n" +
   "00002\\tＧＳ言語科目\\t英語基礎\\t火2\\t鈴木花子\\t1年\\t25\\t15\\t8\\t4\\t2\\t1\\t0\\t0\\n";
 

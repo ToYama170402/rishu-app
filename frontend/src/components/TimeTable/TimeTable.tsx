@@ -68,7 +68,12 @@ type ColumnLabel<C> = ({ col }: { col: C }) => React.ReactNode;
  *  - columnLabel: (省略可) 各列のラベル描画関数
  *  - className: オプションのルート要素クラス名
  */
-type TimeTableProps<T, R, C, U> = {
+type TimeTableProps<
+  T,
+  R extends string | number, // オブジェクトを行/列要素にしてString()で[object Object]でkeyが衝突するのを避けるため
+  C extends string | number,
+  U,
+> = {
   datum: T;
   rowElements: R[];
   columnElements: C[];
@@ -93,9 +98,12 @@ type TimeTableProps<T, R, C, U> = {
  *  - 必要に応じて `rowLabel` / `columnLabel` を先に描画する
  *  - React.Fragment を使い、map のキーは `String(row)` や `String(col)` を使用
  */
-export default function TimeTable<T, R, C, U>(
-  props: TimeTableProps<T, R, C, U>,
-) {
+export default function TimeTable<
+  T,
+  R extends string | number,
+  C extends string | number,
+  U,
+>(props: TimeTableProps<T, R, C, U>) {
   return (
     <div className={props.className}>
       {props.rowElements.map((row) => (

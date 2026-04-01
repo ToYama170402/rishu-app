@@ -19,23 +19,23 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <html lang="ja">
+    <html lang="en">
       <body className="antialiased">
         <main className="flex flex-col items-center justify-center min-h-screen gap-6 p-8 text-center">
           <h1 className="text-2xl font-semibold">重大なエラーが発生しました</h1>
-          <p className="text-sm text-gray-500 max-w-md">
+          <p className="text-sm text-muted-foreground max-w-md">
             アプリケーションで予期しない問題が発生しました。再試行するか、ページを再読み込みしてください。
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={reset}
-              className="px-6 py-3 bg-black text-white rounded font-medium hover:opacity-80 transition-opacity"
+              className="px-6 py-3 bg-primary text-primary-foreground rounded font-medium hover:opacity-80 transition-opacity"
             >
               再試行
             </button>
             <Link
               href="/"
-              className="px-6 py-3 bg-gray-100 text-gray-900 rounded font-medium hover:opacity-80 transition-opacity"
+              className="px-6 py-3 bg-secondary text-secondary-foreground rounded font-medium hover:opacity-80 transition-opacity"
             >
               ホームへ戻る
             </Link>

@@ -29,6 +29,13 @@ rishu-appは、金沢大学の学生が履修登録をより効率的に行え�
 
 このプロジェクトへの参加を歓迎します！
 
+### 貢献の始め方
+
+- 🌱 **初めての方**: [初心者向け貢献ガイド](./CONTRIBUTING_BEGINNERS.md) - GitHubの使い方から丁寧に解説
+- 📖 **経験者の方**: [貢献ガイドライン](./CONTRIBUTING.md) - 開発ワークフローやコーディング規約
+
+開発に参加したい方は、Twitterの[@ToYamaSoujin](https://x.com/ToYamaSoujin)または、[toyamasoujinn@gmail.com](toyamasoujinn@gmail.com)までお気軽にご連絡ください。
+
 ### 参加方法
 
 - **不具合報告**: [Issues](https://github.com/ToYama170402/rishu-app/issues)で不具合を報告

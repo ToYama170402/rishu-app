@@ -84,7 +84,7 @@ rishu-appへの貢献はいろいろな形で歓迎しています：
    - VS Codeでクローンしたディレクトリを開く
    - コマンドパレット（`Ctrl+Shift+P` / `Cmd+Shift+P`）を開く
    - `Dev Containers: Reopen in Container` を選択
-   - 開発したいサービスを選択（frontend、syllabus-frontendなど）
+   - 開発したいサービスを選択（frontend、syllabus-backend、syllabus-scrapeなど）
 
 4. **リモートリポジトリの設定**
 
@@ -160,7 +160,7 @@ git rebase upstream/main
 ### 全体的なコーディング規約
 
 このプロジェクトは複数のサービスから構成されています：
-- **frontend、syllabus-frontend、syllabus-scrape**: TypeScript
+- **frontend、syllabus-scrape**: TypeScript
 - **syllabus-backend**: Go
 
 それぞれのサービスで共通して守るべき規約：
@@ -172,8 +172,6 @@ git rebase upstream/main
 
 ### フロントエンド（React/Next.js）
 
-<!-- TODO: 将来的にfrontendの機能はsyllabus-frontendに統合予定。その際にReact/Next.jsは使用しなくなる可能性があります -->
-
 - 関数コンポーネントを使用
 - Hooksを適切に使用（`useState`, `useEffect`など）
 - コンポーネントは再利用可能で単一責任の原則に従う
@@ -181,10 +179,9 @@ git rebase upstream/main
 
 ### スタイリング
 
-<!-- TODO: 上記のフロントエンド統合に伴い、MUIも使用しなくなる可能性があります -->
-
-- MUIコンポーネントを優先的に使用
-- カスタムスタイルが必要な場合は、MUIのスタイリングシステム（`sx` prop、`styled`）を使用
+- Tailwind CSS を使用したユーティリティファーストのスタイリングを基本とする
+- shadcn/ui コンポーネントを優先的に使用
+- カスタムスタイルが必要な場合は、Tailwind CSS のユーティリティクラスを使用
 
 ### コメント
 

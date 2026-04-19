@@ -65,9 +65,17 @@ services:
     networks:
       - rishu-app_network
 
-networks:
-  rishu-app_network:
-    driver: bridge
+  syllabus-scrape-redis:
+    image: redis:8.0-alpine
+    restart: always
+    volumes:
+      - redis-data:/data
 
 volumes:
   syllabus-db:
+  redis-data:
+
+
+networks:
+  rishu-app_network:
+    driver: bridge

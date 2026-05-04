@@ -1,5 +1,5 @@
 # ベースイメージ
-FROM golang:1.24.0-bullseye
+FROM golang:1.25.0-bookworm
 
 # 作業ディレクトリを作成
 WORKDIR /workspace

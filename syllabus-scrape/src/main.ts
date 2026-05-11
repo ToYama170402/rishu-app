@@ -166,40 +166,64 @@ const courseRepositoryAdapter = new RestApiCourseRepositoryAdapter(
 );
 const courseRepository = new CourseRepository(courseRepositoryAdapter);
 
-Object.keys(facultyMap).forEach((key) => {
-  timeRangeScheduler.addTask(async () => {
-    try {
-      const syllabusSearchResults = await scrapeSyllabusSearchResult(
-        key as Department
+timeRangeScheduler.addWorker("scrapeSyllabus", async (taskPayload) => {
+  const { syllabusSearchResult } = taskPayload as {
+    syllabusSearchResult: ReturnType<
+      typeof scrapeSyllabusSearchResult
+    > extends Promise<infer U>
+      ? U extends (infer V)[]
+        ? V
+        : never
+      : never;
+  };
+  try {
+    if (!syllabusSearchResult) {
+      logger.log(
+        `Invalid task payload: ${JSON.stringify(taskPayload, null, 2)}`,
+        "error"
       );
+      return;
+    }
+    const syllabusData = await scrapeSyllabus(
+      syllabusSearchResult?.japaneseUrl || ""
+    );
+    if (!syllabusData) return;
+    const course = courseService.createCourseFromSyllabusData(
+      syllabusData.data,
+      syllabusSearchResult,
+      2025,
+      syllabusData.data.courseDescription
+    );
+
+    await courseRepository.saveCourse(course);
+  } catch (error) {
+    logger.log(`Error scraping syllabus: ${error}`, "error");
+    logger.log(
+      `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
+      "error"
+    );
+    logger.log(
+      `Error occurred at: ${JSON.stringify(syllabusSearchResult, null, 2)}`,
+      "error"
+    );
+  }
+});
+
+timeRangeScheduler.addWorker(
+  "scrapeSyllabusSearchResult",
+  async (taskPayload) => {
+    const { department } = taskPayload as {
+      department: Department;
+    };
+    try {
+      const syllabusSearchResults =
+        await scrapeSyllabusSearchResult(department);
       syllabusSearchResults
         .filter((e) => e !== null)
         .forEach((syllabusSearchResult) => {
-          timeRangeScheduler.addTask(async () => {
-            try {
-              const syllabusData = await scrapeSyllabus(
-                syllabusSearchResult?.japaneseUrl || ""
-              );
-              if (!syllabusData) return;
-              const course = courseService.createCourseFromSyllabusData(
-                syllabusData.data,
-                syllabusSearchResult,
-                2025,
-                syllabusData.data.courseDescription
-              );
-
-              await courseRepository.saveCourse(course);
-            } catch (error) {
-              logger.log(`Error scraping syllabus: ${error}`, "error");
-              logger.log(
-                `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
-                "error"
-              );
-              logger.log(
-                `Error occurred at: ${JSON.stringify(syllabusSearchResult, null, 2)}`,
-                "error"
-              );
-            }
+          timeRangeScheduler.addTask({
+            type: "scrapeSyllabus",
+            payload: { syllabusSearchResult },
           });
         });
     } catch (error) {
@@ -208,8 +232,15 @@ Object.keys(facultyMap).forEach((key) => {
         `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
         "error"
       );
-      logger.log(`Faculty: ${key}`, "error");
+      logger.log(`Faculty: ${department}`, "error");
     }
+  }
+);
+
+Object.keys(facultyMap).forEach((department) => {
+  timeRangeScheduler.addTask({
+    type: "scrapeSyllabusSearchResult",
+    payload: { department },
   });
 });
 

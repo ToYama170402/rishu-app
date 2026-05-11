@@ -1,7 +1,14 @@
-export type Task = () => Promise<void> | void;
+export type TaskPayload = {
+  type: string;
+  payload: unknown;
+};
 
 export interface Scheduler {
-  addTask(task: Task): void;
+  addWorker(
+    name: string,
+    processor: (taskPayload: unknown) => Promise<void>
+  ): void;
+  addTask(task: TaskPayload): void;
   start(): void;
   stop(): void;
 }

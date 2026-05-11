@@ -1,8 +1,9 @@
-import type { Scheduler, Task } from "./core";
+import type { Scheduler, TaskPayload } from "./core";
 
 export class TimeRangeScheduler implements Scheduler {
-  private tasks: Task[] = [];
+  private tasks: TaskPayload[] = [];
   private isRunning: boolean = false;
+  private workers: Record<string, (taskPayload: unknown) => Promise<void>> = {};
 
   constructor(
     private startHour: number,
@@ -10,7 +11,7 @@ export class TimeRangeScheduler implements Scheduler {
     private intervalMs: number | (() => number)
   ) {}
 
-  addTask(task: Task): void {
+  addTask(task: TaskPayload): void {
     this.tasks.push(task);
   }
 
@@ -23,13 +24,32 @@ export class TimeRangeScheduler implements Scheduler {
     this.isRunning = false;
   }
 
+  addWorker(
+    name: string,
+    processor: (taskPayload: unknown) => Promise<void>
+  ): void {
+    if (this.workers[name]) {
+      throw new Error(`Worker with name ${name} already exists.`);
+    }
+    this.workers[name] = processor;
+  }
+
   private async runTasks(): Promise<void> {
     while (this.isRunning) {
       const now = new Date().getHours();
       if (this.tasks.length > 0 && this.isInTimeRange(now)) {
         const task = this.tasks.shift();
         if (task) {
-          await task();
+          const worker = this.workers[task.type];
+          if (worker) {
+            try {
+              await worker(task.payload);
+            } catch (error) {
+              console.error(`Error processing task: ${error}`);
+            }
+          } else {
+            console.warn(`No worker found for task type: ${task.type}`);
+          }
         }
       }
       await this.sleep(

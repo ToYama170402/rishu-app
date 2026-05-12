@@ -169,12 +169,10 @@ bullMQScheduler.addWorker(
   "scrapeSyllabus",
   async (taskPayload) => {
     const { syllabusSearchResult } = taskPayload as {
-      syllabusSearchResult: ReturnType<
-        typeof scrapeSyllabusSearchResult
-      > extends Promise<infer U>
-        ? U extends (infer V)[]
-          ? V
-          : never
+      syllabusSearchResult: Awaited<
+        ReturnType<typeof scrapeSyllabusSearchResult>
+      > extends (infer T)[]
+        ? T
         : never;
     };
     try {

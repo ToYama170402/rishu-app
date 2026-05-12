@@ -169,7 +169,7 @@ type syllabusSearchResult = Awaited<
   ReturnType<typeof scrapeSyllabusSearchResult>
 >[number];
 
-bullMQScheduler.addWorker<syllabusSearchResult>(
+await bullMQScheduler.addWorker<syllabusSearchResult>(
   "scrapeSyllabus",
   async (taskPayload) => {
     try {
@@ -205,7 +205,7 @@ bullMQScheduler.addWorker<syllabusSearchResult>(
   6
 );
 
-bullMQScheduler.addWorker<{ department: Department }>(
+await bullMQScheduler.addWorker<{ department: Department }>(
   "scrapeSyllabusSearchResult",
   async (taskPayload) => {
     const { department } = taskPayload;

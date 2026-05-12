@@ -165,31 +165,26 @@ const courseRepositoryAdapter = new RestApiCourseRepositoryAdapter(
 );
 const courseRepository = new CourseRepository(courseRepositoryAdapter);
 
-bullMQScheduler.addWorker(
+type syllabusSearchResult = Awaited<
+  ReturnType<typeof scrapeSyllabusSearchResult>
+>[number];
+
+bullMQScheduler.addWorker<syllabusSearchResult>(
   "scrapeSyllabus",
   async (taskPayload) => {
-    const { syllabusSearchResult } = taskPayload as {
-      syllabusSearchResult: Awaited<
-        ReturnType<typeof scrapeSyllabusSearchResult>
-      > extends (infer T)[]
-        ? T
-        : never;
-    };
     try {
-      if (!syllabusSearchResult) {
+      if (!taskPayload) {
         logger.log(
           `Invalid task payload: ${JSON.stringify(taskPayload, null, 2)}`,
           "error"
         );
         return;
       }
-      const syllabusData = await scrapeSyllabus(
-        syllabusSearchResult?.japaneseUrl || ""
-      );
+      const syllabusData = await scrapeSyllabus(taskPayload.japaneseUrl || "");
       if (!syllabusData) return;
       const course = courseService.createCourseFromSyllabusData(
         syllabusData.data,
-        syllabusSearchResult,
+        taskPayload,
         2025,
         syllabusData.data.courseDescription
       );
@@ -202,7 +197,7 @@ bullMQScheduler.addWorker(
         "error"
       );
       logger.log(
-        `Error occurred at: ${JSON.stringify(syllabusSearchResult, null, 2)}`,
+        `Error occurred at: ${JSON.stringify(taskPayload, null, 2)}`,
         "error"
       );
     }
@@ -210,12 +205,10 @@ bullMQScheduler.addWorker(
   6
 );
 
-bullMQScheduler.addWorker(
+bullMQScheduler.addWorker<{ department: Department }>(
   "scrapeSyllabusSearchResult",
   async (taskPayload) => {
-    const { department } = taskPayload as {
-      department: Department;
-    };
+    const { department } = taskPayload;
     try {
       const syllabusSearchResults =
         await scrapeSyllabusSearchResult(department);

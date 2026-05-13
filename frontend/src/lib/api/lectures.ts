@@ -64,7 +64,7 @@ export async function fetchLectures(): Promise<LotteryCourseStatus[]> {
       ? new Date(data.currentCollectStartedAt).getTime() + avgDurationMs
       : Date.now() + avgDurationMs + 3000;
     const waitMs = Math.max(predictedFinishAt - Date.now(), 1000);
-    await setTimeout(() => Promise.resolve(), waitMs);
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
     return fetchLectures(); // 再帰的にリトライ
   }
 

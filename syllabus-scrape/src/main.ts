@@ -205,10 +205,10 @@ await bullMQScheduler.addWorker<syllabusSearchResult>(
   { max: 1, duration: 10000 }
 );
 
-await bullMQScheduler.addWorker<{ department: Department }>(
+await bullMQScheduler.addWorker<Department>(
   "scrapeSyllabusSearchResult",
   async (taskPayload) => {
-    const { department } = taskPayload;
+    const department = taskPayload;
     try {
       const syllabusSearchResults =
         await scrapeSyllabusSearchResult(department);

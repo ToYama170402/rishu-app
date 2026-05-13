@@ -58,6 +58,9 @@ services:
       context: ./syllabus-scrape
       dockerfile: Dockerfile
     restart: always
+    depends_on:
+      - syllabus-scrape-redis
+      - syllabus-backend
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

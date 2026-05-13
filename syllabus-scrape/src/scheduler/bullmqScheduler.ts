@@ -53,8 +53,16 @@ export class BullMQScheduler implements Scheduler {
     }
   }
   async stop(): Promise<void> {
-    await Promise.all(
-      Object.values(this.workers).map((worker) => worker.pause())
-    );
+    const workers = Object.values(this.workers);
+    const queues = Object.values(this.queues);
+
+    await Promise.all(workers.map((worker) => worker.pause()));
+    await Promise.all([
+      ...workers.map((worker) => worker.close()),
+      ...queues.map((queue) => queue.close()),
+    ]);
+
+    this.workers = {};
+    this.queues = {};
   }
 }

@@ -243,12 +243,12 @@ bullMQScheduler.start();
 
 process.on("SIGINT", async () => {
   await logger.log("Received SIGINT. Shutting down...");
-  bullMQScheduler.stop();
+  await bullMQScheduler.stop();
   process.exit();
 });
 
 process.on("SIGTERM", async () => {
   await logger.log("Received SIGTERM. Shutting down...");
-  bullMQScheduler.stop();
+  await bullMQScheduler.stop();
   process.exit();
 });

@@ -1,6 +1,5 @@
-import { parseSV } from "@/utils/parseSV";
-import { array2LectureArray } from "@/utils/timeTable";
 import type { LotteryCourseStatus } from "@/types/lotteryCourse";
+import { array2LectureArray } from "@/utils/timeTable";
 import {
   LECTURES_API_URL,
   LECTURES_DEMO_URL_BROWSER,

@@ -1,7 +1,7 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import {
-  fetchLectures,
   fetchLectureDetail,
+  fetchLectures,
   type apiResponse,
 } from "./lectures";
 

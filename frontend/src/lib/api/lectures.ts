@@ -16,6 +16,24 @@ function getLecturesEndpoint(): string {
     ? LECTURES_DEMO_URL_SERVER
     : LECTURES_DEMO_URL_BROWSER;
 }
+// 参考
+// https://github.com/ogawa3427/risyu-api/blob/main/docs/memos/2026-04-09-client-reference-prompt.md
+export type apiResponse = {
+  ok: boolean;
+  reason: "cached" | "refreshing_in_background" | "initializing";
+  preparingNext: boolean; // true = バックグラウンドでスクレイピング中 or 起動済み
+  currentCollectStartedAt: string | null; // 進行中スクレイピング開始時刻(ISO8601)。null = まだ起動していない
+  lastCollectAt: string; // 前回スクレイピング完了時刻(ISO8601)
+  recentRefreshes: Array<{
+    startedAt: string;
+    finishedAt: string;
+    durationMs: number;
+    success: boolean;
+  }>;
+  rowCount: number;
+  rows: string[][]; // TSVデータ(行×列)
+  message?: string; // preparingNext=true かつ stale の場合のみ
+};
 
 /**
  * 全講義の志望者数情報を取得する。
@@ -36,23 +54,6 @@ export async function fetchLectures(): Promise<LotteryCourseStatus[]> {
 
   // 参考
   // https://github.com/ogawa3427/risyu-api/blob/main/docs/memos/2026-04-09-client-reference-prompt.md
-  type apiResponse = {
-    ok: boolean;
-    reason: "cached" | "refreshing_in_background" | "initializing";
-    preparingNext: boolean; // true = バックグラウンドでスクレイピング中 or 起動済み
-    currentCollectStartedAt: string | null; // 進行中スクレイピング開始時刻(ISO8601)。null = まだ起動していない
-    lastCollectAt: string; // 前回スクレイピング完了時刻(ISO8601)
-    recentRefreshes: Array<{
-      startedAt: string;
-      finishedAt: string;
-      durationMs: number;
-      success: boolean;
-    }>;
-    rowCount: number;
-    rows: string[][]; // TSVデータ(行×列)
-    message?: string; // preparingNext=true かつ stale の場合のみ
-  };
-
   const data: apiResponse = (await response.json()) as apiResponse;
   if (data.reason === "initializing") {
     const avgDurationMs =

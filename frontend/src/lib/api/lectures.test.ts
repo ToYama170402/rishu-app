@@ -1,5 +1,9 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
-import { fetchLectures, fetchLectureDetail } from "./lectures";
+import {
+  fetchLectures,
+  fetchLectureDetail,
+  type apiResponse,
+} from "./lectures";
 
 const API_HEADER_ROW = [
   "講義番号",
@@ -52,24 +56,7 @@ const API_ROW_2 = [
   "0",
 ];
 
-function makeLecturesApiResponse(
-  overrides: Partial<{
-    ok: boolean;
-    reason: "cached" | "refreshing_in_background" | "initializing";
-    preparingNext: boolean;
-    currentCollectStartedAt: string | null;
-    lastCollectAt: string;
-    recentRefreshes: Array<{
-      startedAt: string;
-      finishedAt: string;
-      durationMs: number;
-      success: boolean;
-    }>;
-    rowCount: number;
-    rows: string[][];
-    message?: string;
-  }> = {},
-) {
+function makeLecturesApiResponse(overrides: Partial<apiResponse> = {}) {
   const rows = overrides.rows ?? [API_HEADER_ROW, API_ROW_1, API_ROW_2];
   return {
     ok: true,

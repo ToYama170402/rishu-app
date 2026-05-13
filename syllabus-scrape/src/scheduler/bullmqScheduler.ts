@@ -1,4 +1,9 @@
-import { Queue, Worker, type ConnectionOptions } from "bullmq";
+import {
+  Queue,
+  Worker,
+  type ConnectionOptions,
+  type RateLimiterOptions,
+} from "bullmq";
 import type { Scheduler, TaskPayload } from "./core";
 
 export class BullMQScheduler implements Scheduler {
@@ -13,7 +18,7 @@ export class BullMQScheduler implements Scheduler {
   async addWorker<DataType>(
     name: string,
     processor: (taskPayload: DataType) => Promise<void>,
-    maxTaskPerMinute?: number
+    limiter?: RateLimiterOptions
   ) {
     if (this.workers[name]) {
       throw new Error(`Worker with name ${name} already exists.`);
@@ -25,9 +30,9 @@ export class BullMQScheduler implements Scheduler {
       name,
       (job) => processor(job.data),
       {
-        limiter: {
-          max: maxTaskPerMinute ? 1 : Infinity,
-          duration: 60000 / (maxTaskPerMinute ?? 1),
+        limiter: limiter ?? {
+          max: 1,
+          duration: 10000,
         },
         connection: this.redisConfig,
       }

@@ -202,7 +202,7 @@ await bullMQScheduler.addWorker<syllabusSearchResult>(
       );
     }
   },
-  6
+  { max: 1, duration: 10000 }
 );
 
 await bullMQScheduler.addWorker<{ department: Department }>(
@@ -229,7 +229,7 @@ await bullMQScheduler.addWorker<{ department: Department }>(
       logger.log(`Faculty: ${department}`, "error");
     }
   },
-  6
+  { max: 1, duration: 10000 }
 );
 
 Object.keys(facultyMap).forEach((department) => {

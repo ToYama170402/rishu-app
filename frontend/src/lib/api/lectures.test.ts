@@ -123,7 +123,12 @@ describe("fetchLectures (JSON API contract)", () => {
     const nowSpy = vi.spyOn(Date, "now").mockReturnValue(100000);
     const setTimeoutSpy = vi
       .spyOn(globalThis, "setTimeout")
-      .mockImplementation(((..._args: unknown[]) => 0) as typeof setTimeout);
+      .mockImplementation(((callback: TimerHandler, _delay?: number) => {
+        if (typeof callback === "function") {
+          callback();
+        }
+        return 0 as ReturnType<typeof setTimeout>;
+      }) as typeof setTimeout);
 
     vi.mocked(fetch)
       .mockResolvedValueOnce({

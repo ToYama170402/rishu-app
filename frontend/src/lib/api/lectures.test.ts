@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import {
   fetchLectureDetail,
   fetchLectures,
-  type apiResponse,
+  type ApiResponse,
 } from "./lectures";
 
 const API_HEADER_ROW = [
@@ -56,7 +56,7 @@ const API_ROW_2 = [
   "0",
 ];
 
-function makeLecturesApiResponse(overrides: Partial<apiResponse> = {}) {
+function makeLecturesApiResponse(overrides: Partial<ApiResponse> = {}) {
   const rows = overrides.rows ?? [API_HEADER_ROW, API_ROW_1, API_ROW_2];
   return {
     ok: true,

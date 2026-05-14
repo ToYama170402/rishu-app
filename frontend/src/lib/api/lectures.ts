@@ -17,7 +17,7 @@ function getLecturesEndpoint(): string {
 }
 // 参考
 // https://github.com/ogawa3427/risyu-api/blob/main/docs/memos/2026-04-09-client-reference-prompt.md
-export type apiResponse = {
+export type ApiResponse = {
   ok: boolean;
   reason: "cached" | "refreshing_in_background" | "initializing";
   preparingNext: boolean; // true = バックグラウンドでスクレイピング中 or 起動済み
@@ -53,7 +53,7 @@ export async function fetchLectures(): Promise<LotteryCourseStatus[]> {
 
   // 参考
   // https://github.com/ogawa3427/risyu-api/blob/main/docs/memos/2026-04-09-client-reference-prompt.md
-  const data: apiResponse = (await response.json()) as apiResponse;
+  const data: ApiResponse = (await response.json()) as ApiResponse;
   if (data.reason === "initializing") {
     const avgDurationMs =
       data.recentRefreshes

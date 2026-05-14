@@ -1,6 +1,5 @@
-import { parseSV } from "@/utils/parseSV";
-import { array2LectureArray } from "@/utils/timeTable";
 import type { LotteryCourseStatus } from "@/types/lotteryCourse";
+import { array2LectureArray } from "@/utils/timeTable";
 import {
   LECTURES_API_URL,
   LECTURES_DEMO_URL_BROWSER,
@@ -16,6 +15,24 @@ function getLecturesEndpoint(): string {
     ? LECTURES_DEMO_URL_SERVER
     : LECTURES_DEMO_URL_BROWSER;
 }
+// 参考
+// https://github.com/ogawa3427/risyu-api/blob/main/docs/memos/2026-04-09-client-reference-prompt.md
+export type ApiResponse = {
+  ok: boolean;
+  reason: "cached" | "refreshing_in_background" | "initializing";
+  preparingNext: boolean; // true = バックグラウンドでスクレイピング中 or 起動済み
+  currentCollectStartedAt: string | null; // 進行中スクレイピング開始時刻(ISO8601)。null = まだ起動していない
+  lastCollectAt: string; // 前回スクレイピング完了時刻(ISO8601)
+  recentRefreshes: Array<{
+    startedAt: string;
+    finishedAt: string;
+    durationMs: number;
+    success: boolean;
+  }>;
+  rowCount: number;
+  rows: string[][]; // TSVデータ(行×列)
+  message?: string; // preparingNext=true かつ stale の場合のみ
+};
 
 /**
  * 全講義の志望者数情報を取得する。
@@ -33,8 +50,28 @@ export async function fetchLectures(): Promise<LotteryCourseStatus[]> {
       `Failed to fetch lectures: ${response.status} ${response.statusText}`,
     );
   }
-  const data: string = await response.text();
-  return array2LectureArray(parseSV(data, "\\t", "\\n").slice(1)); // ヘッダー行を除外
+
+  // 参考
+  // https://github.com/ogawa3427/risyu-api/blob/main/docs/memos/2026-04-09-client-reference-prompt.md
+  const data: ApiResponse = (await response.json()) as ApiResponse;
+  if (data.reason === "initializing") {
+    const avgDurationMs =
+      data.recentRefreshes
+        .filter((d) => d.success)
+        .reduce((sum, d) => sum + d.durationMs, 0) /
+      Math.max(1, data.recentRefreshes.filter((d) => d.success).length);
+    const currentCollectStartedAtMs = data.currentCollectStartedAt
+      ? new Date(data.currentCollectStartedAt).getTime()
+      : NaN;
+    const predictedFinishAt = Number.isFinite(currentCollectStartedAtMs)
+      ? currentCollectStartedAtMs + avgDurationMs
+      : Date.now() + avgDurationMs + 3000;
+    const waitMs = Math.max(predictedFinishAt - Date.now(), 1000);
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+    return fetchLectures(); // 再帰的にリトライ
+  }
+
+  return array2LectureArray(data.rows.slice(1)); // ヘッダー行を除外
 }
 
 /**

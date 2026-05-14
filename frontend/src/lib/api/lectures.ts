@@ -60,8 +60,11 @@ export async function fetchLectures(): Promise<LotteryCourseStatus[]> {
         .filter((d) => d.success)
         .reduce((sum, d) => sum + d.durationMs, 0) /
       Math.max(1, data.recentRefreshes.filter((d) => d.success).length);
-    const predictedFinishAt = data.currentCollectStartedAt
-      ? new Date(data.currentCollectStartedAt).getTime() + avgDurationMs
+    const currentCollectStartedAtMs = data.currentCollectStartedAt
+      ? new Date(data.currentCollectStartedAt).getTime()
+      : NaN;
+    const predictedFinishAt = Number.isFinite(currentCollectStartedAtMs)
+      ? currentCollectStartedAtMs + avgDurationMs
       : Date.now() + avgDurationMs + 3000;
     const waitMs = Math.max(predictedFinishAt - Date.now(), 1000);
     await new Promise((resolve) => setTimeout(resolve, waitMs));

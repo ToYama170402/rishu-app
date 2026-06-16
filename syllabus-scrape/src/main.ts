@@ -3,7 +3,7 @@ import type { Department } from "./course";
 import { facultyMap } from "./course";
 import { Logger } from "./logger";
 import { PuppeteerClient } from "./resourceClient/browserClient/puppeteerClient";
-import { TimeRangeScheduler } from "./scheduler/timeRangeScheduler";
+import { BullMQScheduler } from "./scheduler/bullmqScheduler";
 import { CheerioDOMParser } from "./scraping/adapters";
 import { FacultyParser } from "./scraping/commonParser/facultyParser";
 import { InstructorParser } from "./scraping/commonParser/instructorParser";
@@ -154,11 +154,10 @@ async function scrapeSyllabusSearchResult(department: Department) {
 
 logger.log("start scraping syllabus...");
 
-const timeRangeScheduler = new TimeRangeScheduler(
-  23,
-  3,
-  () => (50 + Math.random() * 20) * 1000
-);
+const bullMQScheduler = new BullMQScheduler({
+  host: process.env.REDIS_HOST || "localhost",
+  port: Number(process.env.REDIS_PORT) || 6379,
+});
 
 const courseService = new CourseService();
 const courseRepositoryAdapter = new RestApiCourseRepositoryAdapter(
@@ -166,40 +165,59 @@ const courseRepositoryAdapter = new RestApiCourseRepositoryAdapter(
 );
 const courseRepository = new CourseRepository(courseRepositoryAdapter);
 
-Object.keys(facultyMap).forEach((key) => {
-  timeRangeScheduler.addTask(async () => {
+type syllabusSearchResult = Awaited<
+  ReturnType<typeof scrapeSyllabusSearchResult>
+>[number];
+
+await bullMQScheduler.addWorker<syllabusSearchResult>(
+  "scrapeSyllabus",
+  async (taskPayload) => {
     try {
-      const syllabusSearchResults = await scrapeSyllabusSearchResult(
-        key as Department
+      if (!taskPayload) {
+        logger.log(
+          `Invalid task payload: ${JSON.stringify(taskPayload, null, 2)}`,
+          "error"
+        );
+        return;
+      }
+      const syllabusData = await scrapeSyllabus(taskPayload.japaneseUrl || "");
+      if (!syllabusData) return;
+      const course = courseService.createCourseFromSyllabusData(
+        syllabusData.data,
+        taskPayload,
+        2025,
+        syllabusData.data.courseDescription
       );
+
+      await courseRepository.saveCourse(course);
+    } catch (error) {
+      logger.log(`Error scraping syllabus: ${error}`, "error");
+      logger.log(
+        `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
+        "error"
+      );
+      logger.log(
+        `Error occurred at: ${JSON.stringify(taskPayload, null, 2)}`,
+        "error"
+      );
+    }
+  },
+  { max: 1, duration: 10000 }
+);
+
+await bullMQScheduler.addWorker<Department>(
+  "scrapeSyllabusSearchResult",
+  async (taskPayload) => {
+    const department = taskPayload;
+    try {
+      const syllabusSearchResults =
+        await scrapeSyllabusSearchResult(department);
       syllabusSearchResults
         .filter((e) => e !== null)
         .forEach((syllabusSearchResult) => {
-          timeRangeScheduler.addTask(async () => {
-            try {
-              const syllabusData = await scrapeSyllabus(
-                syllabusSearchResult?.japaneseUrl || ""
-              );
-              if (!syllabusData) return;
-              const course = courseService.createCourseFromSyllabusData(
-                syllabusData.data,
-                syllabusSearchResult,
-                2025,
-                syllabusData.data.courseDescription
-              );
-
-              await courseRepository.saveCourse(course);
-            } catch (error) {
-              logger.log(`Error scraping syllabus: ${error}`, "error");
-              logger.log(
-                `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
-                "error"
-              );
-              logger.log(
-                `Error occurred at: ${JSON.stringify(syllabusSearchResult, null, 2)}`,
-                "error"
-              );
-            }
+          bullMQScheduler.addTask({
+            type: "scrapeSyllabus",
+            payload: { syllabusSearchResult },
           });
         });
     } catch (error) {
@@ -208,21 +226,29 @@ Object.keys(facultyMap).forEach((key) => {
         `Stack trace: ${error instanceof Error ? error.stack : "no stack"}`,
         "error"
       );
-      logger.log(`Faculty: ${key}`, "error");
+      logger.log(`Faculty: ${department}`, "error");
     }
+  },
+  { max: 1, duration: 10000 }
+);
+
+Object.keys(facultyMap).forEach((department) => {
+  bullMQScheduler.addTask({
+    type: "scrapeSyllabusSearchResult",
+    payload: { department },
   });
 });
 
-timeRangeScheduler.start();
+bullMQScheduler.start();
 
 process.on("SIGINT", async () => {
   await logger.log("Received SIGINT. Shutting down...");
-  timeRangeScheduler.stop();
+  await bullMQScheduler.stop();
   process.exit();
 });
 
 process.on("SIGTERM", async () => {
   await logger.log("Received SIGTERM. Shutting down...");
-  timeRangeScheduler.stop();
+  await bullMQScheduler.stop();
   process.exit();
 });

@@ -4,7 +4,7 @@
 
 ## 概要
 
-このサービスは、各マイクロサービス（frontend、syllabus-frontend、syllabus-backend）へのリクエストをルーティングするリバースプロキシとして動作します。本番環境でのフロントエンドとして、クライアントからのすべてのHTTPリクエストを受け付けます。
+このサービスは、各マイクロサービス（frontend、syllabus-backend）へのリクエストをルーティングするリバースプロキシとして動作します。本番環境でのフロントエンドとして、クライアントからのすべてのHTTPリクエストを受け付けます。
 
 ## 利用技術
 
@@ -30,14 +30,12 @@ nginx/
 - **ポート80でリクエストを受信**
 - **各サービスへのプロキシ設定（サブドメインベース）**:
   - `example.com` → frontend
-  - `builder.example.com` → syllabus-frontend
   - `api.example.com` → syllabus-backend
 
 #### ルーティング例
 
 ```
 http://example.com/              → frontendサービス
-http://builder.example.com/      → syllabus-frontendサービス
 http://api.example.com/          → syllabus-backendサービス
 ```
 
@@ -67,9 +65,6 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 # ホストマシンで実行: メインページへのアクセス
 curl http://localhost/
 
-# ホストマシンで実行: syllabus-frontendへのアクセス（builder.localhostサブドメイン）
-curl -H "Host: builder.localhost" http://localhost/
-
 # ホストマシンで実行: syllabus-backendへのアクセス（api.localhostサブドメイン）
 curl -H "Host: api.localhost" http://localhost/courses
 ```
@@ -79,7 +74,6 @@ curl -H "Host: api.localhost" http://localhost/courses
 ブラウザで以下のURLにアクセスして、各サービスが正常に動作していることを確認：
 
 - `http://localhost/` - frontend
-- `http://builder.localhost/` - syllabus-frontend
 - `http://api.localhost/courses` - syllabus-backend
 
 ## 本番環境
